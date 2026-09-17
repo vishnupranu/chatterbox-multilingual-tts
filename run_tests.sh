@@ -19,7 +19,7 @@ fi
 
 echo "[*] Python executable: $($PYTHON --version)"
 echo "[*] Target device: $($PYTHON -c "import tts_engine; print(tts_engine.get_target_device())")"
-echo "[*] Running comprehensive audit across 18 subsystems..."
+echo "[*] Running comprehensive audit across 20 subsystems..."
 echo ""
 
 $PYTHON tests/test_audit.py
@@ -29,7 +29,7 @@ EXIT_CODE=$?
 if [ $EXIT_CODE -eq 0 ]; then
     echo ""
     echo "========================================================"
-    echo "  [AUDIT PASSED] ALL 18 SUBSYSTEM TESTS VERIFIED 100%   "
+    echo "  [AUDIT PASSED] ALL 20 SUBSYSTEM TESTS VERIFIED 100%   "
     echo "========================================================"
 else
     echo ""

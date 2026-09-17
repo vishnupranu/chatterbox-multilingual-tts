@@ -349,6 +349,31 @@ class TestAuditChatterboxPlatform(unittest.TestCase):
             self.assertEqual(sr, 24000, f"Sample rate must be 24kHz, got {sr}")
             self.assertGreater(len(data), 0, f"WAV file {wav_file} contains no audio samples.")
 
+    def test_19_copilot_chat_endpoint(self):
+        """Audit /api/copilot/chat endpoint grounded on project architecture."""
+        # 1. Ask about 23 languages
+        res = self.client.post("/api/copilot/chat", json={"query": "What 23 languages are supported?"})
+        self.assertEqual(res.status_code, 200)
+        data = res.json()
+        self.assertTrue(data["success"])
+        self.assertEqual(data["category"], "languages")
+        self.assertIn("23 Total", data["answer"])
+
+        # 2. Ask about voice cloning
+        res_clone = self.client.post("/api/copilot/chat", json={"query": "How do I clone a voice?"})
+        self.assertEqual(res_clone.status_code, 200)
+        self.assertEqual(res_clone.json()["category"], "cloning")
+
+        # 3. Empty query rejection
+        err_res = self.client.post("/api/copilot/chat", json={"query": "   "})
+        self.assertEqual(err_res.status_code, 400)
+
+    def test_20_official_upi_id_configured(self):
+        """Audit that official merchant UPI ID 9994152888-4#ybl is active in billing engine."""
+        order = billing.create_scan_to_pay_order("plan_starter")
+        self.assertEqual(order["pay_address"], "9994152888-4#ybl")
+        self.assertIn("pa=9994152888-4%23ybl", order["upi_url"])
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

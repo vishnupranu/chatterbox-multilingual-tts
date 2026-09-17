@@ -4,6 +4,7 @@ Payment Gateway & Scan-to-Pay Billing Engine for Chatterbox Multilingual TTS.
 Supports dynamic QR code generation (UPI, Digital Wallets, Crypto, Stripe Pay),
 order lifecycle tracking, and credit balance management.
 """
+import os
 import uuid
 import time
 import base64
@@ -76,10 +77,11 @@ def create_scan_to_pay_order(plan_id: str, payment_method: str = "scan_to_pay") 
     amount_inr = plan["price_inr"]
     amount_usd = plan["price_usd"]
 
-    # Generate standard UPI / Scan-to-pay deep-link URI
-    upi_pa = "chatterbox.ai@upi"
+    # Generate standard UPI / Scan-to-pay deep-link URI with official merchant ID
+    upi_pa = os.getenv("UPI_ID", "9994152888-4#ybl")
     upi_pn = "Chatterbox Multilingual AI"
-    upi_url = f"upi://pay?pa={upi_pa}&pn={urllib.parse.quote(upi_pn)}&am={amount_inr}&cu=INR&tr={order_id}&tn=Chatterbox+TTS+Credits"
+    encoded_pa = urllib.parse.quote(upi_pa, safe="")
+    upi_url = f"upi://pay?pa={encoded_pa}&pn={urllib.parse.quote(upi_pn)}&am={amount_inr}&cu=INR&tr={order_id}&tn=Chatterbox+TTS+Credits"
 
     # SVG QR Code representation (Self-contained vector QR pattern for reliable rendering)
     # Encodes order details, order ID, and amount

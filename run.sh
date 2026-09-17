@@ -18,8 +18,18 @@ COMMAND="${1:-app}"
 
 case "$COMMAND" in
     app|"")
-        echo "[*] Launching Chatterbox Z.ai Multilingual Platform on http://localhost:8000..."
+        echo "[*] Launching Chatterbox Z.ai Multilingual Platform on http://localhost:8080..."
         "$PYTHON" server.py
+        ;;
+    desktop)
+        shift
+        ./launch_desktop.sh "$@"
+        ;;
+    test|audit)
+        ./run_tests.sh
+        ;;
+    deploy)
+        ./deploy.sh
         ;;
     ui|gradio)
         echo "[*] Launching Gradio UI on http://localhost:7860..."
@@ -33,12 +43,14 @@ case "$COMMAND" in
         "$PYTHON" cli.py --list-languages
         ;;
     *)
-        echo "Usage: $0 {app|ui|cli|languages} [arguments...]"
+        echo "Usage: $0 {app|desktop|cli|ui|test|deploy|languages} [arguments...]"
         echo "Examples:"
-        echo "  $0                                             # Launch Z.ai Platform (http://localhost:8000)"
-        echo "  $0 app                                         # Launch Z.ai Platform (Chat, Code, Workers)"
-        echo "  $0 ui                                          # Launch Gradio Web UI (http://localhost:7860)"
-        echo "  $0 cli -t 'Hello world' -l en -o speech.wav   # Synthesize English via CLI"
+        echo "  $0                                             # Launch Z.ai Platform (http://localhost:8080)"
+        echo "  $0 desktop                                     # Launch Native Desktop Application"
+        echo "  $0 cli                                         # Interactive Terminal Shell & AITalk"
+        echo "  $0 cli --ai 'What languages?'                  # Ask Project-Trained AITalk Copilot"
+        echo "  $0 test                                        # Run 18-Subsystem Audit Test Suite"
+        echo "  $0 deploy                                      # Production Daemon Deployment"
         echo "  $0 languages                                   # List all 23 supported languages"
         exit 1
         ;;

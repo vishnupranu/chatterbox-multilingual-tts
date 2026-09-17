@@ -52,7 +52,11 @@
 
       <!-- Primary Workspace Navigation -->
       <nav class="space-y-1 mb-6">
-        <button id="nav-btn-chat" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium nav-tab-active transition">
+        <button id="nav-btn-landing" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium nav-tab-active transition">
+          <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+          Showcase & Vision
+        </button>
+        <button id="nav-btn-chat" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium text-zinc-400 hover:text-white hover:bg-white/5 transition">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
           Chat Assistant
         </button>
@@ -137,8 +141,182 @@
       </div>
     </header>
 
+    <!-- WORKSPACE 0: CINEMATIC SHOWCASE & LANDING PAGE -->
+    <section id="workspace-view-landing" class="flex-1 overflow-y-auto p-8 relative hero-glow-bg">
+      <div class="max-w-6xl mx-auto space-y-12 pb-24">
+        
+        <!-- Hero Section -->
+        <div class="text-center space-y-5 pt-6">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-xs font-semibold tracking-wide">
+            <span class="w-2 h-2 rounded-full bg-indigo-400 animate-pulse"></span>
+            <span>CHATTERBOX MULTILINGUAL V3.0 • 24kHz STUDIO AI</span>
+          </div>
+          <h1 class="text-4xl sm:text-6xl font-black tracking-tight text-white max-w-3xl mx-auto leading-tight">
+            Cinematic Voice AI with <span class="gradient-text-cinematic">Real Zero-Shot Timbre</span>
+          </h1>
+          <p class="text-zinc-400 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
+            Generate authentic, expressive human speech across 23 languages. Instant voice cloning from a 5-second audio sample, powered by Matcha-TTS flow matching and 24kHz HiFiGAN vocoding.
+          </p>
+          
+          <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
+            <button onclick="switchWorkspace('chat')" class="px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-500 hover:from-indigo-600 hover:to-cyan-600 text-white font-bold text-xs shadow-lg shadow-indigo-500/30 transition hover:scale-105 flex items-center gap-2">
+              <span>🚀</span> Launch Web Studio
+            </button>
+            <button onclick="openScanToPayForPlan('plan_pro')" class="px-5 py-3 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300 font-bold text-xs transition flex items-center gap-2">
+              <span>⚡</span> Scan to Pay (UPI: 9994152888-4#ybl)
+            </button>
+            <button onclick="toggleAITalkDrawer()" class="px-5 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-300 font-semibold text-xs transition flex items-center gap-2">
+              <span>💬</span> Ask AITalk Copilot
+            </button>
+          </div>
+        </div>
+
+        <!-- 23-Language Interactive Audition Showcase -->
+        <div class="card-cinematic p-6 rounded-2xl space-y-5">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-white/5 pb-4">
+            <div>
+              <h3 class="text-base font-bold text-white flex items-center gap-2">
+                <span>🌐</span> Interactive 23-Language Voice Audition
+              </h3>
+              <p class="text-xs text-zinc-400">Click any native speaker to audition real 24kHz studio quality</p>
+            </div>
+            <div class="text-[11px] font-mono text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-3 py-1 rounded-lg">
+              23 Official Language Models Active
+            </div>
+          </div>
+
+          <div id="landing-voices-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2.5">
+            <!-- Populated with real native audio samples by app.js -->
+          </div>
+        </div>
+
+        <!-- Multi-Client Platform Ecosystem -->
+        <div class="space-y-4">
+          <div class="text-center space-y-1">
+            <h3 class="text-xl font-bold text-white tracking-tight">Run Everywhere: Web, Desktop, Terminal & Cloud</h3>
+            <p class="text-xs text-zinc-400">Unified workflow with AITalk copilot available in every application client</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="card-cinematic p-5 rounded-2xl flex flex-col justify-between">
+              <div>
+                <div class="w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-lg mb-3">🌐</div>
+                <h4 class="text-sm font-bold text-white mb-1">Web Platform</h4>
+                <p class="text-xs text-zinc-400 leading-relaxed mb-4">chat.z.ai responsive SPA with Chat, Code runner, and Autonomous Workers queue.</p>
+              </div>
+              <button onclick="switchWorkspace('chat')" class="w-full py-2 rounded-xl bg-indigo-600/30 hover:bg-indigo-600/50 border border-indigo-500/30 text-xs font-semibold text-indigo-200 transition">
+                Open Web Studio →
+              </button>
+            </div>
+
+            <div class="card-cinematic p-5 rounded-2xl flex flex-col justify-between">
+              <div>
+                <div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-lg mb-3">🖥️</div>
+                <h4 class="text-sm font-bold text-white mb-1">Desktop Application</h4>
+                <p class="text-xs text-zinc-400 leading-relaxed mb-4">Native macOS WebKit desktop client with low latency audio streaming and system tray.</p>
+              </div>
+              <div class="text-[11px] font-mono bg-zinc-950/80 p-2 rounded-lg border border-white/10 text-zinc-300 text-center">
+                ./launch_desktop.sh
+              </div>
+            </div>
+
+            <div class="card-cinematic p-5 rounded-2xl flex flex-col justify-between">
+              <div>
+                <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-lg mb-3">💻</div>
+                <h4 class="text-sm font-bold text-white mb-1">Terminal CLI & AITalk</h4>
+                <p class="text-xs text-zinc-400 leading-relaxed mb-4">Interactive REPL shell with synthesis commands and built-in project AI assistant.</p>
+              </div>
+              <div class="text-[11px] font-mono bg-zinc-950/80 p-2 rounded-lg border border-white/10 text-zinc-300 text-center">
+                ./run.sh cli --ai
+              </div>
+            </div>
+
+            <div class="card-cinematic p-5 rounded-2xl flex flex-col justify-between">
+              <div>
+                <div class="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-lg mb-3">🐙</div>
+                <h4 class="text-sm font-bold text-white mb-1">GitHub & CI/CD</h4>
+                <p class="text-xs text-zinc-400 leading-relaxed mb-4">Locked to main branch with automated 18-subsystem pre-flight audit test enforcement.</p>
+              </div>
+              <div class="text-[11px] font-mono bg-zinc-950/80 p-2 rounded-lg border border-white/10 text-emerald-400 text-center">
+                branch: main • locked
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scan to Pay & Pricing Matrix -->
+        <div class="space-y-4">
+          <div class="text-center space-y-1">
+            <div class="text-xs font-bold font-mono text-amber-400 uppercase tracking-wider">Instant Scan to Pay Billing</div>
+            <h3 class="text-xl font-bold text-white tracking-tight">Flexible Synthesis Credit Packages</h3>
+            <p class="text-xs text-zinc-400">Pay directly with any UPI app (GPay, PhonePe, Paytm) to official merchant ID: <code class="text-amber-300 font-mono">9994152888-4#ybl</code></p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <!-- Starter -->
+            <div class="card-cinematic p-6 rounded-2xl flex flex-col justify-between border-white/10">
+              <div class="space-y-3">
+                <div class="text-xs font-bold uppercase text-zinc-400 tracking-wider">Starter Pack</div>
+                <div class="text-2xl font-black text-white font-mono">₹750 <span class="text-xs font-normal text-zinc-400">/ $9.00</span></div>
+                <div class="text-xs text-indigo-400 font-semibold font-mono">⚡ 10,000 Synthesis Credits</div>
+                <p class="text-xs text-zinc-400">~100,000 characters (~1.5 hours studio audio). Ideal for creators & personal projects.</p>
+                <ul class="text-xs text-zinc-300 space-y-1.5 pt-2">
+                  <li class="flex items-center gap-1.5"><span class="text-emerald-400">✓</span> Standard 24kHz Studio Audio</li>
+                  <li class="flex items-center gap-1.5"><span class="text-emerald-400">✓</span> All 23 Languages Included</li>
+                  <li class="flex items-center gap-1.5"><span class="text-emerald-400">✓</span> Zero-Shot Voice Cloning</li>
+                </ul>
+              </div>
+              <button onclick="openScanToPayForPlan('plan_starter')" class="mt-6 w-full py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white font-semibold text-xs transition flex items-center justify-center gap-2">
+                <span>⚡</span> Scan to Pay ₹750
+              </button>
+            </div>
+
+            <!-- Pro Creator -->
+            <div class="card-cinematic p-6 rounded-2xl flex flex-col justify-between border-indigo-500/50 shadow-xl shadow-indigo-500/10 relative">
+              <span class="absolute -top-2.5 right-6 px-2.5 py-0.5 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white text-[10px] font-bold uppercase tracking-wider">Most Popular</span>
+              <div class="space-y-3">
+                <div class="text-xs font-bold uppercase text-indigo-400 tracking-wider">Pro Creator</div>
+                <div class="text-2xl font-black text-white font-mono">₹2,400 <span class="text-xs font-normal text-zinc-400">/ $29.00</span></div>
+                <div class="text-xs text-amber-400 font-semibold font-mono">⚡ 50,000 Synthesis Credits</div>
+                <p class="text-xs text-zinc-400">~500,000 characters (~7.5 hours studio audio). Perfect for podcasts, audiobooks, and videos.</p>
+                <ul class="text-xs text-zinc-300 space-y-1.5 pt-2">
+                  <li class="flex items-center gap-1.5"><span class="text-emerald-400">✓</span> Priority Generation Queue</li>
+                  <li class="flex items-center gap-1.5"><span class="text-emerald-400">✓</span> Autonomous Workers Pipeline</li>
+                  <li class="flex items-center gap-1.5"><span class="text-emerald-400">✓</span> Cross-Lingual Dubbing Engine</li>
+                  <li class="flex items-center gap-1.5"><span class="text-emerald-400">✓</span> High Concurrency Access</li>
+                </ul>
+              </div>
+              <button onclick="openScanToPayForPlan('plan_pro')" class="mt-6 w-full py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-xs transition shadow-lg shadow-indigo-600/30 flex items-center justify-center gap-2">
+                <span>⚡</span> Scan to Pay ₹2,400
+              </button>
+            </div>
+
+            <!-- Studio Enterprise -->
+            <div class="card-cinematic p-6 rounded-2xl flex flex-col justify-between border-white/10">
+              <div class="space-y-3">
+                <div class="text-xs font-bold uppercase text-zinc-400 tracking-wider">Studio Enterprise</div>
+                <div class="text-2xl font-black text-white font-mono">₹8,200 <span class="text-xs font-normal text-zinc-400">/ $99.00</span></div>
+                <div class="text-xs text-cyan-400 font-semibold font-mono">⚡ 250,000 Synthesis Credits</div>
+                <p class="text-xs text-zinc-400">~2.5 million characters (~40 hours studio audio). For high-scale production studios.</p>
+                <ul class="text-xs text-zinc-300 space-y-1.5 pt-2">
+                  <li class="flex items-center gap-1.5"><span class="text-emerald-400">✓</span> Dedicated MPS/GPU Workers</li>
+                  <li class="flex items-center gap-1.5"><span class="text-emerald-400">✓</span> Unlimited Concurrency</li>
+                  <li class="flex items-center gap-1.5"><span class="text-emerald-400">✓</span> Custom Timbre Profiling</li>
+                  <li class="flex items-center gap-1.5"><span class="text-emerald-400">✓</span> 24/7 SLA Engineering Support</li>
+                </ul>
+              </div>
+              <button onclick="openScanToPayForPlan('plan_enterprise')" class="mt-6 w-full py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white font-semibold text-xs transition flex items-center justify-center gap-2">
+                <span>⚡</span> Scan to Pay ₹8,200
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
     <!-- WORKSPACE 1: CHAT ASSISTANT -->
-    <section id="workspace-view-chat" class="flex-1 flex flex-col h-full overflow-hidden p-6 relative">
+    <section id="workspace-view-chat" class="hidden flex-1 flex-col h-full overflow-hidden p-6 relative">
       <!-- Message Stream -->
       <div id="chat-messages-container" class="flex-1 overflow-y-auto pr-2 pb-32 space-y-4 max-w-4xl mx-auto w-full">
         <!-- Messages appended dynamically by app.js -->
@@ -436,7 +614,7 @@
             <!-- Dynamic QR visual elements inserted by JS -->
           </svg>
           <div class="text-[10px] font-mono text-zinc-800 mt-2 text-center font-bold">
-            UPI ID: <span class="text-indigo-600">chatterbox.ai@upi</span>
+            UPI ID: <span id="qr-upi-id-display" class="text-indigo-600 font-mono font-bold">9994152888-4#ybl</span>
           </div>
         </div>
 
@@ -456,6 +634,62 @@
           </button>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- Floating AITalk Assistant Button -->
+  <button id="aitalk-btn" onclick="toggleAITalkDrawer()" class="aitalk-floating-btn fixed bottom-6 right-6 z-50 flex items-center gap-2.5 px-4 py-3 rounded-full text-white font-semibold text-xs tracking-wide cursor-pointer transition-transform duration-300">
+    <span class="text-base">💬</span>
+    <span>AITalk Copilot</span>
+    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+  </button>
+
+  <!-- AITalk Project-Trained Copilot Drawer -->
+  <div id="aitalk-drawer" class="aitalk-drawer">
+    <div class="h-16 border-b border-white/10 px-5 flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-500 to-pink-500 flex items-center justify-center font-bold text-xs text-white">AI</div>
+        <div>
+          <h3 class="text-xs font-bold text-white flex items-center gap-1.5">
+            AITalk Copilot
+            <span class="text-[9px] px-1.5 py-0.5 bg-emerald-500/20 text-emerald-300 font-mono rounded">TRAINED</span>
+          </h3>
+          <p class="text-[10px] text-zinc-400">Chatterbox V3 Architecture & APIs</p>
+        </div>
+      </div>
+      <button onclick="toggleAITalkDrawer()" class="text-zinc-400 hover:text-white p-1 rounded-lg hover:bg-white/10 text-xs">✕</button>
+    </div>
+    
+    <!-- Quick Question Chips -->
+    <div class="p-3 border-b border-white/5 flex gap-1.5 overflow-x-auto no-scrollbar text-[11px] bg-zinc-900/50">
+      <button onclick="sendAITalkQuery('What 23 languages are supported?')" class="px-2.5 py-1 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-300 flex-shrink-0 transition">🌐 23 Languages</button>
+      <button onclick="sendAITalkQuery('How do I clone a voice?')" class="px-2.5 py-1 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-300 flex-shrink-0 transition">🎙️ Voice Cloning</button>
+      <button onclick="sendAITalkQuery('How does cross-lingual dubbing work?')" class="px-2.5 py-1 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-300 flex-shrink-0 transition">⚙️ Dubbing</button>
+      <button onclick="sendAITalkQuery('Show pricing plans and scan to pay')" class="px-2.5 py-1 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-300 flex-shrink-0 transition">💳 Scan to Pay</button>
+      <button onclick="sendAITalkQuery('How to use CLI and Terminal?')" class="px-2.5 py-1 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-300 flex-shrink-0 transition">💻 CLI / Terminal</button>
+    </div>
+
+    <!-- Messages Container -->
+    <div id="aitalk-messages" class="flex-1 overflow-y-auto p-4 space-y-3.5 text-xs">
+      <div class="p-3.5 rounded-xl bg-zinc-900/80 border border-indigo-500/20 text-zinc-300 space-y-2">
+        <div class="font-bold text-white flex items-center gap-1.5">
+          <span>🤖</span> Welcome to Chatterbox AITalk
+        </div>
+        <p class="leading-relaxed">
+          I am trained on the complete Chatterbox Multilingual architecture, 23 language phonetics, zero-shot voice cloning, autonomous workers, and Scan-to-Pay billing.
+        </p>
+        <p class="text-zinc-400">
+          Ask me anything or click a quick prompt above!
+        </p>
+      </div>
+    </div>
+
+    <!-- Input Box -->
+    <div class="p-3 border-t border-white/10 bg-zinc-950/90">
+      <form onsubmit="event.preventDefault(); submitAITalkInput();" class="flex items-center gap-2">
+        <input type="text" id="aitalk-input" placeholder="Ask about architecture, languages, code..." class="flex-1 bg-zinc-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 transition">
+        <button type="submit" class="px-3 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-medium text-xs shadow-md transition">Send</button>
+      </form>
     </div>
   </div>
 

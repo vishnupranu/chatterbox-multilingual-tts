@@ -186,10 +186,78 @@ async function loadPresetVoices() {
         </div>
       `).join('');
     }
+
+    // Populate Landing Page Interactive Showcase
+    renderLandingVoices();
   } catch (err) {
     console.error("Failed to load preset voices:", err);
   }
 }
+
+function renderLandingVoices() {
+  const grid = document.getElementById('landing-voices-grid');
+  if (!grid) return;
+
+  const voices = (state.presets && state.presets.length > 0) ? state.presets : [
+    { id: 'en_female', name: 'Sarah', lang: 'en', audio: 'https://storage.googleapis.com/chatterbox-demo-samples/mtl_prompts/en_f1.flac', avatar: '👩🏼', desc: 'English (US)' },
+    { id: 'fr_female', name: 'Camille', lang: 'fr', audio: 'https://storage.googleapis.com/chatterbox-demo-samples/mtl_prompts/fr_f1.flac', avatar: '👩🏻', desc: 'French (FR)' },
+    { id: 'es_female', name: 'Elena', lang: 'es', audio: 'https://storage.googleapis.com/chatterbox-demo-samples/mtl_prompts/es_f1.flac', avatar: '👩🏽', desc: 'Spanish (ES)' },
+    { id: 'de_female', name: 'Greta', lang: 'de', audio: 'https://storage.googleapis.com/chatterbox-demo-samples/mtl_prompts/de_f1.flac', avatar: '👱🏻‍♀️', desc: 'German (DE)' },
+    { id: 'hi_female', name: 'Aanya', lang: 'hi', audio: 'https://storage.googleapis.com/chatterbox-demo-samples/mtl_prompts/hi_f1.flac', avatar: '👩🏾', desc: 'Hindi (IN)' },
+    { id: 'ja_female', name: 'Yuki', lang: 'ja', audio: 'https://storage.googleapis.com/chatterbox-demo-samples/mtl_prompts/ja/ja_prompts1.flac', avatar: '👧🏻', desc: 'Japanese (JP)' },
+    { id: 'zh_female', name: 'Mei', lang: 'zh', audio: 'https://storage.googleapis.com/chatterbox-demo-samples/mtl_prompts/zh_f2.flac', avatar: '👩🏻', desc: 'Chinese (Mandarin)' },
+    { id: 'ru_male', name: 'Dmitri', lang: 'ru', audio: 'https://storage.googleapis.com/chatterbox-demo-samples/mtl_prompts/ru_m.flac', avatar: '👨🏼', desc: 'Russian (RU)' },
+    { id: 'it_male', name: 'Marco', lang: 'it', audio: 'https://storage.googleapis.com/chatterbox-demo-samples/mtl_prompts/it_m1.flac', avatar: '👨🏻', desc: 'Italian (IT)' },
+    { id: 'pt_male', name: 'Thiago', lang: 'pt', audio: 'https://storage.googleapis.com/chatterbox-demo-samples/mtl_prompts/pt_m1.flac', avatar: '👨🏽', desc: 'Portuguese (BR)' },
+    { id: 'ar_female', name: 'Layla', lang: 'ar', audio: 'https://storage.googleapis.com/chatterbox-demo-samples/mtl_prompts/ar_f/ar_prompts2.flac', avatar: '🧕🏽', desc: 'Arabic (MSA)' }
+  ];
+
+  grid.innerHTML = voices.map(v => `
+    <div class="voice-sample-chip p-3 rounded-xl flex flex-col justify-between gap-2">
+      <div class="flex items-center justify-between">
+        <span class="text-[11px] font-mono font-bold px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-300">${v.lang.toUpperCase()}</span>
+        <button onclick="playLandingVoiceAudio('${v.audio}', this)" class="w-7 h-7 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white flex items-center justify-center transition shadow-md" title="Audition Voice">
+          <svg class="w-3.5 h-3.5 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+      </div>
+      <div>
+        <div class="text-xs font-bold text-white truncate">${v.name}</div>
+        <div class="text-[10px] text-zinc-400 capitalize truncate">${v.desc || v.lang}</div>
+      </div>
+      <button onclick="selectPresetVoice('${v.id}'); switchWorkspace('chat');" class="w-full py-1 rounded-lg bg-white/5 hover:bg-indigo-600/30 text-[10px] text-zinc-300 hover:text-white transition">
+        Use Voice →
+      </button>
+    </div>
+  `).join('');
+}
+window.renderLandingVoices = renderLandingVoices;
+
+let currentLandingAudio = null;
+function playLandingVoiceAudio(url, btn) {
+  if (currentLandingAudio) {
+    currentLandingAudio.pause();
+    currentLandingAudio = null;
+    document.querySelectorAll('#landing-voices-grid button svg').forEach(svg => {
+      svg.parentElement.innerHTML = '<svg class="w-3.5 h-3.5 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+    });
+  }
+  const audio = new Audio(url);
+  currentLandingAudio = audio;
+  btn.innerHTML = '<svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
+  audio.play();
+  audio.onended = () => {
+    btn.innerHTML = '<svg class="w-3.5 h-3.5 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+    currentLandingAudio = null;
+  };
+}
+window.playLandingVoiceAudio = playLandingVoiceAudio;
+
+function openScanToPayForPlan(planId) {
+  const modal = document.getElementById('billing-modal');
+  if (modal) modal.classList.remove('hidden');
+  selectBillingPlan(planId);
+}
+window.openScanToPayForPlan = openScanToPayForPlan;
 
 function selectPresetVoice(presetId) {
   const p = state.presets.find(x => x.id === presetId);
@@ -246,7 +314,7 @@ function updatePromptPlaceholder() {
 
 // Tab Navigation
 function initTabs() {
-  const tabs = ['chat', 'code', 'workers'];
+  const tabs = ['landing', 'chat', 'code', 'workers'];
   tabs.forEach(tabName => {
     const btn = document.getElementById(`nav-btn-${tabName}`);
     if (btn) {
@@ -257,7 +325,7 @@ function initTabs() {
 
 function switchTab(targetTab) {
   state.currentTab = targetTab;
-  const tabs = ['chat', 'code', 'workers'];
+  const tabs = ['landing', 'chat', 'code', 'workers'];
 
   tabs.forEach(tab => {
     const btn = document.getElementById(`nav-btn-${tab}`);
@@ -276,10 +344,15 @@ function switchTab(targetTab) {
     if (view) {
       if (tab === targetTab) {
         view.classList.remove('hidden');
-        view.classList.add('flex');
+        if (tab === 'landing') {
+          view.classList.add('block');
+        } else {
+          view.classList.add('flex');
+        }
+        view.classList.add('animate-fade-in');
       } else {
         view.classList.add('hidden');
-        view.classList.remove('flex');
+        view.classList.remove('flex', 'block', 'animate-fade-in');
       }
     }
   });
@@ -295,6 +368,7 @@ function switchTab(targetTab) {
     state.workersInterval = null;
   }
 }
+window.switchWorkspace = switchTab;
 
 // Chat Workspace logic
 function addWelcomeChatMessage() {
@@ -1066,6 +1140,10 @@ async function startScanToPay(planId) {
     document.getElementById('qr-plan-title').textContent = `${order.plan_name} (${order.credits.toLocaleString()} Credits)`;
     document.getElementById('qr-amount-display').textContent = `₹${order.amount_inr} / $${order.amount_usd}`;
     document.getElementById('qr-order-id').textContent = order.order_id;
+    const upiDisplay = document.getElementById('qr-upi-id-display');
+    if (upiDisplay && order.pay_address) {
+      upiDisplay.textContent = order.pay_address;
+    }
 
     // Render Dynamic QR SVG
     renderQrCodeSvg(order.upi_url);
@@ -1187,4 +1265,157 @@ function escapeHtml(str) {
     "'": '&#039;'
   })[m]);
 }
+
+// ==============================================================================
+// AITalk Project-Trained Copilot Controller
+// ==============================================================================
+function toggleAITalkDrawer() {
+  const drawer = document.getElementById('aitalk-drawer');
+  if (drawer) {
+    drawer.classList.toggle('open');
+    if (drawer.classList.contains('open')) {
+      document.getElementById('aitalk-input')?.focus();
+    }
+  }
+}
+window.toggleAITalkDrawer = toggleAITalkDrawer;
+
+async function sendAITalkQuery(query) {
+  const messagesContainer = document.getElementById('aitalk-messages');
+  if (!messagesContainer || !query.trim()) return;
+
+  // Open drawer if closed
+  const drawer = document.getElementById('aitalk-drawer');
+  if (drawer && !drawer.classList.contains('open')) {
+    drawer.classList.add('open');
+  }
+
+  // Append user message
+  const userMsgEl = document.createElement('div');
+  userMsgEl.className = 'p-3 rounded-xl bg-indigo-600/20 border border-indigo-500/30 text-white ml-6 text-xs';
+  userMsgEl.innerHTML = `<div class="font-semibold text-indigo-300 text-[10px] mb-1">YOU</div><div>${escapeHtml(query)}</div>`;
+  messagesContainer.appendChild(userMsgEl);
+
+  // Append thinking bubble
+  const aiMsgEl = document.createElement('div');
+  aiMsgEl.className = 'p-3.5 rounded-xl bg-zinc-900/90 border border-white/10 text-zinc-300 mr-4 text-xs space-y-2';
+  aiMsgEl.innerHTML = `
+    <div class="font-semibold text-purple-400 text-[10px] flex items-center gap-1.5">
+      <span class="w-1.5 h-1.5 rounded-full bg-purple-400 animate-ping"></span>
+      AITALK COPILOT
+    </div>
+    <div class="text-zinc-400 italic">Project context retrieval in progress...</div>
+  `;
+  messagesContainer.appendChild(aiMsgEl);
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+  try {
+    const res = await fetch('/api/copilot/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query: query, context: state.currentTab })
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      let actionsHtml = '';
+      if (data.suggested_actions && data.suggested_actions.length > 0) {
+        actionsHtml = `
+          <div class="pt-2 flex flex-wrap gap-1.5 border-t border-white/5">
+            ${data.suggested_actions.map(act => `
+              <button onclick="handleCopilotAction('${encodeURIComponent(JSON.stringify(act))}')" class="px-2 py-1 rounded-md bg-indigo-500/20 hover:bg-indigo-500/30 border border-indigo-500/30 text-[10px] font-semibold text-indigo-300 transition">
+                ⚡ ${act.label}
+              </button>
+            `).join('')}
+          </div>
+        `;
+      }
+
+      // Convert simple markdown code blocks and headers to HTML
+      let formatted = data.answer
+        .replace(/### (.*)/g, '<h4 class="font-bold text-white text-xs mt-1 mb-1">$1</h4>')
+        .replace(/\*\*(.*?)\*\*/g, '<strong class="text-white">$1</strong>')
+        .replace(/`([^`]+)`/g, '<code class="px-1 py-0.5 rounded bg-black/40 text-amber-300 font-mono text-[10px]">$1</code>')
+        .replace(/```python([\s\S]*?)```/g, '<pre class="bg-black/60 p-2.5 rounded-lg font-mono text-[10px] text-emerald-300 overflow-x-auto my-2 border border-white/5">$1</pre>')
+        .replace(/```bash([\s\S]*?)```/g, '<pre class="bg-black/60 p-2.5 rounded-lg font-mono text-[10px] text-cyan-300 overflow-x-auto my-2 border border-white/5">$1</pre>')
+        .replace(/\n\n/g, '<br><br>');
+
+      aiMsgEl.innerHTML = `
+        <div class="flex items-center justify-between">
+          <div class="font-semibold text-purple-400 text-[10px] flex items-center gap-1.5">
+            <span>✨</span> AITALK COPILOT
+          </div>
+          <button onclick="speakAITalkText(this)" data-text="${escapeHtml(data.answer.replace(/#|\*|`|```[\s\S]*?```/g, ''))}" class="text-[10px] text-zinc-400 hover:text-white flex items-center gap-1 bg-white/5 px-2 py-0.5 rounded transition">
+            <span>🔊</span> Listen
+          </button>
+        </div>
+        <div class="leading-relaxed text-zinc-200">${formatted}</div>
+        ${actionsHtml}
+      `;
+    } else {
+      aiMsgEl.innerHTML = `<div class="text-rose-400">Error: ${data.detail || 'Could not answer query'}</div>`;
+    }
+  } catch (err) {
+    aiMsgEl.innerHTML = `<div class="text-rose-400">Network error: ${err.message}</div>`;
+  }
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+window.sendAITalkQuery = sendAITalkQuery;
+
+function submitAITalkInput() {
+  const input = document.getElementById('aitalk-input');
+  if (input && input.value.trim()) {
+    const val = input.value.trim();
+    input.value = '';
+    sendAITalkQuery(val);
+  }
+}
+window.submitAITalkInput = submitAITalkInput;
+
+function handleCopilotAction(encodedAct) {
+  const act = JSON.parse(decodeURIComponent(encodedAct));
+  if (act.type === 'switch_tab') {
+    switchWorkspace(act.target);
+  } else if (act.type === 'open_modal') {
+    if (act.target === 'presetModal') openPresetsModal();
+    if (act.target === 'paymentModal') openBillingModal();
+  } else if (act.type === 'chat_fill') {
+    switchWorkspace('chat');
+    const input = document.getElementById('chat-input-text');
+    if (input) input.value = act.text;
+    if (act.lang) {
+      const select = document.getElementById('chat-language-select');
+      if (select) select.value = act.lang;
+      state.selectedLanguage = act.lang;
+    }
+  } else if (act.type === 'copilot_ask') {
+    sendAITalkQuery(act.query);
+  }
+}
+window.handleCopilotAction = handleCopilotAction;
+
+function speakAITalkText(btn) {
+  const text = btn.getAttribute('data-text');
+  if (!text) return;
+  btn.innerHTML = `<span>⏳</span> Synthesizing...`;
+  fetch('/api/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text: text.slice(0, 250), language: 'en', model_version: 'v3' })
+  })
+  .then(r => r.json())
+  .then(data => {
+    if (data.success && data.audio_url) {
+      const audio = new Audio(data.audio_url);
+      audio.play();
+      btn.innerHTML = `<span>🔊</span> Playing`;
+      audio.onended = () => { btn.innerHTML = `<span>🔊</span> Listen`; };
+    } else {
+      btn.innerHTML = `<span>🔊</span> Listen`;
+    }
+  })
+  .catch(() => { btn.innerHTML = `<span>🔊</span> Listen`; });
+}
+window.speakAITalkText = speakAITalkText;
+
 

@@ -21,6 +21,7 @@ from tts_engine import (
 )
 import workers
 import billing
+import copilot
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_DIR = os.path.join(BASE_DIR, "static")
@@ -135,6 +136,20 @@ def verify_billing_payment(req: VerifyOrderRequest):
         return res
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
+
+
+class CopilotChatRequest(BaseModel):
+    query: str = Field(..., description="User query for the project-trained AITalk copilot")
+    context: Optional[str] = Field(None, description="Optional active workspace context")
+
+
+@app.post("/api/copilot/chat")
+def copilot_chat(req: CopilotChatRequest):
+    """AITalk project-trained copilot endpoint answering queries about Chatterbox architecture, languages, code, and workers."""
+    if not req.query.strip():
+        raise HTTPException(status_code=400, detail="Query cannot be empty.")
+    res = copilot.ask_aitalk(req.query, req.context)
+    return {"success": True, **res}
 
 
 @app.get("/api/languages")
