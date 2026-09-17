@@ -1,0 +1,29 @@
+[project]
+name = "chatterbox-multilingual-tts"
+version = "0.1.0"
+description = "Chatterbox Multilingual TTS with Gradio UI, CLI, and REST API"
+readme = "README.md"
+requires-python = ">=3.10,<3.13"
+dependencies = [
+    "torch>=2.2.0,<2.7.0",
+    "torchaudio>=2.2.0,<2.7.0",
+    "transformers>=4.40.0,<4.45.0",
+    "diffusers==0.29.0",
+    "resemble-perth @ git+https://github.com/resemble-ai/Perth.git@master",
+    "conformer==0.3.2",
+    "safetensors==0.5.3",
+    "spacy-pkuseg",
+    "pykakasi==2.3.0",
+    "gradio>=4.0.0",
+    "fastapi>=0.110.0",
+    "uvicorn>=0.29.0",
+    "soundfile>=0.12.1",
+    "librosa>=0.10.0",
+    "pyloudnorm>=0.1.1",
+    "s3tokenizer",
+    "omegaconf"
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"

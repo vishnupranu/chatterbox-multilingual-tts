@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chatterbox Z.ai - Multilingual Voice Platform</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="bg-[#090a0f] text-zinc-100 flex h-screen w-screen overflow-hidden select-none">
+
+  <!-- Left Sidebar (Collapsible) -->
+  <aside class="w-64 flex-shrink-0 bg-[#0c0e15] border-r border-white/5 flex flex-col justify-between p-3.5 z-20">
+    <div>
+      <!-- Brand Header -->
+      <div class="flex items-center gap-2.5 px-2.5 py-2 mb-4">
+        <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-cyan-400 flex items-center justify-center shadow-lg shadow-indigo-500/20 text-white font-black text-sm">
+          Z
+        </div>
+        <div>
+          <div class="text-sm font-bold tracking-tight text-white flex items-center gap-1.5">
+            Z.ai <span class="text-[10px] px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-mono">TTS</span>
+          </div>
+          <div class="text-[10px] text-zinc-400 font-medium">Chatterbox Multilingual</div>
+        </div>
+      </div>
+
+      <!-- New Session Action -->
+      <button onclick="location.reload()" class="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-gradient-to-r from-indigo-600/30 to-purple-600/20 hover:from-indigo-600/40 hover:to-purple-600/30 border border-indigo-500/30 text-xs font-semibold text-white transition mb-4 shadow-sm">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+        New Session
+      </button>
+
+      <!-- Primary Workspace Navigation -->
+      <nav class="space-y-1 mb-6">
+        <button id="nav-btn-chat" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium nav-tab-active transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+          Chat Assistant
+        </button>
+        <button id="nav-btn-code" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium text-zinc-400 hover:text-white hover:bg-white/5 transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+          Code & API
+        </button>
+        <button id="nav-btn-workers" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium text-zinc-400 hover:text-white hover:bg-white/5 transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          Autonomous Workers
+        </button>
+      </nav>
+
+      <!-- History Section -->
+      <div class="px-3">
+        <div class="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider mb-2">Preset Voices</div>
+        <div id="sidebar-voice-presets-list" class="space-y-1 text-xs text-zinc-400">
+          <!-- Dynamically filled by app.js -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar Footer -->
+    <div class="pt-3 border-t border-white/5">
+      <div id="system-status-badge" class="px-2.5 py-2 rounded-xl bg-zinc-900/80 border border-white/5 text-[11px] font-mono text-zinc-400 flex items-center">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 inline-block mr-1.5 animate-pulse"></span>
+        V3 • READY
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main View Container -->
+  <main class="flex-1 flex flex-col h-full bg-[#090a0f] overflow-hidden relative">
+
+    <!-- Top Navigation & Control Bar -->
+    <header class="h-14 border-b border-white/5 px-6 flex items-center justify-between gap-4 glass-panel z-10">
+      <div class="flex items-center gap-3">
+        <h2 id="top-title" class="text-sm font-semibold text-white tracking-tight">Chatterbox Multilingual Workspace</h2>
+        <span class="text-xs text-zinc-500 hidden md:inline">|</span>
+        <span class="text-xs text-zinc-400 hidden md:inline">23 Languages • Zero-Shot Voice Cloning</span>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <!-- Language Selector -->
+        <div class="flex items-center gap-1.5 bg-zinc-900/80 border border-white/10 rounded-xl px-2.5 py-1.5 text-xs text-zinc-200">
+          <span class="text-zinc-400">🌐</span>
+          <select id="chat-language-select" class="bg-transparent text-xs text-zinc-200 focus:outline-none cursor-pointer">
+            <option value="en">English (en)</option>
+          </select>
+        </div>
+
+        <!-- Preset Voices Modal Button -->
+        <button id="btn-open-presets" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-600/20 hover:bg-indigo-600/30 border border-indigo-500/30 text-xs font-medium text-indigo-300 transition" title="Choose from library of voices">
+          <span>🎭</span>
+          <span>Voice Library</span>
+        </button>
+
+        <!-- Credit Balance & Scan to Pay Button -->
+        <button id="btn-open-billing" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500/20 to-orange-500/20 hover:from-amber-500/30 hover:to-orange-500/30 border border-amber-500/30 text-xs font-semibold text-amber-300 transition shadow-sm" title="Credit Balance & Scan to Pay">
+          <span>⚡</span>
+          <span id="user-credits-display">2,500</span>
+          <span class="text-[10px] uppercase font-bold text-amber-400 bg-amber-500/20 px-1.5 py-0.5 rounded">Scan to Pay</span>
+        </button>
+
+        <!-- Voice Clone Indicator / Button -->
+        <input type="file" id="voice-upload-input" accept="audio/*" class="hidden">
+        <div id="voice-clone-badge" class="hidden items-center gap-1.5 bg-indigo-500/10 border border-indigo-500/30 rounded-xl px-2.5 py-1.5 text-xs text-indigo-300">
+          <span>🎙️</span>
+          <span id="voice-clone-filename" class="truncate max-w-[100px]">Voice Sample</span>
+          <button id="btn-clear-voice-clone" class="text-zinc-400 hover:text-white ml-1">✕</button>
+        </div>
+
+        <button id="btn-voice-clone-trigger" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-medium text-zinc-300 transition" title="Upload reference audio to clone voice">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z"/></svg>
+          Upload Voice
+        </button>
+
+        <!-- Settings Trigger -->
+        <button id="btn-open-settings" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-400 hover:text-white transition" title="Voice & Generation Parameters">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- WORKSPACE 1: CHAT ASSISTANT -->
+    <section id="workspace-view-chat" class="flex-1 flex flex-col h-full overflow-hidden p-6 relative">
+      <!-- Message Stream -->
+      <div id="chat-messages-container" class="flex-1 overflow-y-auto pr-2 pb-32 space-y-4 max-w-4xl mx-auto w-full">
+        <!-- Messages appended dynamically by app.js -->
+      </div>
+
+      <!-- Floating Input Container (Z.ai Style) -->
+      <div class="absolute bottom-6 left-6 right-6 flex justify-center pointer-events-none">
+        <div class="w-full max-w-4xl pointer-events-auto flex flex-col gap-2">
+          <!-- Suggestion Prompt Pills -->
+          <div class="flex items-center gap-2 overflow-x-auto pb-1 text-xs no-scrollbar">
+            <button onclick="document.getElementById('chat-input-text').value = 'Bonjour, comment se passe votre journée?'; handleChatSubmit();" class="px-3 py-1.5 rounded-full bg-zinc-900/90 border border-white/10 hover:border-indigo-500/40 text-zinc-300 hover:text-white transition flex-shrink-0">
+              🇫🇷 French sample
+            </button>
+            <button onclick="document.getElementById('chat-input-text').value = 'Hola, ¿cómo estás hoy? Bienvenido al mundo de la voz.'; handleChatSubmit();" class="px-3 py-1.5 rounded-full bg-zinc-900/90 border border-white/10 hover:border-indigo-500/40 text-zinc-300 hover:text-white transition flex-shrink-0">
+              🇪🇸 Spanish sample
+            </button>
+            <button onclick="document.getElementById('chat-input-text').value = '你好，这是高保真多语言语音生成演示。'; handleChatSubmit();" class="px-3 py-1.5 rounded-full bg-zinc-900/90 border border-white/10 hover:border-indigo-500/40 text-zinc-300 hover:text-white transition flex-shrink-0">
+              🇨🇳 Chinese sample
+            </button>
+            <button onclick="document.getElementById('chat-input-text').value = 'नमस्ते, यह बहुभाषी टेक्स्ट-टू-स्पीच का एक सुंदर उदाहरण है।'; handleChatSubmit();" class="px-3 py-1.5 rounded-full bg-zinc-900/90 border border-white/10 hover:border-indigo-500/40 text-zinc-300 hover:text-white transition flex-shrink-0">
+              🇮🇳 Hindi sample
+            </button>
+          </div>
+
+          <!-- Input Box with Mic Record Button -->
+          <div class="glass-input rounded-2xl p-2.5 flex items-end gap-2 shadow-2xl border border-white/10">
+            <!-- Microphone Record Action -->
+            <button id="btn-mic-record" class="w-10 h-10 rounded-xl bg-white/5 hover:bg-white/10 text-zinc-300 flex items-center justify-center transition flex-shrink-0" title="Record microphone to clone voice">
+              <svg id="icon-mic-idle" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z"/></svg>
+              <span id="icon-mic-recording" class="w-3.5 h-3.5 rounded-full bg-red-500 hidden pulse-recording"></span>
+            </button>
+
+            <textarea id="chat-input-text" rows="2" placeholder="Message Chatterbox or enter text to synthesize in 23 languages..." class="flex-1 bg-transparent border-0 text-sm text-white placeholder-zinc-500 focus:outline-none resize-none px-2 py-2 leading-relaxed" onkeydown="if(event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); handleChatSubmit(); }"></textarea>
+            
+            <button id="btn-send-chat" onclick="handleChatSubmit()" class="w-10 h-10 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white flex items-center justify-center transition shadow-lg shadow-indigo-600/30 flex-shrink-0">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WORKSPACE 2: CODE & API RUNNER -->
+    <section id="workspace-view-code" class="flex-1 hidden flex-col h-full overflow-hidden p-6">
+      <div class="max-w-6xl mx-auto w-full h-full flex flex-col gap-4">
+        <!-- Top Selector & Action Bar -->
+        <div class="flex items-center justify-between gap-4 glass-panel p-3.5 rounded-2xl">
+          <div class="flex items-center gap-3">
+            <label class="text-xs font-semibold text-zinc-400">Select Snippet:</label>
+            <select id="code-snippet-select" class="bg-zinc-900 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-zinc-200 focus:outline-none">
+              <option value="python">Python SDK (ChatterboxMultilingualTTS)</option>
+              <option value="curl">cURL REST API (/api/chat)</option>
+              <option value="javascript">JavaScript Fetch API</option>
+              <option value="cli">Command-Line Interface (cli.py)</option>
+            </select>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button id="btn-copy-code" class="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-medium text-zinc-300 transition">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+              <span id="copy-code-text">Copy Code</span>
+            </button>
+            <button id="btn-run-code" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs transition shadow-lg shadow-indigo-600/30">
+              <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              Run Script
+            </button>
+          </div>
+        </div>
+
+        <!-- Code Editor and Live Terminal Console -->
+        <div class="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-4 overflow-hidden">
+          <!-- Editor Pane -->
+          <div class="glass-panel rounded-2xl p-4 flex flex-col h-full overflow-hidden">
+            <div class="text-xs font-mono text-zinc-400 mb-2 flex items-center justify-between">
+              <span>Code Editor</span>
+              <span class="text-[10px] bg-zinc-800 px-2 py-0.5 rounded text-zinc-400">Interactive</span>
+            </div>
+            <textarea id="code-editor-textarea" class="flex-1 w-full bg-[#0d0f17] text-zinc-200 font-mono text-xs p-4 rounded-xl resize-none focus:outline-none border border-white/5 leading-relaxed"></textarea>
+          </div>
+
+          <!-- Console & Audio Result Pane -->
+          <div class="glass-panel rounded-2xl p-4 flex flex-col h-full overflow-hidden">
+            <div class="text-xs font-mono text-zinc-400 mb-2 flex items-center justify-between">
+              <span>Execution Logs & Result</span>
+              <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded">Console Output</span>
+            </div>
+            <div id="code-console-output" class="flex-1 bg-[#0d0f17] text-emerald-400 font-mono text-xs p-4 rounded-xl overflow-y-auto border border-white/5 leading-relaxed whitespace-pre-wrap">
+[INFO] Ready to execute. Click 'Run Script' above to test multilingual synthesis.
+            </div>
+            <div id="code-audio-result"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WORKSPACE 3: AUTONOMOUS WORKERS -->
+    <section id="workspace-view-workers" class="flex-1 hidden flex-col h-full overflow-y-auto p-6">
+      <div class="max-w-6xl mx-auto w-full space-y-6">
+        
+        <!-- Workflow Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Worker 1: Batch Synthesis -->
+          <div class="glass-panel rounded-2xl p-5 border border-white/5 flex flex-col justify-between worker-card">
+            <div>
+              <div class="flex items-center gap-2.5 mb-2">
+                <span class="p-2 rounded-xl bg-indigo-500/20 text-indigo-400 text-sm">📦</span>
+                <h3 class="text-sm font-bold text-white">Batch Audio Generator</h3>
+              </div>
+              <p class="text-xs text-zinc-400 mb-3">Split multi-line text into individual audio chunks and download batch assets.</p>
+              
+              <div class="space-y-2">
+                <textarea id="batch-input-lines" rows="3" placeholder="Enter one sentence per line...&#10;Line 1: Good morning.&#10;Line 2: The weather is bright and clear." class="w-full bg-zinc-950/80 rounded-xl p-3 text-xs text-white border border-white/5 focus:outline-none resize-none"></textarea>
+                <div class="flex items-center gap-2">
+                  <span class="text-xs text-zinc-400">Language:</span>
+                  <select id="batch-language-select" class="bg-zinc-900 border border-white/10 rounded-lg px-2.5 py-1 text-xs text-white">
+                    <option value="en">English (en)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <button id="btn-submit-batch-worker" class="mt-4 w-full py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs transition">
+              Enqueue Batch Worker
+            </button>
+          </div>
+
+          <!-- Worker 2: Cross-Lingual Dubbing -->
+          <div class="glass-panel rounded-2xl p-5 border border-white/5 flex flex-col justify-between worker-card">
+            <div>
+              <div class="flex items-center gap-2.5 mb-2">
+                <span class="p-2 rounded-xl bg-cyan-500/20 text-cyan-400 text-sm">🌐</span>
+                <h3 class="text-sm font-bold text-white">Cross-Lingual Dubbing Worker</h3>
+              </div>
+              <p class="text-xs text-zinc-400 mb-3">Synthesize matching audio across target languages preserving speaker vocal tone.</p>
+              
+              <div class="space-y-2">
+                <input id="dubbing-source-text" type="text" placeholder="Speech text to synthesize in multiple languages..." value="Welcome to this international presentation." class="w-full bg-zinc-950/80 rounded-xl p-2.5 text-xs text-white border border-white/5 focus:outline-none">
+                <div class="text-xs text-zinc-400">Target Languages:</div>
+                <div class="flex flex-wrap gap-2 text-xs">
+                  <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" value="fr" checked class="dubbing-target-lang"> French</label>
+                  <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" value="es" checked class="dubbing-target-lang"> Spanish</label>
+                  <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" value="de" checked class="dubbing-target-lang"> German</label>
+                  <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" value="ja" class="dubbing-target-lang"> Japanese</label>
+                  <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" value="zh" class="dubbing-target-lang"> Chinese</label>
+                </div>
+              </div>
+            </div>
+
+            <button id="btn-submit-dubbing-worker" class="mt-4 w-full py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-semibold text-xs transition">
+              Enqueue Dubbing Worker
+            </button>
+          </div>
+        </div>
+
+        <!-- Live Queue Manager -->
+        <div class="glass-panel rounded-2xl p-5 border border-white/5">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+              <span>⚡</span> Active Worker Queue & Pipeline Status
+            </h3>
+            <div class="flex items-center gap-2">
+              <button id="btn-clear-jobs" class="text-xs px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white transition">
+                Clear Completed
+              </button>
+              <button onclick="refreshWorkersJobs()" class="text-xs px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white transition">
+                ↻ Refresh
+              </button>
+            </div>
+          </div>
+
+          <div id="workers-jobs-list">
+            <!-- Jobs rendered by app.js -->
+            <div class="text-center py-10 text-zinc-500 text-xs">Loading queue status...</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Voice Library / Presets Modal -->
+  <div id="presets-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-panel bg-[#11131c] rounded-2xl max-w-2xl w-full p-6 border border-white/10 shadow-2xl space-y-4 max-h-[85vh] flex flex-col">
+      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+        <div>
+          <h3 class="text-sm font-bold text-white flex items-center gap-2">
+            <span>🎭</span> Voice Library & Timbre Presets
+          </h3>
+          <p class="text-xs text-zinc-400">Click any preset voice to immediately use for zero-shot voice cloning.</p>
+        </div>
+        <button id="btn-close-presets" class="text-zinc-400 hover:text-white">✕</button>
+      </div>
+
+      <div id="presets-cards-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3 overflow-y-auto pr-1 flex-1 py-1">
+        <!-- Preset Cards rendered by app.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Modal Dialog -->
+  <div id="settings-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-panel bg-[#11131c] rounded-2xl max-w-md w-full p-6 border border-white/10 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+        <h3 class="text-sm font-bold text-white">Voice & Engine Settings</h3>
+        <button id="btn-close-settings" class="text-zinc-400 hover:text-white">✕</button>
+      </div>
+
+      <div class="space-y-3.5 text-xs">
+        <div>
+          <label class="block text-zinc-400 mb-1">Model Version</label>
+          <select id="setting-model-version" class="w-full bg-zinc-900 border border-white/10 rounded-xl p-2 text-white">
+            <option value="v3" selected>Chatterbox Multilingual V3 (Recommended, SoTA)</option>
+            <option value="v2">Chatterbox Multilingual V2 (Legacy)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-zinc-400 mb-1">Exaggeration / Expressiveness (0.25 - 2.0)</label>
+          <input id="setting-exaggeration" type="number" step="0.05" min="0.25" max="2.0" value="0.5" class="w-full bg-zinc-900 border border-white/10 rounded-xl p-2 text-white">
+          <span class="text-[10px] text-zinc-500">0.5 is neutral. Higher values add dramatic flair.</span>
+        </div>
+
+        <div>
+          <label class="block text-zinc-400 mb-1">CFG / Pacing Weight (0.0 - 1.0)</label>
+          <input id="setting-cfg" type="number" step="0.05" min="0.0" max="1.0" value="0.5" class="w-full bg-zinc-900 border border-white/10 rounded-xl p-2 text-white">
+          <span class="text-[10px] text-zinc-500">Set to 0.0 when cross-lingual voice cloning to avoid accent leakage.</span>
+        </div>
+
+        <div>
+          <label class="block text-zinc-400 mb-1">Temperature (0.1 - 2.0)</label>
+          <input id="setting-temperature" type="number" step="0.05" min="0.1" max="2.0" value="0.8" class="w-full bg-zinc-900 border border-white/10 rounded-xl p-2 text-white">
+        </div>
+
+        <div>
+          <label class="block text-zinc-400 mb-1">Random Seed</label>
+          <input id="setting-seed" type="number" value="0" class="w-full bg-zinc-900 border border-white/10 rounded-xl p-2 text-white">
+          <span class="text-[10px] text-zinc-500">0 for random speech, or fix a number for reproducibility.</span>
+        </div>
+      </div>
+
+      <div class="pt-3 border-t border-white/10 flex justify-end gap-2">
+        <button id="btn-save-settings" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs transition">
+          Save Settings
+        </button>
+      </div>
+    </div>
+  <!-- Billing & Scan to Pay Modal -->
+  <div id="billing-modal" class="fixed inset-0 bg-black/70 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-panel bg-[#11131c] rounded-2xl max-w-xl w-full p-6 border border-white/10 shadow-2xl space-y-5 max-h-[90vh] flex flex-col">
+      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+        <div>
+          <h3 class="text-base font-bold text-white flex items-center gap-2">
+            <span>⚡</span> Scan to Pay • Credit Packages
+          </h3>
+          <p class="text-xs text-zinc-400">Instant top-up via UPI, QR Code, or Digital Wallet for multilingual synthesis.</p>
+        </div>
+        <button id="btn-close-billing" class="text-zinc-400 hover:text-white text-sm">✕</button>
+      </div>
+
+      <!-- Current Balance Banner -->
+      <div class="p-3.5 rounded-xl bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-indigo-500/10 border border-amber-500/20 flex items-center justify-between">
+        <div>
+          <div class="text-[10px] uppercase font-bold text-amber-400 tracking-wider">Available Credits</div>
+          <div class="text-xl font-black text-white font-mono flex items-center gap-1.5">
+            <span>⚡</span> <span id="modal-credits-display">2,500</span>
+          </div>
+        </div>
+        <div class="text-right text-[11px] text-zinc-400">
+          <div>~25 min synthesized</div>
+          <span class="text-emerald-400 text-[10px]">● Active Account</span>
+        </div>
+      </div>
+
+      <!-- Step 1: Plans Grid -->
+      <div id="billing-plans-view" class="space-y-3 overflow-y-auto pr-1">
+        <div class="text-xs font-semibold text-zinc-300">Select Credit Package:</div>
+        <div id="billing-plans-cards" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <!-- Populated by app.js -->
+        </div>
+      </div>
+
+      <!-- Step 2: Scan to Pay View (Hidden initially) -->
+      <div id="billing-qr-view" class="hidden flex-col items-center justify-center p-4 rounded-xl bg-zinc-950/80 border border-white/10 space-y-4">
+        <div class="text-center">
+          <span class="text-xs px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-mono font-bold uppercase">Dynamic QR Code</span>
+          <h4 id="qr-plan-title" class="text-sm font-bold text-white mt-1">Pro Creator Pack</h4>
+          <div class="text-xl font-black text-amber-400 mt-0.5 font-mono" id="qr-amount-display">₹2,400 / $29.00</div>
+        </div>
+
+        <!-- QR Code Container -->
+        <div class="p-4 bg-white rounded-2xl shadow-xl flex flex-col items-center justify-center">
+          <!-- High-Contrast Vector QR Display -->
+          <svg id="qr-svg-canvas" class="w-48 h-48" viewBox="0 0 200 200">
+            <!-- Dynamic QR visual elements inserted by JS -->
+          </svg>
+          <div class="text-[10px] font-mono text-zinc-800 mt-2 text-center font-bold">
+            UPI ID: <span class="text-indigo-600">chatterbox.ai@upi</span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 text-xs text-zinc-400">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>Order ID: <code id="qr-order-id" class="text-zinc-200">ORDER-XXXX</code></span>
+          <span>•</span>
+          <span id="qr-timer" class="font-mono text-amber-400">14:59</span>
+        </div>
+
+        <div class="flex items-center gap-2 w-full">
+          <button id="btn-back-plans" class="flex-1 py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-semibold transition">
+            ← Change Plan
+          </button>
+          <button id="btn-confirm-payment" class="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-1.5">
+            <span>✓</span> I Have Paid • Verify
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

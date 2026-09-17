@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  chatterbox-zai:
+    build: .
+    container_name: chatterbox_zai_tts
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - CHATTERBOX_MULTILINGUAL_T3_MODEL=v3
+    volumes:
+      - ./static/audio_output:/app/static/audio_output
+      - ./static/uploads:/app/static/uploads
+      - hf_cache:/root/.cache/huggingface
+    restart: unless-stopped
+
+volumes:
+  hf_cache:
