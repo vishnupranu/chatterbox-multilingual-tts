@@ -575,6 +575,53 @@ class TestAuditChatterboxPlatform(unittest.TestCase):
         self.assertIn("audio_url", data)
         self.assertEqual(data["partner"], "Key Secure Foundation")
 
+    def test_28_auth_system(self):
+        """Audit Authentication system: register, login, session validation, logout."""
+        test_email = f"audit_{uuid.uuid4().hex[:6]}@khyathi.sri"
+
+        # 1. Registration
+        reg_res = self.client.post("/api/auth/register", json={
+            "email": test_email,
+            "password": "auditpassword123",
+            "name": "Audit Tester",
+            "role": "PG Researcher"
+        })
+        self.assertEqual(reg_res.status_code, 200)
+        reg_data = reg_res.json()
+        self.assertTrue(reg_data["success"])
+        self.assertIn("token", reg_data)
+        token = reg_data["token"]
+        self.assertEqual(reg_data["user"]["role"], "PG Researcher")
+
+        # 2. Get current user via Token header
+        me_res = self.client.get("/api/auth/me", headers={"Authorization": f"Bearer {token}"})
+        self.assertEqual(me_res.status_code, 200)
+        me_data = me_res.json()
+        self.assertTrue(me_data["success"])
+        self.assertEqual(me_data["user"]["email"], test_email)
+
+        # 3. Login
+        login_res = self.client.post("/api/auth/login", json={
+            "email": test_email,
+            "password": "auditpassword123"
+        })
+        self.assertEqual(login_res.status_code, 200)
+        login_data = login_res.json()
+        self.assertTrue(login_data["success"])
+
+        # 4. Invalid Login
+        fail_res = self.client.post("/api/auth/login", json={
+            "email": test_email,
+            "password": "wrongpassword"
+        })
+        self.assertEqual(fail_res.status_code, 401)
+
+        # 5. Logout
+        logout_res = self.client.post("/api/auth/logout", json={"token": token})
+        self.assertEqual(logout_res.status_code, 200)
+        self.assertTrue(logout_res.json()["success"])
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+

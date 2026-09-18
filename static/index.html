@@ -1,1422 +1,1212 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chatterbox Z.ai - Multilingual Voice Platform</title>
-  <!-- Tailwind CSS CDN -->
+  <title>Khyathi.Sri AI — Multilingual Voice & Intelligence</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            brand: {
-              50: '#eef2ff',
-              100: '#e0e7ff',
-              500: '#6366f1',
-              600: '#4f46e5',
-              700: '#4338ca',
-            }
-          }
-        }
-      }
-    }
-  </script>
   <link rel="stylesheet" href="/static/css/style.css">
 </head>
-<body class="bg-[#090a0f] text-zinc-100 flex h-screen w-screen overflow-hidden select-none">
-  <!-- Soothing Ambient Cyber Grid Overlay -->
-  <div class="grid-mesh-overlay"></div>
+<body>
 
-  <!-- Left Sidebar (Collapsible) -->
-  <aside class="w-64 flex-shrink-0 bg-[#0c0e15] border-r border-white/5 flex flex-col justify-between p-3.5 z-20">
-    <div>
-      <!-- Brand Header with Official GS Logo & Key Secure Foundation Partner -->
-      <div class="p-2.5 mb-3 rounded-2xl bg-gradient-to-br from-white/5 to-white/0 border border-white/5 space-y-2">
-        <div class="flex items-center gap-2.5">
-          <img src="/static/img/brand_logo_gs.png" alt="GS Brand Logo" class="w-9 h-9 rounded-full shadow-lg shadow-indigo-500/20 border border-white/10 object-contain hover:scale-105 transition flex-shrink-0">
-          <div class="overflow-hidden">
-            <div class="text-xs font-bold tracking-tight text-white flex items-center gap-1.5 truncate">
-              Khyathi.Sri AI <span class="text-[9px] px-1.5 py-0.2 rounded bg-pink-500/20 text-pink-300 font-mono">LLM-CHAT</span>
-            </div>
-            <div class="text-[10px] text-zinc-400 truncate">Entertainment & 24kHz Voice</div>
-          </div>
-        </div>
-        <!-- Partner Badge -->
-        <div class="flex items-center gap-2 pt-1.5 border-t border-white/5">
-          <img src="/static/img/partner_key_secure_foundation.png" alt="Key Secure Foundation" class="w-6 h-6 object-contain rounded-md flex-shrink-0">
-          <div class="text-[9px] leading-tight text-zinc-400">
-            <span class="text-amber-300 font-bold block">Key Secure Foundation</span>
-            <span>Cloud + Security Partner</span>
-          </div>
-        </div>
-      </div>
+<!-- ── NAVBAR (Icon-Only, Fully Responsive on Mobile & Desktop) ── -->
+<nav class="navbar" id="navbar">
+  <a class="navbar-brand" href="#" onclick="showPanel('landing')">
+    <img src="/static/img/brand_logo_gs.png" alt="Logo" class="navbar-logo" onerror="this.style.display='none'">
+    <span class="navbar-name">Khyathi<span>.Sri AI</span></span>
+  </a>
 
-      <!-- New Session Action -->
-      <button onclick="location.reload()" class="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-gradient-to-r from-indigo-600/30 to-purple-600/20 hover:from-indigo-600/40 hover:to-purple-600/30 border border-indigo-500/30 text-xs font-semibold text-white transition mb-4 shadow-sm">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-        New Session
+  <!-- Icon-Only Menu (Never overflows, works on all platforms & mobile) -->
+  <div class="navbar-icons" id="nav-icons">
+    <!-- Home -->
+    <button class="nav-icon-btn active" onclick="showPanel('landing')" id="ni-landing" data-tooltip="Overview">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    </button>
+    <!-- Chat -->
+    <button class="nav-icon-btn" onclick="showPanel('chat')" id="ni-chat" data-tooltip="Interactive Voice Chat">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    </button>
+    <!-- Capabilities / Workspaces -->
+    <button class="nav-icon-btn" onclick="showPanel('skills')" id="ni-skills" data-tooltip="Capabilities Studio">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    </button>
+    <!-- Intelligence Models -->
+    <button class="nav-icon-btn" onclick="showPanel('models')" id="ni-models" data-tooltip="Intelligence Matrix">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    </button>
+    <!-- Voice Personas -->
+    <button class="nav-icon-btn" onclick="showPanel('team')" id="ni-team" data-tooltip="Voice Personas">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+    </button>
+    <!-- Integrations -->
+    <button class="nav-icon-btn" onclick="showPanel('connectors')" id="ni-connectors" data-tooltip="Integrations">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+    </button>
+    <!-- Developer API -->
+    <button class="nav-icon-btn" onclick="showPanel('code')" id="ni-code" data-tooltip="Developer API">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+    </button>
+  </div>
+
+  <div class="nav-actions">
+    <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-3);background:#f3f4f6;border:1px solid var(--border);padding:6px 12px;border-radius:8px">
+      <span class="dot dot-green"></span>
+      <span id="status-label">Active</span>
+    </div>
+
+    <!-- Auth User Chip / Sign In Button -->
+    <div id="nav-auth-container">
+      <button class="btn btn-ghost btn-sm" onclick="openAuthModal('signin')" id="btn-open-login" style="display:flex;align-items:center;gap:5px">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Sign In
       </button>
-
-      <!-- Primary Workspace Navigation -->
-      <nav class="space-y-1 mb-6">
-        <button id="nav-btn-landing" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium nav-tab-active transition">
-          <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
-          <span>Showcase & Vision</span>
+      <div id="nav-user-chip" class="user-chip" style="display:none">
+        <div class="user-avatar-initials" id="nav-user-initials">AS</div>
+        <span id="nav-user-name" style="max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Dr. Aryan</span>
+        <span class="user-role-tag" id="nav-user-role">Researcher</span>
+        <button class="btn-logout" onclick="performLogout()" title="Sign Out">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
         </button>
-        <button id="nav-btn-team" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-zinc-400 hover:text-white hover:bg-white/5 transition group">
-          <div class="flex items-center gap-3">
-            <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-            <span>Team & Characters</span>
-          </div>
-          <span class="text-[9px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono font-bold">HUMAN AI</span>
-        </button>
-        <button id="nav-btn-chat" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-zinc-400 hover:text-white hover:bg-white/5 transition">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
-          <span>Chat Assistant</span>
-        </button>
-        <button id="nav-btn-skills" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-zinc-400 hover:text-white hover:bg-white/5 transition group">
-          <div class="flex items-center gap-3">
-            <svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
-            <span>Autonomous Skills</span>
-          </div>
-          <span class="text-[9px] px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 font-mono font-bold">AGENTS</span>
-        </button>
-        <button id="nav-btn-models" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-zinc-400 hover:text-white hover:bg-white/5 transition group">
-          <div class="flex items-center gap-3">
-            <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/></svg>
-            <span>LLM AI Matrix</span>
-          </div>
-          <span class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono font-bold">6 LLMs</span>
-        </button>
-        <button id="nav-btn-connectors" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-zinc-400 hover:text-white hover:bg-white/5 transition group">
-          <div class="flex items-center gap-3">
-            <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
-            <span>Connectors & Apps</span>
-          </div>
-          <span class="text-[9px] px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-300 font-mono font-bold">HOOKS</span>
-        </button>
-        <button id="nav-btn-code" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-zinc-400 hover:text-white hover:bg-white/5 transition">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
-          <span>Code & API</span>
-        </button>
-        <button id="nav-btn-workers" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-zinc-400 hover:text-white hover:bg-white/5 transition">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-          <span>Autonomous Workers</span>
-        </button>
-      </nav>
-
-      <!-- History Section -->
-      <div class="px-3">
-        <div class="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider mb-2">Preset Voices</div>
-        <div id="sidebar-voice-presets-list" class="space-y-1 text-xs text-zinc-400">
-          <!-- Dynamically filled by app.js -->
-        </div>
       </div>
     </div>
 
-    <!-- Sidebar Footer -->
-    <div class="pt-3 border-t border-white/5">
-      <div id="system-status-badge" class="px-2.5 py-2 rounded-xl bg-zinc-900/80 border border-white/5 text-[11px] font-mono text-zinc-400 flex items-center">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 inline-block mr-1.5 animate-pulse"></span>
-        V3 • READY
-      </div>
-    </div>
-  </aside>
+    <button class="btn btn-primary btn-sm" onclick="showPanel('chat')">Open Studio</button>
+  </div>
+</nav>
 
-  <!-- Main View Container -->
-  <main class="flex-1 flex flex-col h-full bg-[#090a0f] overflow-hidden relative">
+<!-- ── LAYOUT ── -->
+<div class="layout">
+  <main class="main-content">
 
-    <!-- Top Navigation & Control Bar -->
-    <header class="h-14 border-b border-white/5 px-6 flex items-center justify-between gap-4 glass-panel z-10">
-      <div class="flex items-center gap-3">
-        <h2 id="top-title" class="text-sm font-semibold text-white tracking-tight">Chatterbox Multilingual Workspace</h2>
-        <span class="text-xs text-zinc-500 hidden md:inline">|</span>
-        <span class="text-xs text-zinc-400 hidden md:inline">23 Languages • Zero-Shot Voice Cloning</span>
-      </div>
-
-      <div class="flex items-center gap-2.5">
-        <!-- Partner Badge: Key Secure Foundation -->
-        <div class="hidden sm:flex items-center gap-2 bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent border border-amber-500/20 rounded-xl px-2.5 py-1 text-xs text-amber-200">
-          <img src="/static/img/partner_key_secure_foundation.png" alt="Key Secure Shield" class="w-5 h-5 object-contain">
-          <span class="font-bold text-[11px]">Key Secure Foundation</span>
-          <span class="text-zinc-600">•</span>
-          <span class="text-[10px] text-zinc-400 font-mono">Cloud + Security</span>
+    <!-- ══ OVERVIEW / LANDING ══ -->
+    <div class="page-panel active" id="panel-landing">
+      <!-- Universal Hero -->
+      <div class="app-hero">
+        <div class="hero-tag">
+          Universal Voice & Intelligence Platform
         </div>
+        <h1 class="app-hero-title">
+          From Early Learning to <em>Advanced Research</em>
+        </h1>
+        <p class="app-hero-sub">
+          One unified acoustic engine tailored for everyone: engaging interactive voice learning for kids, structured assistance for daily work, and comprehensive multimodal reasoning for university researchers.
+        </p>
 
-        <!-- LLM Selector -->
-        <div class="flex items-center gap-1.5 bg-zinc-900/90 border border-white/10 rounded-xl px-2.5 py-1.5 text-xs text-zinc-200">
-          <span class="text-indigo-400">🧠</span>
-          <select id="header-llm-model-select" class="bg-transparent text-xs text-zinc-200 focus:outline-none cursor-pointer">
-            <option value="local_neural" selected>GS Neural Flow Core (24kHz)</option>
-            <option value="gemini_pro">GS Deep-Thinker Ultra</option>
-            <option value="gemini_flash">GS Multilingual Flash</option>
-            <option value="gpt4o">GS Neural Omni-Core</option>
-            <option value="deepseek_v3">GS Frontier MoE (671B)</option>
-            <option value="llama_33">GS Open-Weights Neural Core</option>
-            <option value="ollama_local">GS Air-Gapped Private Node</option>
-          </select>
-        </div>
-
-        <!-- Language Selector -->
-        <div class="flex items-center gap-1.5 bg-zinc-900/80 border border-white/10 rounded-xl px-2.5 py-1.5 text-xs text-zinc-200">
-          <span class="text-zinc-400">🌐</span>
-          <select id="chat-language-select" class="bg-transparent text-xs text-zinc-200 focus:outline-none cursor-pointer">
-            <option value="en">English (en)</option>
-          </select>
-        </div>
-
-        <!-- Preset Voices Modal Button -->
-        <button id="btn-open-presets" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-600/20 hover:bg-indigo-600/30 border border-indigo-500/30 text-xs font-medium text-indigo-300 transition" title="Choose from library of voices">
-          <span>🎭</span>
-          <span>Voice Library</span>
-        </button>
-
-        <!-- Credit Balance & Scan to Pay Button -->
-        <button id="btn-open-billing" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500/20 to-orange-500/20 hover:from-amber-500/30 hover:to-orange-500/30 border border-amber-500/30 text-xs font-semibold text-amber-300 transition shadow-sm" title="Credit Balance & Scan to Pay">
-          <span>⚡</span>
-          <span id="user-credits-display">2,500</span>
-          <span class="text-[10px] uppercase font-bold text-amber-400 bg-amber-500/20 px-1.5 py-0.5 rounded">Scan to Pay</span>
-        </button>
-
-        <!-- Voice Clone Indicator / Button -->
-        <input type="file" id="voice-upload-input" accept="audio/*" class="hidden">
-        <div id="voice-clone-badge" class="hidden items-center gap-1.5 bg-indigo-500/10 border border-indigo-500/30 rounded-xl px-2.5 py-1.5 text-xs text-indigo-300">
-          <span>🎙️</span>
-          <span id="voice-clone-filename" class="truncate max-w-[100px]">Voice Sample</span>
-          <button id="btn-clear-voice-clone" class="text-zinc-400 hover:text-white ml-1">✕</button>
-        </div>
-
-        <button id="btn-voice-clone-trigger" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-medium text-zinc-300 transition" title="Upload reference audio to clone voice">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z"/></svg>
-          Upload Voice
-        </button>
-
-        <!-- Settings Trigger -->
-        <button id="btn-open-settings" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-400 hover:text-white transition" title="Voice & Generation Parameters">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-        </button>
-      </div>
-    </header>
-
-    <!-- WORKSPACE 0: CINEMATIC SHOWCASE & LANDING PAGE -->
-    <section id="workspace-view-landing" class="flex-1 overflow-y-auto p-8 relative hero-glow-bg">
-      <div class="max-w-6xl mx-auto space-y-12 pb-24">
-        
-        <!-- Hero Section -->
-        <div class="text-center space-y-5 pt-6">
-          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-xs font-semibold tracking-wide">
-            <span class="w-2 h-2 rounded-full bg-indigo-400 animate-pulse"></span>
-            <span>CHATTERBOX MULTILINGUAL V3.0 • 24kHz STUDIO AI</span>
-          </div>
-          <h1 class="text-4xl sm:text-6xl font-black tracking-tight text-white max-w-3xl mx-auto leading-tight">
-            Cinematic Voice AI with <span class="gradient-text-cinematic">Real Zero-Shot Timbre</span>
-          </h1>
-          <p class="text-zinc-400 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
-            Generate authentic, expressive human speech across 23 languages. Instant voice cloning from a 5-second audio sample, powered by Matcha-TTS flow matching and 24kHz HiFiGAN vocoding.
-          </p>
-          
-          <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
-            <button onclick="switchWorkspace('chat')" class="px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-500 hover:from-indigo-600 hover:to-cyan-600 text-white font-bold text-xs shadow-lg shadow-indigo-500/30 transition hover:scale-105 flex items-center gap-2">
-              <span>🚀</span> Launch Web Studio
-            </button>
-            <button onclick="openScanToPayForPlan('plan_pro')" class="px-5 py-3 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300 font-bold text-xs transition flex items-center gap-2">
-              <span>⚡</span> Scan to Pay (UPI: 9994152888-4#ybl)
-            </button>
-            <button onclick="toggleAITalkDrawer()" class="px-5 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-300 font-semibold text-xs transition flex items-center gap-2">
-              <span>💬</span> Ask AITalk Copilot
+        <!-- ── HERO INTERACTIVE PROMPT (MATCHING REFERENCE SaaS DESIGN) ── -->
+        <div class="hero-prompt-container">
+          <div class="hero-prompt-box">
+            <input type="text" id="hero-prompt-input" class="hero-prompt-input" placeholder="Describe what you want to create or synthesize... (e.g. Bedtime story in Telugu, Thesis summary...)" onkeydown="if(event.key==='Enter') runHeroPrompt()">
+            <select id="hero-lang-select" class="hero-lang-select">
+              <option value="en">English</option>
+              <option value="te">Telugu</option>
+              <option value="hi">Hindi</option>
+              <option value="es">Spanish</option>
+              <option value="ja">Japanese</option>
+              <option value="fr">French</option>
+            </select>
+            <button class="hero-prompt-btn" id="hero-prompt-btn" onclick="runHeroPrompt()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Generate &amp; Speak
             </button>
           </div>
-        </div>
 
-        <!-- 23-Language Interactive Audition Showcase -->
-        <div class="card-cinematic p-6 rounded-2xl space-y-5">
-          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-white/5 pb-4">
-            <div>
-              <h3 class="text-base font-bold text-white flex items-center gap-2">
-                <span>🌐</span> Interactive 23-Language Voice Audition
-              </h3>
-              <p class="text-xs text-zinc-400">Click any native speaker to audition real 24kHz studio quality</p>
-            </div>
-            <div class="text-[11px] font-mono text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-3 py-1 rounded-lg">
-              23 Official Language Models Active
-            </div>
-          </div>
-
-          <div id="landing-voices-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2.5">
-            <!-- Populated with real native audio samples by app.js -->
-          </div>
-        </div>
-
-        <!-- Multi-Client Platform Ecosystem -->
-        <div class="space-y-4">
-          <div class="text-center space-y-1">
-            <h3 class="text-xl font-bold text-white tracking-tight">Run Everywhere: Web, Desktop, Terminal & Cloud</h3>
-            <p class="text-xs text-zinc-400">Unified workflow with AITalk copilot available in every application client</p>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div class="card-cinematic p-5 rounded-2xl flex flex-col justify-between">
-              <div>
-                <div class="w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-lg mb-3">🌐</div>
-                <h4 class="text-sm font-bold text-white mb-1">Web Platform</h4>
-                <p class="text-xs text-zinc-400 leading-relaxed mb-4">chat.z.ai responsive SPA with Chat, Code runner, and Autonomous Workers queue.</p>
-              </div>
-              <button onclick="switchWorkspace('chat')" class="w-full py-2 rounded-xl bg-indigo-600/30 hover:bg-indigo-600/50 border border-indigo-500/30 text-xs font-semibold text-indigo-200 transition">
-                Open Web Studio →
-              </button>
-            </div>
-
-            <div class="card-cinematic p-5 rounded-2xl flex flex-col justify-between">
-              <div>
-                <div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-lg mb-3">🖥️</div>
-                <h4 class="text-sm font-bold text-white mb-1">Desktop Application</h4>
-                <p class="text-xs text-zinc-400 leading-relaxed mb-4">Native macOS WebKit desktop client with low latency audio streaming and system tray.</p>
-              </div>
-              <div class="text-[11px] font-mono bg-zinc-950/80 p-2 rounded-lg border border-white/10 text-zinc-300 text-center">
-                ./launch_desktop.sh
-              </div>
-            </div>
-
-            <div class="card-cinematic p-5 rounded-2xl flex flex-col justify-between">
-              <div>
-                <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-lg mb-3">💻</div>
-                <h4 class="text-sm font-bold text-white mb-1">Terminal CLI & AITalk</h4>
-                <p class="text-xs text-zinc-400 leading-relaxed mb-4">Interactive REPL shell with synthesis commands and built-in project AI assistant.</p>
-              </div>
-              <div class="text-[11px] font-mono bg-zinc-950/80 p-2 rounded-lg border border-white/10 text-zinc-300 text-center">
-                ./run.sh cli --ai
-              </div>
-            </div>
-
-            <div class="card-cinematic p-5 rounded-2xl flex flex-col justify-between">
-              <div>
-                <div class="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-lg mb-3">🐙</div>
-                <h4 class="text-sm font-bold text-white mb-1">GitHub & CI/CD</h4>
-                <p class="text-xs text-zinc-400 leading-relaxed mb-4">Locked to main branch with automated 18-subsystem pre-flight audit test enforcement.</p>
-              </div>
-              <div class="text-[11px] font-mono bg-zinc-950/80 p-2 rounded-lg border border-white/10 text-emerald-400 text-center">
-                branch: main • locked
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Scan to Pay & Pricing Matrix -->
-        <div class="space-y-4">
-          <div class="text-center space-y-1">
-            <div class="text-xs font-bold font-mono text-amber-400 uppercase tracking-wider">Instant Scan to Pay Billing</div>
-            <h3 class="text-xl font-bold text-white tracking-tight">Flexible Synthesis Credit Packages</h3>
-            <p class="text-xs text-zinc-400">Pay directly with any UPI app (GPay, PhonePe, Paytm) to official merchant ID: <code class="text-amber-300 font-mono">9994152888-4#ybl</code></p>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-            <!-- Starter -->
-            <div class="card-cinematic p-6 rounded-2xl flex flex-col justify-between border-white/10">
-              <div class="space-y-3">
-                <div class="text-xs font-bold uppercase text-zinc-400 tracking-wider">Starter Pack</div>
-                <div class="text-2xl font-black text-white font-mono">₹750 <span class="text-xs font-normal text-zinc-400">/ $9.00</span></div>
-                <div class="text-xs text-indigo-400 font-semibold font-mono">⚡ 10,000 Synthesis Credits</div>
-                <p class="text-xs text-zinc-400">~100,000 characters (~1.5 hours studio audio). Ideal for creators & personal projects.</p>
-                <ul class="text-xs text-zinc-300 space-y-1.5 pt-2">
-                  <li class="flex items-center gap-1.5"><span class="text-emerald-400">✓</span> Standard 24kHz Studio Audio</li>
-                  <li class="flex items-center gap-1.5"><span class="text-emerald-400">✓</span> All 23 Languages Included</li>
-                  <li class="flex items-center gap-1.5"><span class="text-emerald-400">✓</span> Zero-Shot Voice Cloning</li>
-                </ul>
-              </div>
-              <button onclick="openScanToPayForPlan('plan_starter')" class="mt-6 w-full py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white font-semibold text-xs transition flex items-center justify-center gap-2">
-                <span>⚡</span> Scan to Pay ₹750
-              </button>
-            </div>
-
-            <!-- Pro Creator -->
-            <div class="card-cinematic p-6 rounded-2xl flex flex-col justify-between border-indigo-500/50 shadow-xl shadow-indigo-500/10 relative">
-              <span class="absolute -top-2.5 right-6 px-2.5 py-0.5 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white text-[10px] font-bold uppercase tracking-wider">Most Popular</span>
-              <div class="space-y-3">
-                <div class="text-xs font-bold uppercase text-indigo-400 tracking-wider">Pro Creator</div>
-                <div class="text-2xl font-black text-white font-mono">₹2,400 <span class="text-xs font-normal text-zinc-400">/ $29.00</span></div>
-                <div class="text-xs text-amber-400 font-semibold font-mono">⚡ 50,000 Synthesis Credits</div>
-                <p class="text-xs text-zinc-400">~500,000 characters (~7.5 hours studio audio). Perfect for podcasts, audiobooks, and videos.</p>
-                <ul class="text-xs text-zinc-300 space-y-1.5 pt-2">
-                  <li class="flex items-center gap-1.5"><span class="text-emerald-400">✓</span> Priority Generation Queue</li>
-                  <li class="flex items-center gap-1.5"><span class="text-emerald-400">✓</span> Autonomous Workers Pipeline</li>
-                  <li class="flex items-center gap-1.5"><span class="text-emerald-400">✓</span> Cross-Lingual Dubbing Engine</li>
-                  <li class="flex items-center gap-1.5"><span class="text-emerald-400">✓</span> High Concurrency Access</li>
-                </ul>
-              </div>
-              <button onclick="openScanToPayForPlan('plan_pro')" class="mt-6 w-full py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-xs transition shadow-lg shadow-indigo-600/30 flex items-center justify-center gap-2">
-                <span>⚡</span> Scan to Pay ₹2,400
-              </button>
-            </div>
-
-            <!-- Studio Enterprise -->
-            <div class="card-cinematic p-6 rounded-2xl flex flex-col justify-between border-white/10">
-              <div class="space-y-3">
-                <div class="text-xs font-bold uppercase text-zinc-400 tracking-wider">Studio Enterprise</div>
-                <div class="text-2xl font-black text-white font-mono">₹8,200 <span class="text-xs font-normal text-zinc-400">/ $99.00</span></div>
-                <div class="text-xs text-cyan-400 font-semibold font-mono">⚡ 250,000 Synthesis Credits</div>
-                <p class="text-xs text-zinc-400">~2.5 million characters (~40 hours studio audio). For high-scale production studios.</p>
-                <ul class="text-xs text-zinc-300 space-y-1.5 pt-2">
-                  <li class="flex items-center gap-1.5"><span class="text-emerald-400">✓</span> Dedicated MPS/GPU Workers</li>
-                  <li class="flex items-center gap-1.5"><span class="text-emerald-400">✓</span> Unlimited Concurrency</li>
-                  <li class="flex items-center gap-1.5"><span class="text-emerald-400">✓</span> Custom Timbre Profiling</li>
-                  <li class="flex items-center gap-1.5"><span class="text-emerald-400">✓</span> 24/7 SLA Engineering Support</li>
-                </ul>
-              </div>
-              <button onclick="openScanToPayForPlan('plan_enterprise')" class="mt-6 w-full py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white font-semibold text-xs transition flex items-center justify-center gap-2">
-                <span>⚡</span> Scan to Pay ₹8,200
-              </button>
-            </div>
-          </div>
-        </div>
-
-    </section>
-
-    <!-- WORKSPACE: TEAM & HUMAN AI CHARACTERS -->
-    <section id="workspace-view-team" class="flex-1 hidden flex-col h-full overflow-y-auto p-6 space-y-6">
-      <div class="max-w-6xl mx-auto w-full space-y-6 pb-16">
-        
-        <!-- Header Banner -->
-        <div class="glass-panel p-5 rounded-2xl border border-white/5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-          <div class="flex items-center gap-3.5">
-            <img src="/static/img/brand_logo_gs.png" alt="GS Logo" class="w-10 h-10 rounded-full border border-white/10 shadow-lg object-contain">
-            <div>
-              <div class="flex items-center gap-2 mb-0.5">
-                <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span>
-                <span class="text-xs font-mono font-bold text-amber-300 uppercase tracking-wider">Human AI Characters & Team</span>
-              </div>
-              <h2 class="text-xl font-black text-white">GS Leadership & Acoustic Personas</h2>
-              <p class="text-xs text-zinc-400">Interactive team avatars with 2D/3D tactile tilt, authentic voice auditioning, and one-click voice cloning.</p>
-            </div>
-          </div>
-          <div class="flex items-center gap-2">
-            <button onclick="loadTeamRoster()" class="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-xs text-zinc-300 font-medium transition flex items-center gap-1.5">
-              <span>↻</span> Sync Personas
-            </button>
-            <span class="px-3 py-1.5 rounded-xl bg-amber-500/20 text-amber-300 text-xs font-mono font-bold border border-amber-500/30">4 Specialist Avatars</span>
-          </div>
-        </div>
-
-        <!-- Featured Creator Hero Card: G.S. Lead Architect -->
-        <div class="glass-panel rounded-3xl p-6 sm:p-8 border border-orange-500/30 bg-gradient-to-br from-[#131726]/90 via-[#0e1019]/90 to-[#19111f]/90 relative overflow-hidden shadow-2xl card-3d-character">
-          <!-- Background Glowing Aura -->
-          <div class="absolute -right-20 -top-20 w-80 h-80 bg-orange-500/15 rounded-full blur-3xl pointer-events-none"></div>
-          <div class="absolute -left-20 -bottom-20 w-80 h-80 bg-purple-500/15 rounded-full blur-3xl pointer-events-none"></div>
-
-          <div class="relative z-10 flex flex-col md:flex-row items-center md:items-start gap-6 sm:gap-8">
-            <!-- Avatar with Neural Ring & Float Animation -->
-            <div class="flex-shrink-0 flex flex-col items-center">
-              <div class="avatar-neural-glow">
-                <img src="/static/img/avatar_founder_human.jpg" alt="G.S. Lead Architect" class="w-36 h-36 sm:w-44 sm:h-44 rounded-full object-cover border-2 border-white/20 shadow-2xl animate-character-float">
-              </div>
-              <div class="mt-3 flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-500/20 border border-orange-500/40 text-[11px] font-mono font-bold text-orange-300">
-                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span>ONLINE • LEAD ARCHITECT</span>
-              </div>
-            </div>
-
-            <!-- Bio & Quotes -->
-            <div class="flex-1 space-y-3.5 text-center md:text-left">
-              <div class="flex flex-wrap items-center justify-center md:justify-start gap-2">
-                <h3 class="text-2xl font-black text-white tracking-tight">G.S.</h3>
-                <span class="text-xs px-2.5 py-0.5 rounded-full bg-gradient-to-r from-orange-500/30 to-purple-500/30 border border-orange-500/40 text-orange-200 font-mono font-bold">FOUNDER & CHIEF ARCHITECT</span>
-              </div>
-              
-              <div class="text-xs font-semibold text-indigo-300 font-mono">
-                Creator of Chatterbox Multilingual Flow Matching Engine
-              </div>
-
-              <blockquote class="p-3.5 rounded-2xl bg-black/40 border border-white/5 text-xs sm:text-sm text-zinc-200 italic leading-relaxed">
-                "We designed Chatterbox flow matching to capture subtle vocal acoustics and authentic human breath in under 3 seconds. Sound carries human memory, emotion, and presence."
-              </blockquote>
-
-              <!-- Specialties Chips -->
-              <div class="flex flex-wrap items-center justify-center md:justify-start gap-1.5 pt-1">
-                <span class="text-[10px] px-2.5 py-1 rounded-lg bg-white/5 text-zinc-300 border border-white/10 font-mono">⚡ Flow Matching</span>
-                <span class="text-[10px] px-2.5 py-1 rounded-lg bg-white/5 text-zinc-300 border border-white/10 font-mono">🎙️ Zero-Shot Timbre</span>
-                <span class="text-[10px] px-2.5 py-1 rounded-lg bg-white/5 text-zinc-300 border border-white/10 font-mono">🌐 23 Languages</span>
-                <span class="text-[10px] px-2.5 py-1 rounded-lg bg-white/5 text-zinc-300 border border-white/10 font-mono">🚀 24kHz HiFi-GAN</span>
-              </div>
-
-              <!-- Audition & Action Row -->
-              <div class="flex flex-wrap items-center justify-center md:justify-start gap-3 pt-2">
-                <button onclick="auditionTeamVoice('char_founder', this)" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold text-xs transition shadow-lg shadow-orange-500/30 flex items-center gap-2">
-                  <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                  <span>Audition Founder Voice (Baritone)</span>
-                </button>
-                <button onclick="adoptTeamVoicePersona('char_founder')" class="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-zinc-200 hover:text-white transition flex items-center gap-2">
-                  <span>🎭</span> Adopt Voice Clone
-                </button>
-                <button onclick="chatWithTeamPersona('char_founder')" class="px-4 py-2.5 rounded-xl bg-indigo-600/30 hover:bg-indigo-600/40 border border-indigo-500/40 text-xs font-semibold text-indigo-300 transition flex items-center gap-1.5">
-                  <span>💬</span> Chat with G.S.
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Team Roster Grid: 4 Characters -->
-        <div id="team-roster-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <!-- Populated dynamically by app.js from /api/team -->
-        </div>
-
-        <!-- Live Team Audio Preview Bar -->
-        <div id="team-audio-player-box" class="hidden glass-panel p-4 rounded-2xl border border-indigo-500/30 space-y-2 animate-fade-in">
-          <div class="flex items-center justify-between text-xs">
-            <span id="team-audio-speaker-label" class="font-bold text-white flex items-center gap-2">
-              <span>🔊</span> Character Vocal Audition
+          <!-- Quick Suggestion Chips -->
+          <div class="hero-prompt-suggestions">
+            <span class="prompt-chip" onclick="fillHeroPrompt('Tell a joyful bedtime story for kids with a fun moral lesson', 'te')">
+              Kids story in Telugu
             </span>
-            <span id="team-audio-duration" class="text-[10px] font-mono text-zinc-400">Duration: ~4s</span>
-          </div>
-          <p id="team-audio-quote-text" class="text-xs text-zinc-300 italic"></p>
-          <div class="flex items-center gap-3 pt-1">
-            <audio id="team-audio-element" controls class="w-full h-8"></audio>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- WORKSPACE 1: CHAT ASSISTANT -->
-    <section id="workspace-view-chat" class="hidden flex-1 flex-col h-full overflow-hidden p-6 relative">
-      <!-- Message Stream -->
-      <div id="chat-messages-container" class="flex-1 overflow-y-auto pr-2 pb-32 space-y-4 max-w-4xl mx-auto w-full">
-        <!-- Messages appended dynamically by app.js -->
-      </div>
-
-      <!-- Floating Input Container (Z.ai Style) -->
-      <div class="absolute bottom-6 left-6 right-6 flex justify-center pointer-events-none">
-        <div class="w-full max-w-4xl pointer-events-auto flex flex-col gap-2">
-          <!-- Suggestion Prompt Pills -->
-          <div class="flex items-center gap-2 overflow-x-auto pb-1 text-xs no-scrollbar">
-            <button onclick="document.getElementById('chat-input-text').value = 'Bonjour, comment se passe votre journée?'; handleChatSubmit();" class="px-3 py-1.5 rounded-full bg-zinc-900/90 border border-white/10 hover:border-indigo-500/40 text-zinc-300 hover:text-white transition flex-shrink-0">
-              🇫🇷 French sample
-            </button>
-            <button onclick="document.getElementById('chat-input-text').value = 'Hola, ¿cómo estás hoy? Bienvenido al mundo de la voz.'; handleChatSubmit();" class="px-3 py-1.5 rounded-full bg-zinc-900/90 border border-white/10 hover:border-indigo-500/40 text-zinc-300 hover:text-white transition flex-shrink-0">
-              🇪🇸 Spanish sample
-            </button>
-            <button onclick="document.getElementById('chat-input-text').value = '你好，这是高保真多语言语音生成演示。'; handleChatSubmit();" class="px-3 py-1.5 rounded-full bg-zinc-900/90 border border-white/10 hover:border-indigo-500/40 text-zinc-300 hover:text-white transition flex-shrink-0">
-              🇨🇳 Chinese sample
-            </button>
-            <button onclick="document.getElementById('chat-input-text').value = 'नमस्ते, यह बहुभाषी टेक्स्ट-टू-स्पीच का एक सुंदर उदाहरण है।'; handleChatSubmit();" class="px-3 py-1.5 rounded-full bg-zinc-900/90 border border-white/10 hover:border-indigo-500/40 text-zinc-300 hover:text-white transition flex-shrink-0">
-              🇮🇳 Hindi sample
-            </button>
+            <span class="prompt-chip" onclick="fillHeroPrompt('Summarize key findings of quantum computing thesis abstract', 'en')">
+              PG Thesis briefing
+            </span>
+            <span class="prompt-chip" onclick="fillHeroPrompt('Pronounce and explain standard conversational phrases', 'fr')">
+              French pronunciation guide
+            </span>
+            <span class="prompt-chip" onclick="fillHeroPrompt('Prepare executive briefing for Monday product strategy sync', 'en')">
+              Office briefing
+            </span>
+            <span class="prompt-chip" onclick="fillHeroPrompt('Dual-host discussion on next-gen neuromorphic chips', 'en')">
+              Tech podcast
+            </span>
           </div>
 
-          <!-- Input Box with Mic Record Button -->
-          <div class="glass-input rounded-2xl p-2.5 flex items-end gap-2 shadow-2xl border border-white/10">
-            <!-- Microphone Record Action -->
-            <button id="btn-mic-record" class="w-10 h-10 rounded-xl bg-white/5 hover:bg-white/10 text-zinc-300 flex items-center justify-center transition flex-shrink-0" title="Record microphone to clone voice">
-              <svg id="icon-mic-idle" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z"/></svg>
-              <span id="icon-mic-recording" class="w-3.5 h-3.5 rounded-full bg-red-500 hidden pulse-recording"></span>
-            </button>
-
-            <textarea id="chat-input-text" rows="2" placeholder="Message Chatterbox or enter text to synthesize in 23 languages..." class="flex-1 bg-transparent border-0 text-sm text-white placeholder-zinc-500 focus:outline-none resize-none px-2 py-2 leading-relaxed" onkeydown="if(event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); handleChatSubmit(); }"></textarea>
-            
-            <button id="btn-send-chat" onclick="handleChatSubmit()" class="w-10 h-10 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white flex items-center justify-center transition shadow-lg shadow-indigo-600/30 flex-shrink-0">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-            </button>
+          <!-- Hero Instant Output Container -->
+          <div id="hero-output-container" class="hero-output-box" style="display:none">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+              <div style="font-size:13px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:6px">
+                <span class="dot dot-green"></span>
+                <span>Synthesized Output</span>
+              </div>
+              <button class="btn btn-ghost btn-sm" onclick="continueInStudio()">Continue in Studio &rarr;</button>
+            </div>
+            <div id="hero-output-text" style="font-size:13.5px;color:var(--ink-2);line-height:1.6;margin-bottom:12px"></div>
+            <div id="hero-output-audio"></div>
           </div>
         </div>
-      </div>
-    </section>
 
-    <!-- WORKSPACE: AUTONOMOUS AGENT SKILLS -->
-    <section id="workspace-view-skills" class="flex-1 hidden flex-col h-full overflow-y-auto p-6 space-y-6">
-      <div class="max-w-6xl mx-auto w-full space-y-6">
-        
-        <!-- Header Banner -->
-        <div class="glass-panel p-5 rounded-2xl border border-white/5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div class="audience-strip">
+          <span class="audience-pill">Kids Early Education</span>
+          <span class="audience-pill">School &amp; College Learning</span>
+          <span class="audience-pill">Office &amp; Business Automation</span>
+          <span class="audience-pill">University Postgraduate Research</span>
+        </div>
+      </div>
+
+      <!-- Capability Matrix for All Audiences -->
+      <div class="sec">
+        <div class="sec-header">
           <div>
-            <div class="flex items-center gap-2 mb-1">
-              <span class="w-2.5 h-2.5 rounded-full bg-purple-400 animate-pulse"></span>
-              <span class="text-xs font-mono font-bold text-purple-300 uppercase tracking-wider">Autonomous AI Agents</span>
-            </div>
-            <h2 class="text-xl font-black text-white">Agent Skills Studio</h2>
-            <p class="text-xs text-zinc-400 mt-1">Multi-step autonomous workflows combining frontier LLMs with 24kHz zero-shot voice cloning.</p>
-          </div>
-          <div class="flex items-center gap-2">
-            <button onclick="refreshSkillsList()" class="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-xs text-zinc-300 font-medium transition flex items-center gap-1.5">
-              <span>↻</span> Sync Skills
-            </button>
-            <span class="px-3 py-1.5 rounded-xl bg-purple-500/20 text-purple-300 text-xs font-mono font-bold border border-purple-500/30">4 Active Skills</span>
+            <div class="sec-tag">Audience Solutions</div>
+            <h2 class="sec-title">What Can You Do Here?</h2>
           </div>
         </div>
 
-        <!-- Skills Sub-Tab Navigation (Antigravity Style) -->
-        <div class="flex items-center gap-2 border-b border-white/5 pb-2 text-xs">
-          <button id="skills-subtab-active" onclick="switchSkillsSubTab('active')" class="px-3.5 py-1.5 rounded-xl bg-purple-600/30 border border-purple-500/40 text-purple-200 font-semibold transition">
-            ⚡ Active Studio Skills
-          </button>
-          <button id="skills-subtab-marketplace" onclick="switchSkillsSubTab('marketplace')" class="px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white font-medium transition flex items-center gap-1.5">
-            <span>📦</span> Marketplace & Installer
-            <span class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono font-bold">INSTALLER</span>
-          </button>
-          <button id="skills-subtab-builder" onclick="switchSkillsSubTab('builder')" class="px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white font-medium transition flex items-center gap-1.5">
-            <span>🛠️</span> + Define Custom Subagent
-          </button>
-        </div>
-
-        <!-- 1. ACTIVE STUDIO SKILLS CONTAINER -->
-        <div id="skills-container-active" class="space-y-5">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-
-            <!-- Skill 1: Podcast Studio Producer -->
-            <div class="glass-panel rounded-2xl p-5 border border-white/5 flex flex-col justify-between worker-card">
-              <div class="space-y-3">
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-2.5">
-                    <span class="p-2 rounded-xl bg-purple-500/20 text-purple-300 text-base">🎙️</span>
-                    <div>
-                      <h3 class="text-sm font-bold text-white">Podcast Studio Producer</h3>
-                      <p class="text-[11px] text-zinc-400">Autonomous dual-host conversational broadcast with alternating voices</p>
-                    </div>
-                  </div>
-                  <span class="text-[10px] px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-mono font-bold">MULTI-VOICE</span>
-                </div>
-
-                <div class="space-y-2.5 pt-2">
-                  <div>
-                    <label class="block text-[11px] font-semibold text-zinc-400 mb-1">Episode Discussion Topic</label>
-                    <input id="skill-podcast-topic" type="text" value="The Breakthrough in Flow Matching & Zero-Shot Neural Speech" class="w-full bg-zinc-950/90 rounded-xl p-2.5 text-xs text-white border border-white/5 focus:outline-none focus:border-purple-500/50">
-                  </div>
-                  <div class="grid grid-cols-2 gap-2.5">
-                    <div>
-                      <label class="block text-[11px] font-semibold text-zinc-400 mb-1">Turns / Exchanges</label>
-                      <select id="skill-podcast-turns" class="w-full bg-zinc-900 border border-white/10 rounded-xl p-2 text-xs text-white">
-                        <option value="2">2 Exchanges (Quick)</option>
-                        <option value="3" selected>3 Exchanges (Standard)</option>
-                        <option value="4">4 Exchanges (In-Depth)</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label class="block text-[11px] font-semibold text-zinc-400 mb-1">Script Reasoning LLM</label>
-                      <select id="skill-podcast-llm" class="w-full bg-zinc-900 border border-white/10 rounded-xl p-2 text-xs text-white">
-                        <option value="local_neural" selected>Local Neural AI</option>
-                        <option value="gemini_flash">Google Gemini Flash</option>
-                        <option value="gpt4o">OpenAI GPT-4o</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="pt-4 mt-2">
-                <button id="btn-skill-run-podcast" onclick="executePodcastSkill()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-xs transition shadow-lg shadow-purple-600/20 flex items-center justify-center gap-2">
-                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                  Produce Podcast Episode
-                </button>
-                <div id="skill-podcast-result" class="mt-3 hidden"></div>
-              </div>
+        <div class="audience-grid">
+          <!-- Kids & Early Learners -->
+          <div class="audience-card" onclick="openAudienceMode('kids')">
+            <div class="aud-icon-wrap violet">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
             </div>
-
-            <!-- Skill 2: Cross-Lingual Cultural Dubber -->
-            <div class="glass-panel rounded-2xl p-5 border border-white/5 flex flex-col justify-between worker-card">
-              <div class="space-y-3">
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-2.5">
-                    <span class="p-2 rounded-xl bg-cyan-500/20 text-cyan-300 text-base">🌐</span>
-                    <div>
-                      <h3 class="text-sm font-bold text-white">Cross-Lingual Cultural Dubber</h3>
-                      <p class="text-[11px] text-zinc-400">Translates culturally & synthesizes speech preserving speaker identity</p>
-                    </div>
-                  </div>
-                  <span class="text-[10px] px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 font-mono font-bold">23 TONGUES</span>
-                </div>
-
-                <div class="space-y-2.5 pt-2">
-                  <div>
-                    <label class="block text-[11px] font-semibold text-zinc-400 mb-1">Source Speech Input</label>
-                    <textarea id="skill-dub-text" rows="2" class="w-full bg-zinc-950/90 rounded-xl p-2.5 text-xs text-white border border-white/5 focus:outline-none focus:border-cyan-500/50 resize-none">Welcome to our international product announcement. This technology breaks down every language barrier.</textarea>
-                  </div>
-                  <div class="grid grid-cols-2 gap-2.5">
-                    <div>
-                      <label class="block text-[11px] font-semibold text-zinc-400 mb-1">Target Language</label>
-                      <select id="skill-dub-lang" class="w-full bg-zinc-900 border border-white/10 rounded-xl p-2 text-xs text-white">
-                        <option value="ja" selected>Japanese (ja)</option>
-                        <option value="fr">French (fr)</option>
-                        <option value="es">Spanish (es)</option>
-                        <option value="de">German (de)</option>
-                        <option value="zh">Chinese (zh)</option>
-                        <option value="hi">Hindi (hi)</option>
-                        <option value="ar">Arabic (ar)</option>
-                        <option value="ru">Russian (ru)</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label class="block text-[11px] font-semibold text-zinc-400 mb-1">Preserve Tone</label>
-                      <div class="p-2 rounded-xl bg-zinc-900/90 border border-white/10 text-xs text-zinc-300 flex items-center gap-2">
-                        <input type="checkbox" id="skill-dub-preserve" checked class="rounded">
-                        <span class="text-[11px]">Zero-Shot Timbre</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="pt-4 mt-2">
-                <button id="btn-skill-run-dub" onclick="executeDubbingSkill()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold text-xs transition shadow-lg shadow-cyan-600/20 flex items-center justify-center gap-2">
-                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg>
-                  Translate & Dub Voice
-                </button>
-                <div id="skill-dub-result" class="mt-3 hidden"></div>
-              </div>
-            </div>
-
-            <!-- Skill 3: Document & Audiobook Narrator -->
-            <div class="glass-panel rounded-2xl p-5 border border-white/5 flex flex-col justify-between worker-card">
-              <div class="space-y-3">
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-2.5">
-                    <span class="p-2 rounded-xl bg-amber-500/20 text-amber-300 text-base">📖</span>
-                    <div>
-                      <h3 class="text-sm font-bold text-white">Document & Audiobook Narrator</h3>
-                      <p class="text-[11px] text-zinc-400">Pacing-aware longform chapter recitation with natural breath cadence</p>
-                    </div>
-                  </div>
-                  <span class="text-[10px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono font-bold">LONG-FORM</span>
-                </div>
-
-                <div class="space-y-2.5 pt-2">
-                  <div>
-                    <label class="block text-[11px] font-semibold text-zinc-400 mb-1">Manuscript / Chapter Excerpt</label>
-                    <textarea id="skill-narrator-text" rows="2" class="w-full bg-zinc-950/90 rounded-xl p-2.5 text-xs text-white border border-white/5 focus:outline-none focus:border-amber-500/50 resize-none">The neon spires of Neo-Kyoto pierced the perpetual smog, glowing with electric amethyst reflections.</textarea>
-                  </div>
-                  <div class="grid grid-cols-2 gap-2.5">
-                    <div>
-                      <label class="block text-[11px] font-semibold text-zinc-400 mb-1">Vocal Narration Style</label>
-                      <select id="skill-narrator-style" class="w-full bg-zinc-900 border border-white/10 rounded-xl p-2 text-xs text-white">
-                        <option value="Warm Conversational" selected>Warm Conversational</option>
-                        <option value="Epic Cinematic">Epic Cinematic</option>
-                        <option value="Crisp Executive">Crisp Executive</option>
-                        <option value="Calm Bedtime">Calm Bedtime</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label class="block text-[11px] font-semibold text-zinc-400 mb-1">Cadence Pacing</label>
-                      <select id="skill-narrator-pacing" class="w-full bg-zinc-900 border border-white/10 rounded-xl p-2 text-xs text-white">
-                        <option value="normal" selected>Natural (1.0x)</option>
-                        <option value="deliberate">Deliberate & Slow (0.85x)</option>
-                        <option value="brisk">Brisk Audio (1.15x)</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="pt-4 mt-2">
-                <button id="btn-skill-run-narrator" onclick="executeNarratorSkill()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white font-bold text-xs transition shadow-lg shadow-amber-600/20 flex items-center justify-center gap-2">
-                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-                  Narrate Chapter Audio
-                </button>
-                <div id="skill-narrator-result" class="mt-3 hidden"></div>
-              </div>
-            </div>
-
-            <!-- Skill 4: Cinematic Voice Director -->
-            <div class="glass-panel rounded-2xl p-5 border border-white/5 flex flex-col justify-between worker-card">
-              <div class="space-y-3">
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-2.5">
-                    <span class="p-2 rounded-xl bg-emerald-500/20 text-emerald-300 text-base">🎬</span>
-                    <div>
-                      <h3 class="text-sm font-bold text-white">Cinematic Voice Director</h3>
-                      <p class="text-[11px] text-zinc-400">Dynamic emotional acoustic shaping with expressive CFG & temperature</p>
-                    </div>
-                  </div>
-                  <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono font-bold">EMOTION</span>
-                </div>
-
-                <div class="space-y-2.5 pt-2">
-                  <div>
-                    <label class="block text-[11px] font-semibold text-zinc-400 mb-1">Actor Script Line</label>
-                    <input id="skill-director-text" type="text" value="Listen closely... What we have discovered tonight changes humanity forever." class="w-full bg-zinc-950/90 rounded-xl p-2.5 text-xs text-white border border-white/5 focus:outline-none focus:border-emerald-500/50">
-                  </div>
-                  <div class="grid grid-cols-2 gap-2.5">
-                    <div>
-                      <label class="block text-[11px] font-semibold text-zinc-400 mb-1">Emotional Archetype</label>
-                      <select id="skill-director-mood" class="w-full bg-zinc-900 border border-white/10 rounded-xl p-2 text-xs text-white">
-                        <option value="Dramatic Suspense" selected>Dramatic Suspense</option>
-                        <option value="Enthusiastic Hype">Enthusiastic Hype</option>
-                        <option value="Calm Meditation">Calm Meditation</option>
-                        <option value="Urgent Breaking News">Urgent Breaking News</option>
-                        <option value="Noir Mystery">Noir Mystery</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label class="block text-[11px] font-semibold text-zinc-400 mb-1">Voice Reference</label>
-                      <select id="skill-director-preset" class="w-full bg-zinc-900 border border-white/10 rounded-xl p-2 text-xs text-white">
-                        <option value="en_female">Sarah (English)</option>
-                        <option value="fr_female">Camille (French)</option>
-                        <option value="es_female">Elena (Spanish)</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="pt-4 mt-2">
-                <button id="btn-skill-run-director" onclick="executeDirectorSkill()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs transition shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2">
-                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-                  Direct & Synthesize Scene
-                </button>
-                <div id="skill-director-result" class="mt-3 hidden"></div>
-              </div>
-            </div>
-
-            <!-- Skill 5: Khyathi.Sri Kids Songs & Story Studio (Partner: Key Secure Foundation) -->
-            <div class="glass-panel rounded-2xl p-5 border border-pink-500/30 bg-gradient-to-br from-pink-950/20 via-zinc-900/60 to-purple-950/20 flex flex-col justify-between worker-card md:col-span-2">
-              <div class="space-y-3">
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-3">
-                    <img src="/static/img/avatar_khyathi_sri.png" alt="Khyathi Sri" class="w-11 h-11 rounded-2xl object-cover border border-pink-500/40 shadow-md">
-                    <div>
-                      <div class="flex items-center gap-2">
-                        <h3 class="text-sm font-bold text-white">Khyathi.Sri Kids Songs & Story Studio</h3>
-                        <span class="text-[9px] px-1.5 py-0.5 rounded bg-pink-500/20 text-pink-300 font-mono font-bold">KIDS & FAMILY</span>
-                      </div>
-                      <p class="text-[11px] text-zinc-400">Sweet rhyming melodies, moral bedtime stories, and joyful multilingual education • Partner: <strong class="text-amber-300">Key Secure Foundation</strong></p>
-                    </div>
-                  </div>
-                  <img src="/static/img/partner_key_secure_foundation.png" alt="Key Secure" class="w-8 h-8 object-contain hidden sm:block">
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-2">
-                  <div class="sm:col-span-2">
-                    <label class="block text-[11px] font-semibold text-zinc-400 mb-1">Song or Story Theme</label>
-                    <input id="skill-kids-theme" type="text" value="Little Rainbow Butterfly dancing across the garden flowers" class="w-full bg-zinc-950/90 rounded-xl p-2.5 text-xs text-white border border-white/5 focus:outline-none focus:border-pink-500/50">
-                  </div>
-                  <div>
-                    <label class="block text-[11px] font-semibold text-zinc-400 mb-1">Content Format</label>
-                    <select id="skill-kids-type" class="w-full bg-zinc-900 border border-white/10 rounded-xl p-2 text-xs text-white">
-                      <option value="Nursery Rhyme Song" selected>Nursery Rhyme Song</option>
-                      <option value="Bedtime Adventure Story">Bedtime Adventure Story</option>
-                      <option value="Alphabet & Numbers Song">Alphabet & Numbers Song</option>
-                      <option value="Joyful Animal Tale">Joyful Animal Tale</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-
-              <div class="pt-4 mt-2">
-                <button id="btn-skill-run-kids" onclick="executeKidsSkill()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600 hover:from-pink-500 hover:to-indigo-500 text-white font-bold text-xs transition shadow-lg shadow-pink-600/20 flex items-center justify-center gap-2">
-                  <span>🎈</span>
-                  Create Kids Song, Illustration & Audio
-                </button>
-                <div id="skill-kids-result" class="mt-3 hidden"></div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- 2. SKILL MARKETPLACE & AGENT INSTALLER (Antigravity System) -->
-        <div id="skills-container-marketplace" class="hidden space-y-5">
-          <div class="glass-panel p-4 rounded-xl border border-white/5 flex items-center justify-between text-xs">
-            <div>
-              <span class="font-bold text-white">Antigravity Agent Skills Marketplace</span>
-              <p class="text-zinc-400 text-[11px]">Install specialized agent skills equipped with tool access and custom prompts into your studio.</p>
-            </div>
-            <button onclick="loadSkillsMarketplace()" class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-zinc-300 text-xs transition">
-              ↻ Refresh Catalog
-            </button>
+            <h3>Kids & Young Learners</h3>
+            <p>Joyful rhymes, phonetics practice, animated storytelling, and moral tales synthesized with warm, expressive acoustic pacing.</p>
           </div>
 
-          <div id="skills-marketplace-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <!-- Populated dynamically by app.js from /api/skills/marketplace -->
+          <!-- Students & Education -->
+          <div class="audience-card" onclick="openAudienceMode('students')">
+            <div class="aud-icon-wrap cyan">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            </div>
+            <h3>School & College Students</h3>
+            <p>Language pronunciation practice across 23 global languages, textbook chapter narration, and audio study guides on demand.</p>
+          </div>
+
+          <!-- Office & Work -->
+          <div class="audience-card" onclick="openAudienceMode('office')">
+            <div class="aud-icon-wrap amber">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+            </div>
+            <h3>Daily Office & Professional Work</h3>
+            <p>Document-to-audio briefing, multilingual translation for international meetings, presentation voiceovers, and message summarization.</p>
+          </div>
+
+          <!-- PG Students & Researchers -->
+          <div class="audience-card" onclick="openAudienceMode('research')">
+            <div class="aud-icon-wrap blue">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            </div>
+            <h3>PG Students & Researchers</h3>
+            <p>Listen to lengthy academic papers and theses while commuting, explore multimodal LLM reasoning, and test automated audio pipelines.</p>
           </div>
         </div>
-
-        <!-- 3. CUSTOM AGY SUBAGENT BUILDER (Antigravity define_subagent Method) -->
-        <div id="skills-container-builder" class="hidden space-y-5">
-          <div class="glass-panel rounded-2xl p-6 border border-purple-500/30 space-y-4">
-            <div class="flex items-center justify-between border-b border-white/10 pb-3">
-              <div>
-                <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                  <span>🛠️</span> Antigravity Subagent Architect
-                </h3>
-                <p class="text-[11px] text-zinc-400">Define a new autonomous AI agent with system prompt, tool capabilities, and voice personality.</p>
-              </div>
-              <span class="text-[10px] px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-mono font-bold">define_subagent()</span>
-            </div>
-
-            <div class="space-y-3.5 text-xs">
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label class="block text-zinc-300 font-semibold mb-1">Agent Name</label>
-                  <input id="builder-agent-name" type="text" placeholder="e.g. Cyberpunk Storyteller" value="Cyberpunk Storyteller" class="w-full bg-zinc-950/90 rounded-xl p-2.5 text-white border border-white/10 focus:outline-none focus:border-purple-500">
-                </div>
-                <div>
-                  <label class="block text-zinc-300 font-semibold mb-1">Role / Domain Title</label>
-                  <input id="builder-agent-role" type="text" placeholder="e.g. Worldbuilder & Narrative Actor" value="Worldbuilder & Narrative Actor" class="w-full bg-zinc-950/90 rounded-xl p-2.5 text-white border border-white/10 focus:outline-none focus:border-purple-500">
-                </div>
-              </div>
-
-              <div>
-                <label class="block text-zinc-300 font-semibold mb-1">Description</label>
-                <input id="builder-agent-desc" type="text" placeholder="Brief explanation of what this agent accomplishes..." value="Generates immersive neo-noir dystopian vignettes with suspenseful audio delivery." class="w-full bg-zinc-950/90 rounded-xl p-2.5 text-white border border-white/10 focus:outline-none focus:border-purple-500">
-              </div>
-
-              <div>
-                <label class="block text-zinc-300 font-semibold mb-1">System Prompt (Antigravity Instruction)</label>
-                <textarea id="builder-agent-prompt" rows="3" class="w-full bg-zinc-950/90 rounded-xl p-2.5 text-white border border-white/10 focus:outline-none focus:border-purple-500 font-mono text-xs leading-relaxed">You are an atmospheric sci-fi storyteller. You craft short, vivid narrative scenes set in rain-slicked neon cities and voice them with dramatic noir pacing.</textarea>
-              </div>
-
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label class="block text-zinc-300 font-semibold mb-1">Voice Archetype</label>
-                  <select id="builder-agent-voice" class="w-full bg-zinc-900 border border-white/10 rounded-xl p-2 text-white">
-                    <option value="Epic Cinematic">Epic Cinematic (Dmitri / Alex)</option>
-                    <option value="Warm Conversational">Warm Conversational (Sarah)</option>
-                    <option value="Crisp Executive">Crisp Executive (Marco)</option>
-                    <option value="Empathetic Counselor">Empathetic Counselor (Elena)</option>
-                  </select>
-                </div>
-                <div>
-                  <label class="block text-zinc-300 font-semibold mb-1">Tool Capabilities</label>
-                  <div class="flex flex-wrap gap-2 pt-1 text-[11px] text-zinc-300">
-                    <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" checked class="builder-tool-check" value="llm_reasoning"> Multi-LLM Reasoning</label>
-                    <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" checked class="builder-tool-check" value="voice_synthesis"> 24kHz Synthesis</label>
-                    <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" checked class="builder-tool-check" value="webhook_trigger"> Webhooks</label>
-                  </div>
-                </div>
-              </div>
-
-              <div class="pt-3 border-t border-white/10 flex justify-end gap-3">
-                <button onclick="deployCustomAgent()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-xs transition shadow-lg shadow-purple-600/30 flex items-center gap-2">
-                  <span>🚀</span> Deploy Autonomous Subagent
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
       </div>
-    </section>
 
-    <!-- WORKSPACE: MULTI-MODEL LLM MATRIX -->
-    <section id="workspace-view-models" class="flex-1 hidden flex-col h-full overflow-y-auto p-6 space-y-6">
-      <div class="max-w-6xl mx-auto w-full space-y-6">
-        
-        <!-- Header Banner -->
-        <div class="glass-panel p-5 rounded-2xl border border-white/5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <!-- Core Capabilities Grid -->
+      <div class="sec" style="border-top:1px solid var(--border)">
+        <div class="sec-header">
           <div>
-            <div class="flex items-center gap-2 mb-1">
-              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-              <span class="text-xs font-mono font-bold text-emerald-300 uppercase tracking-wider">Multi-Model LLM Matrix</span>
-            </div>
-            <h2 class="text-xl font-black text-white">Frontier AI Intelligence + 24kHz Audio</h2>
-            <p class="text-xs text-zinc-400 mt-1">Connect leading AI reasoning providers directly to Chatterbox flow-matching voice synthesis.</p>
-          </div>
-          <div class="flex items-center gap-2">
-            <button onclick="loadLLMModelsMatrix()" class="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-xs text-zinc-300 font-medium transition flex items-center gap-1.5">
-              <span>↻</span> Refresh Models
-            </button>
-            <span class="px-3 py-1.5 rounded-xl bg-emerald-500/20 text-emerald-300 text-xs font-mono font-bold border border-emerald-500/30">6 Providers</span>
+            <div class="sec-tag">Acoustic Engine</div>
+            <h2 class="sec-title">Universal Audio & Multimodal Capabilities</h2>
           </div>
         </div>
 
-        <!-- Interactive Playground: Chat & Speak with Chosen Model -->
-        <div class="glass-panel rounded-2xl p-5 border border-indigo-500/30 space-y-4">
-          <div class="flex items-center justify-between">
-            <h3 class="text-sm font-bold text-white flex items-center gap-2">
-              <span>⚡</span> Multimodal Inference & Voice Synthesis Tester
-            </h3>
-            <span class="text-[11px] text-zinc-400">Type a prompt, chosen LLM responds, Chatterbox vocalizes it</span>
+        <div class="feat-grid">
+          <div class="feat-card">
+            <h3>Multi-Speaker Voice Studio</h3>
+            <p>Generate lifelike conversations between multiple personas with nuanced turn-taking and natural inflection.</p>
           </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-            <div class="md:col-span-2">
-              <input id="llm-play-prompt" type="text" placeholder="Explain quantum computing in one sentence..." value="What makes generative neural speech so revolutionary?" class="w-full bg-zinc-950/90 rounded-xl p-3 text-xs text-white border border-white/10 focus:outline-none focus:border-indigo-500">
-            </div>
-            <div class="flex items-center gap-2">
-              <select id="llm-play-model" class="flex-1 bg-zinc-900 border border-white/10 rounded-xl p-3 text-xs text-white">
-                <option value="local_neural" selected>GS Neural Flow Core (24kHz)</option>
-                <option value="gemini_pro">GS Deep-Thinker Ultra</option>
-                <option value="gemini_flash">GS Multilingual Flash</option>
-                <option value="gpt4o">GS Neural Omni-Core</option>
-                <option value="deepseek_v3">GS Frontier MoE (671B)</option>
-                <option value="llama_33">GS Open-Weights Neural Core</option>
-                <option value="ollama_local">GS Air-Gapped Private Node</option>
-              </select>
-              <button id="btn-llm-generate-speak" onclick="runLLMPlayground()" class="px-4 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition shadow-lg shadow-indigo-600/30 flex items-center gap-1.5 flex-shrink-0">
-                <span>⚡</span> Speak
-              </button>
-            </div>
+          <div class="feat-card">
+            <h3>23-Language Acoustic Translation</h3>
+            <p>Instant cross-lingual translation with matching pitch, prosody, and zero-shot voice characteristic preservation.</p>
           </div>
-
-          <div id="llm-play-result" class="hidden p-4 rounded-xl bg-zinc-950/90 border border-white/10 space-y-2">
-            <!-- Rendered by app.js -->
+          <div class="feat-card">
+            <h3>Long-Form Document Audio Reader</h3>
+            <p>Convert research whitepapers, essays, lecture notes, and documentation into studio-grade 24kHz spoken audio.</p>
+          </div>
+          <div class="feat-card">
+            <h3>Cinematic Voice Director</h3>
+            <p>Modulate expression, emotional intensity, pacing, and tone dynamically for education, drama, or corporate narration.</p>
+          </div>
+          <div class="feat-card">
+            <h3>Interactive Multimodal Chat</h3>
+            <p>Dialogue with integrated neural reasoning models that formulate answers and speak them back simultaneously.</p>
+          </div>
+          <div class="feat-card">
+            <h3>High-Performance Core</h3>
+            <p>Powered by local hardware acceleration for low-latency synthesis without third-party exposure.</p>
           </div>
         </div>
-
-        <!-- Models Grid Matrix -->
-        <div id="llm-models-matrix-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <!-- Populated dynamically by app.js from /api/llm/models -->
-        </div>
-
       </div>
-    </section>
 
-    <!-- WORKSPACE: CONNECTORS & INTEGRATIONS -->
-    <section id="workspace-view-connectors" class="flex-1 hidden flex-col h-full overflow-y-auto p-6 space-y-6">
-      <div class="max-w-6xl mx-auto w-full space-y-6">
-        
-        <!-- Header Banner -->
-        <div class="glass-panel p-5 rounded-2xl border border-white/5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <!-- Security & Foundation Strip -->
+      <div style="border-top:1px solid var(--border);padding:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <img src="/static/img/partner_key_secure_foundation.png" alt="Key Secure" style="width:32px;height:32px;object-fit:contain;border-radius:8px" onerror="this.style.display='none'">
           <div>
-            <div class="flex items-center gap-2 mb-1">
-              <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse"></span>
-              <span class="text-xs font-mono font-bold text-cyan-300 uppercase tracking-wider">Ecosystem & Hooks</span>
-            </div>
-            <h2 class="text-xl font-black text-white">Connectors & Apps Hub</h2>
-            <p class="text-xs text-zinc-400 mt-1">Configure provider API keys, inbound webhooks, and cloud storage pipelines.</p>
-          </div>
-          <div class="flex items-center gap-2">
-            <button onclick="loadConnectorsList()" class="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-xs text-zinc-300 font-medium transition flex items-center gap-1.5">
-              <span>↻</span> Refresh Connectors
-            </button>
+            <div style="font-size:13px;font-weight:700;color:var(--ink)">Key Secure Foundation</div>
+            <div style="font-size:11px;color:var(--ink-3)">Security & Infrastructure Partner</div>
           </div>
         </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
-          
-          <!-- Column 1: API Key Vault -->
-          <div class="glass-panel rounded-2xl p-5 border border-white/5 space-y-4">
-            <div class="flex items-center justify-between border-b border-white/5 pb-3">
-              <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                <span>🔐</span> Provider API Key Vault
-              </h3>
-              <span class="text-[10px] text-zinc-500 font-mono">SECURE</span>
-            </div>
-
-            <!-- GS Multilingual Key -->
-            <div class="space-y-1.5">
-              <div class="flex items-center justify-between text-xs">
-                <span class="font-semibold text-zinc-300">GS Multilingual Cloud Key</span>
-                <span id="badge-key-gemini" class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono">READY</span>
-              </div>
-              <div class="flex items-center gap-1.5">
-                <input id="key-input-gemini" type="password" placeholder="Enter GEMINI_API_KEY..." class="flex-1 bg-zinc-950/80 rounded-xl p-2 text-xs text-white border border-white/10 focus:outline-none">
-                <button onclick="saveApiKey('GEMINI_API_KEY', 'key-input-gemini')" class="px-2.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition">Save</button>
-              </div>
-            </div>
-
-            <!-- GS Omni Intelligence Key -->
-            <div class="space-y-1.5">
-              <div class="flex items-center justify-between text-xs">
-                <span class="font-semibold text-zinc-300">GS Omni-Intelligence Cloud Key</span>
-                <span id="badge-key-openai" class="text-[9px] px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-400 font-mono">OPTIONAL</span>
-              </div>
-              <div class="flex items-center gap-1.5">
-                <input id="key-input-openai" type="password" placeholder="Enter OPENAI_API_KEY..." class="flex-1 bg-zinc-950/80 rounded-xl p-2 text-xs text-white border border-white/10 focus:outline-none">
-                <button onclick="saveApiKey('OPENAI_API_KEY', 'key-input-openai')" class="px-2.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition">Save</button>
-              </div>
-            </div>
-
-            <!-- GS Frontier MoE Key -->
-            <div class="space-y-1.5">
-              <div class="flex items-center justify-between text-xs">
-                <span class="font-semibold text-zinc-300">GS Frontier MoE Cognitive Key</span>
-                <span id="badge-key-deepseek" class="text-[9px] px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-400 font-mono">OPTIONAL</span>
-              </div>
-              <div class="flex items-center gap-1.5">
-                <input id="key-input-deepseek" type="password" placeholder="Enter DEEPSEEK_API_KEY..." class="flex-1 bg-zinc-950/80 rounded-xl p-2 text-xs text-white border border-white/10 focus:outline-none">
-                <button onclick="saveApiKey('DEEPSEEK_API_KEY', 'key-input-deepseek')" class="px-2.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition">Save</button>
-              </div>
-            </div>
-
-            <!-- GS Local Mesh Node -->
-            <div class="space-y-1.5">
-              <div class="flex items-center justify-between text-xs">
-                <span class="font-semibold text-zinc-300">GS Air-Gapped Local Node URL</span>
-                <span class="text-[9px] px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-300 font-mono">LOCAL</span>
-              </div>
-              <div class="flex items-center gap-1.5">
-                <input id="key-input-ollama" type="text" value="http://localhost:11434" class="flex-1 bg-zinc-950/80 rounded-xl p-2 text-xs text-white border border-white/10 focus:outline-none">
-                <button onclick="saveApiKey('OLLAMA_HOST', 'key-input-ollama')" class="px-2.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition">Save</button>
-              </div>
-            </div>
+        <div style="display:flex;gap:24px">
+          <div style="text-align:center">
+            <div style="font-size:20px;font-weight:800;color:var(--ink)">23</div>
+            <div style="font-size:11px;color:var(--ink-3)">Languages</div>
           </div>
-
-          <!-- Column 2: Inbound Audio Webhook Simulator -->
-          <div class="glass-panel rounded-2xl p-5 border border-white/5 space-y-4 lg:col-span-2">
-            <div class="flex items-center justify-between border-b border-white/5 pb-3">
-              <div>
-                <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                  <span>📡</span> Inbound Audio Webhook Console
-                </h3>
-                <p class="text-[11px] text-zinc-400">Trigger programmatic synthesis via HTTP POST</p>
-              </div>
-              <code class="text-[10px] px-2 py-0.5 rounded bg-zinc-900 text-cyan-300 font-mono border border-white/10">POST /api/connectors/webhook</code>
-            </div>
-
-            <div class="space-y-2">
-              <label class="block text-xs font-semibold text-zinc-300">JSON Payload Simulator:</label>
-              <textarea id="webhook-test-payload" rows="5" class="w-full bg-[#0d0f17] text-cyan-300 font-mono text-xs p-3 rounded-xl border border-white/10 focus:outline-none resize-none leading-relaxed">{
-  "event": "voice.synthesize",
-  "text": "Inbound webhook triggered speech rendering successfully.",
-  "language": "en",
-  "exaggeration": 0.5,
-  "cfg_weight": 0.5
-}</textarea>
-            </div>
-
-            <div class="flex items-center justify-between">
-              <span class="text-[11px] text-zinc-400">Instant audio return with sample rate & duration</span>
-              <button id="btn-test-webhook" onclick="triggerTestWebhook()" class="px-4 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs transition shadow-lg shadow-cyan-600/30 flex items-center gap-1.5">
-                <span>▶</span> Post Test Event
-              </button>
-            </div>
-
-            <div id="webhook-test-result" class="hidden p-3.5 rounded-xl bg-[#0d0f17] border border-white/10 space-y-2 text-xs">
-              <!-- Rendered by app.js -->
-            </div>
+          <div style="text-align:center">
+            <div style="font-size:20px;font-weight:800;color:var(--ink)">24kHz</div>
+            <div style="font-size:11px;color:var(--ink-3)">Audio Quality</div>
           </div>
-
+          <div style="text-align:center">
+            <div style="font-size:20px;font-weight:800;color:var(--ink)">Local</div>
+            <div style="font-size:11px;color:var(--ink-3)">Hardware Acceleration</div>
+          </div>
         </div>
-
+      <!-- Architecture & Verification Note -->
+      <div style="border-top:1px solid var(--border);padding:18px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--ink-3)">
+        <div>
+          Powered by <strong>Chatterbox</strong> Multilingual Architecture with <strong>Autonomous Workers</strong> &amp; <strong>Scan to Pay</strong> verification support.
+        </div>
+        <div>
+          &copy; 2026 Khyathi.Sri AI &middot; Key Secure Foundation Cloud
+        </div>
       </div>
-    </section>
+    </div>
 
-    <!-- WORKSPACE 2: CODE & API RUNNER -->
-    <section id="workspace-view-code" class="flex-1 hidden flex-col h-full overflow-hidden p-6">
-      <div class="max-w-6xl mx-auto w-full h-full flex flex-col gap-4">
-        <!-- Top Selector & Action Bar -->
-        <div class="flex items-center justify-between gap-4 glass-panel p-3.5 rounded-2xl">
-          <div class="flex items-center gap-3">
-            <label class="text-xs font-semibold text-zinc-400">Select Snippet:</label>
-            <select id="code-snippet-select" class="bg-zinc-900 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-zinc-200 focus:outline-none">
-              <option value="python">Python SDK (ChatterboxMultilingualTTS)</option>
-              <option value="curl">cURL REST API (/api/chat)</option>
-              <option value="javascript">JavaScript Fetch API</option>
-              <option value="cli">Command-Line Interface (cli.py)</option>
+    <!-- ══ CHAT (Multimodal Voice & Text) ══ -->
+    <div class="page-panel" id="panel-chat">
+      <div class="chat-wrap">
+        <!-- Chat toolbar -->
+        <div style="padding:12px 24px;border-bottom:1px solid var(--border);background:var(--surface);display:flex;align-items:center;justify-content:space-between;gap:12px">
+          <div style="display:flex;align-items:center;gap:10px">
+            <select class="input" id="chat-model-select" style="width:auto;font-size:12px;padding:6px 12px">
+              <option value="local_neural">Neural Core</option>
+              <option value="gemini_pro">Deep-Thinker</option>
+              <option value="gemini_flash">Flash</option>
+              <option value="gpt4o">Omni</option>
+              <option value="deepseek_v3">Frontier</option>
+              <option value="llama_33">Open-Weights</option>
+            </select>
+            <select class="input" id="chat-lang-select" style="width:auto;font-size:12px;padding:6px 12px">
+              <option value="en">English</option>
             </select>
           </div>
-
-          <div class="flex items-center gap-2">
-            <button id="btn-copy-code" class="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-medium text-zinc-300 transition">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-              <span id="copy-code-text">Copy Code</span>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-ghost btn-sm" id="btn-presets" style="display:flex;align-items:center;gap:5px">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+              Voice
             </button>
-            <button id="btn-run-code" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs transition shadow-lg shadow-indigo-600/30">
-              <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-              Run Script
-            </button>
+            <button class="btn btn-ghost btn-sm" onclick="clearChat()">Clear</button>
           </div>
         </div>
 
-        <!-- Code Editor and Live Terminal Console -->
-        <div class="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-4 overflow-hidden">
-          <!-- Editor Pane -->
-          <div class="glass-panel rounded-2xl p-4 flex flex-col h-full overflow-hidden">
-            <div class="text-xs font-mono text-zinc-400 mb-2 flex items-center justify-between">
-              <span>Code Editor</span>
-              <span class="text-[10px] bg-zinc-800 px-2 py-0.5 rounded text-zinc-400">Interactive</span>
-            </div>
-            <textarea id="code-editor-textarea" class="flex-1 w-full bg-[#0d0f17] text-zinc-200 font-mono text-xs p-4 rounded-xl resize-none focus:outline-none border border-white/5 leading-relaxed"></textarea>
+        <!-- Messages -->
+        <div class="chat-msgs" id="chat-messages">
+          <div class="chat-bubble ai">
+            Welcome to Khyathi.Sri AI Voice Studio. Ask any question, paste coursework, or request speech synthesis in any of the 23 supported languages.
           </div>
+        </div>
 
-          <!-- Console & Audio Result Pane -->
-          <div class="glass-panel rounded-2xl p-4 flex flex-col h-full overflow-hidden">
-            <div class="text-xs font-mono text-zinc-400 mb-2 flex items-center justify-between">
-              <span>Execution Logs & Result</span>
-              <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded">Console Output</span>
-            </div>
-            <div id="code-console-output" class="flex-1 bg-[#0d0f17] text-emerald-400 font-mono text-xs p-4 rounded-xl overflow-y-auto border border-white/5 leading-relaxed whitespace-pre-wrap">
-[INFO] Ready to execute. Click 'Run Script' above to test multilingual synthesis.
-            </div>
-            <div id="code-audio-result"></div>
+        <!-- Audio Output Container -->
+        <div id="chat-audio-result" style="display:none;padding:0 24px 10px;max-width:780px;width:100%;margin:0 auto"></div>
+
+        <!-- Input Bar -->
+        <div class="chat-bar">
+          <div class="chat-bar-inner">
+            <textarea id="chat-input" rows="1" placeholder="Type a message or prompt…" onkeydown="chatKeydown(event)" oninput="autoResize(this)"></textarea>
+            <button class="chat-send-btn" id="chat-send-btn" onclick="sendChatMessage()">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
           </div>
         </div>
       </div>
-    </section>
+    </div>
 
-    <!-- WORKSPACE 3: AUTONOMOUS WORKERS -->
-    <section id="workspace-view-workers" class="flex-1 hidden flex-col h-full overflow-y-auto p-6">
-      <div class="max-w-6xl mx-auto w-full space-y-6">
-        
-        <!-- Workflow Cards Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <!-- Worker 1: Batch Synthesis -->
-          <div class="glass-panel rounded-2xl p-5 border border-white/5 flex flex-col justify-between worker-card">
-            <div>
-              <div class="flex items-center gap-2.5 mb-2">
-                <span class="p-2 rounded-xl bg-indigo-500/20 text-indigo-400 text-sm">📦</span>
-                <h3 class="text-sm font-bold text-white">Batch Audio Generator</h3>
-              </div>
-              <p class="text-xs text-zinc-400 mb-3">Split multi-line text into individual audio chunks and download batch assets.</p>
-              
-              <div class="space-y-2">
-                <textarea id="batch-input-lines" rows="3" placeholder="Enter one sentence per line...&#10;Line 1: Good morning.&#10;Line 2: The weather is bright and clear." class="w-full bg-zinc-950/80 rounded-xl p-3 text-xs text-white border border-white/5 focus:outline-none resize-none"></textarea>
-                <div class="flex items-center gap-2">
-                  <span class="text-xs text-zinc-400">Language:</span>
-                  <select id="batch-language-select" class="bg-zinc-900 border border-white/10 rounded-lg px-2.5 py-1 text-xs text-white">
-                    <option value="en">English (en)</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            <button id="btn-submit-batch-worker" class="mt-4 w-full py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs transition">
-              Enqueue Batch Worker
-            </button>
-          </div>
-
-          <!-- Worker 2: Cross-Lingual Dubbing -->
-          <div class="glass-panel rounded-2xl p-5 border border-white/5 flex flex-col justify-between worker-card">
-            <div>
-              <div class="flex items-center gap-2.5 mb-2">
-                <span class="p-2 rounded-xl bg-cyan-500/20 text-cyan-400 text-sm">🌐</span>
-                <h3 class="text-sm font-bold text-white">Cross-Lingual Dubbing Worker</h3>
-              </div>
-              <p class="text-xs text-zinc-400 mb-3">Synthesize matching audio across target languages preserving speaker vocal tone.</p>
-              
-              <div class="space-y-2">
-                <input id="dubbing-source-text" type="text" placeholder="Speech text to synthesize in multiple languages..." value="Welcome to this international presentation." class="w-full bg-zinc-950/80 rounded-xl p-2.5 text-xs text-white border border-white/5 focus:outline-none">
-                <div class="text-xs text-zinc-400">Target Languages:</div>
-                <div class="flex flex-wrap gap-2 text-xs">
-                  <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" value="fr" checked class="dubbing-target-lang"> French</label>
-                  <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" value="es" checked class="dubbing-target-lang"> Spanish</label>
-                  <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" value="de" checked class="dubbing-target-lang"> German</label>
-                  <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" value="ja" class="dubbing-target-lang"> Japanese</label>
-                  <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" value="zh" class="dubbing-target-lang"> Chinese</label>
-                </div>
-              </div>
-            </div>
-
-            <button id="btn-submit-dubbing-worker" class="mt-4 w-full py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-semibold text-xs transition">
-              Enqueue Dubbing Worker
-            </button>
-          </div>
-        </div>
-
-        <!-- Live Queue Manager -->
-        <div class="glass-panel rounded-2xl p-5 border border-white/5">
-          <div class="flex items-center justify-between mb-4">
-            <h3 class="text-sm font-bold text-white flex items-center gap-2">
-              <span>⚡</span> Active Worker Queue & Pipeline Status
-            </h3>
-            <div class="flex items-center gap-2">
-              <button id="btn-clear-jobs" class="text-xs px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white transition">
-                Clear Completed
-              </button>
-              <button onclick="refreshWorkersJobs()" class="text-xs px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white transition">
-                ↻ Refresh
-              </button>
-            </div>
-          </div>
-
-          <div id="workers-jobs-list">
-            <!-- Jobs rendered by app.js -->
-            <div class="text-center py-10 text-zinc-500 text-xs">Loading queue status...</div>
-          </div>
-        </div>
-
+    <!-- ══ CAPABILITIES STUDIO ══ -->
+    <div class="page-panel" id="panel-skills">
+      <div class="app-hero" style="padding:32px 24px">
+        <div class="sec-tag">Interactive Studios</div>
+        <h1 class="app-hero-title" style="font-size:28px">Capabilities Studio</h1>
+        <p class="app-hero-sub" style="margin-bottom:0">Select a specialized workflow to synthesize, translate, or generate audio.</p>
       </div>
-    </section>
+      <div class="sec">
+        <div class="skill-grid" id="skills-grid">
+          <!-- Populated dynamically via JS -->
+        </div>
+        <div id="skill-result-area" style="margin-top:20px"></div>
+      </div>
+    </div>
+
+    <!-- ══ MODELS MATRIX ══ -->
+    <div class="page-panel" id="panel-models">
+      <div class="app-hero" style="padding:32px 24px">
+        <div class="sec-tag">Intelligence Engines</div>
+        <h1 class="app-hero-title" style="font-size:28px">Intelligence Matrix</h1>
+        <p class="app-hero-sub" style="margin-bottom:0">Select the cognitive engine driving your speech and text analysis.</p>
+      </div>
+      <div class="sec">
+        <div class="model-grid" id="models-grid">
+          <!-- Populated dynamically via JS -->
+        </div>
+
+        <!-- Test Generation Console -->
+        <div style="margin-top:28px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px">
+          <div style="font-size:15px;font-weight:700;color:var(--ink);margin-bottom:12px">Generation Console</div>
+          <textarea id="llm-prompt" class="input" rows="3" placeholder="Enter text or research query…" style="font-family:inherit;resize:vertical"></textarea>
+          <div style="margin-top:12px;display:flex;gap:10px">
+            <button class="btn btn-primary" onclick="runLLMGenerate()" id="btn-llm-gen">Generate Text</button>
+            <button class="btn btn-ghost" onclick="runLLMChatSpeak()" id="btn-llm-speak">Generate & Speak</button>
+          </div>
+          <div id="llm-result" style="margin-top:16px"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ VOICE PERSONAS / TEAM ══ -->
+    <div class="page-panel" id="panel-team">
+      <div class="app-hero" style="padding:32px 24px">
+        <div class="sec-tag">Acoustic Profiles</div>
+        <h1 class="app-hero-title" style="font-size:28px">Voice Personas</h1>
+        <p class="app-hero-sub" style="margin-bottom:0">Audition the diverse voice profiles available across all studios.</p>
+      </div>
+      <div class="sec">
+        <div class="team-grid" id="team-grid">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ CONNECTORS / INTEGRATIONS ══ -->
+    <div class="page-panel" id="panel-connectors">
+      <div class="app-hero" style="padding:32px 24px">
+        <div class="sec-tag">API Connectivity</div>
+        <h1 class="app-hero-title" style="font-size:28px">Connectors & Keys</h1>
+        <p class="app-hero-sub" style="margin-bottom:0">Configure external model endpoints and platform bridges.</p>
+      </div>
+      <div class="sec">
+        <div class="conn-grid" id="connectors-grid">
+          <!-- Populated dynamically via JS -->
+        </div>
+
+        <div style="margin-top:28px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;max-width:480px">
+          <div style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:4px">Provider Configuration</div>
+          <div style="font-size:12px;color:var(--ink-3);margin-bottom:16px">Add API credentials for cloud engine routing.</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <select id="key-provider" class="input">
+              <option value="gemini">Gemini Engine</option>
+              <option value="openai">Omni Engine</option>
+              <option value="deepseek">DeepSeek Engine</option>
+            </select>
+            <input type="password" id="key-value" class="input" placeholder="Enter key…">
+            <button class="btn btn-primary" onclick="saveApiKey()">Save Credentials</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ DEVELOPER CODE API ══ -->
+    <div class="page-panel" id="panel-code">
+      <div class="app-hero" style="padding:32px 24px">
+        <div class="sec-tag">Developer Interface</div>
+        <h1 class="app-hero-title" style="font-size:28px">API Integration</h1>
+        <p class="app-hero-sub" style="margin-bottom:0">Integrate voice synthesis into external apps, automation scripts, and notebooks.</p>
+      </div>
+      <div class="sec">
+        <div style="display:flex;gap:6px;margin-bottom:18px" id="code-tabs">
+          <div style="display:flex;background:#f3f4f6;padding:4px;border-radius:10px;border:1px solid var(--border)">
+            <button class="btn btn-sm btn-ghost active" onclick="switchCodeTab('curl', this)">cURL</button>
+            <button class="btn btn-sm btn-ghost" onclick="switchCodeTab('python', this)">Python</button>
+            <button class="btn btn-sm btn-ghost" onclick="switchCodeTab('js', this)">JavaScript</button>
+          </div>
+        </div>
+
+        <div id="code-curl" class="code-tab-panel">
+          <div class="code-block">curl -X POST http://localhost:8080/api/chat \
+  -H "Content-Type: application/json" \
+  -d '{
+    "text": "Hello, synthesize this text!",
+    "language": "en",
+    "exaggeration": 0.5
+  }'</div>
+        </div>
+        <div id="code-python" class="code-tab-panel" style="display:none">
+          <div class="code-block">import requests
+
+resp = requests.post("http://localhost:8080/api/chat", json={
+    "text": "Academic paper excerpt or thesis narration.",
+    "language": "en",
+    "exaggeration": 0.5
+})
+data = resp.json()
+print("Generated audio:", data.get("audio_url"))</div>
+        </div>
+        <div id="code-js" class="code-tab-panel" style="display:none">
+          <div class="code-block">const res = await fetch('/api/chat', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    text: 'Student study material narration.',
+    language: 'en',
+    exaggeration: 0.5
+  })
+});
+const { audio_url } = await res.json();</div>
+        </div>
+
+        <div style="margin-top:24px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px">
+          <div style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:14px">Live Synthesis Test</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <input id="code-text" class="input" value="Welcome to the universal voice platform." placeholder="Text to synthesize…">
+            <div style="display:flex;gap:10px">
+              <select id="code-lang" class="input" style="flex:0 0 auto;width:auto">
+                <option value="en">English</option>
+              </select>
+              <button class="btn btn-primary" onclick="runCodeAPI()" id="btn-code-run">Run Synthesis</button>
+            </div>
+          </div>
+          <div id="code-result" style="margin-top:14px"></div>
+        </div>
+      </div>
+    </div>
 
   </main>
+</div>
 
-  <!-- Voice Library / Presets Modal -->
-  <div id="presets-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="glass-panel bg-[#11131c] rounded-2xl max-w-2xl w-full p-6 border border-white/10 shadow-2xl space-y-4 max-h-[85vh] flex flex-col">
-      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+<!-- Voice Library Modal -->
+<div id="modal-presets" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.35);backdrop-filter:blur(4px)" onclick="closePresets(event)">
+  <div style="position:absolute;right:0;top:0;bottom:0;width:340px;background:var(--surface);border-left:1px solid var(--border);overflow-y:auto;padding:24px" onclick="event.stopPropagation()">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+      <div style="font-size:15px;font-weight:700;color:var(--ink)">Voice Presets</div>
+      <button class="btn btn-ghost btn-icon" onclick="closeModal('modal-presets')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div id="presets-list" style="display:flex;flex-direction:column;gap:10px"></div>
+  </div>
+</div>
+
+<!-- ── AUTH MODAL (SIGN IN / REGISTER / DEMO PROFILES) ── -->
+<div id="modal-auth" style="display:none;position:fixed;inset:0;z-index:250;background:rgba(0,0,0,0.4);backdrop-filter:blur(6px);align-items:center;justify-content:center" onclick="closeModalOnBg(event, 'modal-auth')">
+  <div style="background:var(--surface);border-radius:16px;box-shadow:0 20px 40px rgba(0,0,0,0.15);border:1px solid var(--border);width:92%;max-width:420px;padding:26px" onclick="event.stopPropagation()">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+      <div style="font-size:17px;font-weight:800;color:var(--ink)">Account Portal</div>
+      <button class="btn btn-ghost btn-icon" onclick="closeModal('modal-auth')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <!-- Tabs -->
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="auth-tab-signin" onclick="switchAuthTab('signin')">Sign In</button>
+      <button class="auth-tab" id="auth-tab-register" onclick="switchAuthTab('register')">Create Account</button>
+    </div>
+
+    <!-- Sign In Form -->
+    <div id="auth-form-signin">
+      <div style="display:flex;flex-direction:column;gap:12px">
         <div>
-          <h3 class="text-sm font-bold text-white flex items-center gap-2">
-            <span>🎭</span> Voice Library & Timbre Presets
-          </h3>
-          <p class="text-xs text-zinc-400">Click any preset voice to immediately use for zero-shot voice cloning.</p>
+          <label style="font-size:12px;font-weight:600;color:var(--ink-2);display:block;margin-bottom:4px">Email</label>
+          <input type="email" id="signin-email" class="input" placeholder="name@example.com">
         </div>
-        <button id="btn-close-presets" class="text-zinc-400 hover:text-white">✕</button>
+        <div>
+          <label style="font-size:12px;font-weight:600;color:var(--ink-2);display:block;margin-bottom:4px">Password</label>
+          <input type="password" id="signin-password" class="input" placeholder="••••••••" onkeydown="if(event.key==='Enter') performLogin()">
+        </div>
+        <button class="btn btn-primary" style="width:100%;margin-top:6px;justify-content:center" onclick="performLogin()" id="btn-submit-login">Sign In</button>
       </div>
 
-      <div id="presets-cards-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3 overflow-y-auto pr-1 flex-1 py-1">
-        <!-- Preset Cards rendered by app.js -->
+      <!-- Quick Demo Accounts -->
+      <div class="demo-accounts-strip">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink-3);margin-bottom:8px">One-Click Demo Profiles</div>
+        <div class="demo-account-btn" onclick="fillDemoLogin('researcher@khyathi.sri', 'researcher123')">
+          <div><strong>Dr. Aryan Sharma</strong> <span style="font-size:10.5px;color:var(--blue)">PG Researcher</span></div>
+          <span>&rarr;</span>
+        </div>
+        <div class="demo-account-btn" onclick="fillDemoLogin('student@khyathi.sri', 'student123')">
+          <div><strong>Priya Patel</strong> <span style="font-size:10.5px;color:#059669">College Student</span></div>
+          <span>&rarr;</span>
+        </div>
+        <div class="demo-account-btn" onclick="fillDemoLogin('educator@khyathi.sri', 'educator123')">
+          <div><strong>Khyathi Sri</strong> <span style="font-size:10.5px;color:#7c3aed">Early Educator</span></div>
+          <span>&rarr;</span>
+        </div>
+        <div class="demo-account-btn" onclick="fillDemoLogin('office@khyathi.sri', 'office123')">
+          <div><strong>Vikram Rao</strong> <span style="font-size:10.5px;color:#ca8a04">Business Work</span></div>
+          <span>&rarr;</span>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Settings Modal Dialog -->
-  <div id="settings-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="glass-panel bg-[#11131c] rounded-2xl max-w-md w-full p-6 border border-white/10 shadow-2xl space-y-4">
-      <div class="flex items-center justify-between border-b border-white/10 pb-3">
-        <h3 class="text-sm font-bold text-white">Voice & Engine Settings</h3>
-        <button id="btn-close-settings" class="text-zinc-400 hover:text-white">✕</button>
-      </div>
-
-      <div class="space-y-3.5 text-xs">
+    <!-- Register Form -->
+    <div id="auth-form-register" style="display:none">
+      <div style="display:flex;flex-direction:column;gap:12px">
         <div>
-          <label class="block text-zinc-400 mb-1">Model Version</label>
-          <select id="setting-model-version" class="w-full bg-zinc-900 border border-white/10 rounded-xl p-2 text-white">
-            <option value="v3" selected>Chatterbox Multilingual V3 (Recommended, SoTA)</option>
-            <option value="v2">Chatterbox Multilingual V2 (Legacy)</option>
+          <label style="font-size:12px;font-weight:600;color:var(--ink-2);display:block;margin-bottom:4px">Full Name</label>
+          <input type="text" id="reg-name" class="input" placeholder="Your Full Name">
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:600;color:var(--ink-2);display:block;margin-bottom:4px">Email</label>
+          <input type="email" id="reg-email" class="input" placeholder="name@example.com">
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:600;color:var(--ink-2);display:block;margin-bottom:4px">Password</label>
+          <input type="password" id="reg-password" class="input" placeholder="Min 6 characters">
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:600;color:var(--ink-2);display:block;margin-bottom:4px">Primary Role</label>
+          <select id="reg-role" class="input">
+            <option value="PG Researcher">PG Researcher / Academic</option>
+            <option value="College Student">School / College Student</option>
+            <option value="Business Professional">Business Professional / Work</option>
+            <option value="Early Educator">Kids Educator / Parent</option>
           </select>
         </div>
-
-        <div>
-          <label class="block text-zinc-400 mb-1">Exaggeration / Expressiveness (0.25 - 2.0)</label>
-          <input id="setting-exaggeration" type="number" step="0.05" min="0.25" max="2.0" value="0.5" class="w-full bg-zinc-900 border border-white/10 rounded-xl p-2 text-white">
-          <span class="text-[10px] text-zinc-500">0.5 is neutral. Higher values add dramatic flair.</span>
-        </div>
-
-        <div>
-          <label class="block text-zinc-400 mb-1">CFG / Pacing Weight (0.0 - 1.0)</label>
-          <input id="setting-cfg" type="number" step="0.05" min="0.0" max="1.0" value="0.5" class="w-full bg-zinc-900 border border-white/10 rounded-xl p-2 text-white">
-          <span class="text-[10px] text-zinc-500">Set to 0.0 when cross-lingual voice cloning to avoid accent leakage.</span>
-        </div>
-
-        <div>
-          <label class="block text-zinc-400 mb-1">Temperature (0.1 - 2.0)</label>
-          <input id="setting-temperature" type="number" step="0.05" min="0.1" max="2.0" value="0.8" class="w-full bg-zinc-900 border border-white/10 rounded-xl p-2 text-white">
-        </div>
-
-        <div>
-          <label class="block text-zinc-400 mb-1">Random Seed</label>
-          <input id="setting-seed" type="number" value="0" class="w-full bg-zinc-900 border border-white/10 rounded-xl p-2 text-white">
-          <span class="text-[10px] text-zinc-500">0 for random speech, or fix a number for reproducibility.</span>
-        </div>
-      </div>
-
-      <div class="pt-3 border-t border-white/10 flex justify-end gap-2">
-        <button id="btn-save-settings" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs transition">
-          Save Settings
-        </button>
+        <button class="btn btn-primary" style="width:100%;margin-top:6px;justify-content:center" onclick="performRegister()" id="btn-submit-reg">Create Account</button>
       </div>
     </div>
+
+    <div id="auth-error-msg" style="color:#dc2626;font-size:12px;margin-top:12px;text-align:center;display:none"></div>
   </div>
+</div>
 
-  <!-- Billing & Scan to Pay Modal -->
-  <div id="billing-modal" class="fixed inset-0 bg-black/70 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-    <div class="glass-panel bg-[#11131c] rounded-2xl max-w-xl w-full p-6 border border-white/10 shadow-2xl space-y-5 max-h-[90vh] flex flex-col">
-      <div class="flex items-center justify-between border-b border-white/10 pb-3">
-        <div>
-          <h3 class="text-base font-bold text-white flex items-center gap-2">
-            <span>⚡</span> Scan to Pay • Credit Packages
-          </h3>
-          <p class="text-xs text-zinc-400">Instant top-up via UPI, QR Code, or Digital Wallet for multilingual synthesis.</p>
-        </div>
-        <button id="btn-close-billing" class="text-zinc-400 hover:text-white text-sm">✕</button>
-      </div>
+<script src="/static/js/app.js"></script>
+<script>
+// ── NAVIGATION (ICON-ONLY ROUTER) ──
+const ALL_PANELS = ['landing','chat','skills','models','team','connectors','code'];
 
-      <!-- Current Balance Banner -->
-      <div class="p-3.5 rounded-xl bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-indigo-500/10 border border-amber-500/20 flex items-center justify-between">
-        <div>
-          <div class="text-[10px] uppercase font-bold text-amber-400 tracking-wider">Available Credits</div>
-          <div class="text-xl font-black text-white font-mono flex items-center gap-1.5">
-            <span>⚡</span> <span id="modal-credits-display">2,500</span>
-          </div>
-        </div>
-        <div class="text-right text-[11px] text-zinc-400">
-          <div>~25 min synthesized</div>
-          <span class="text-emerald-400 text-[10px]">● Active Account</span>
-        </div>
-      </div>
+function showPanel(id) {
+  ALL_PANELS.forEach(p => {
+    document.getElementById('panel-'+p)?.classList.remove('active');
+    document.getElementById('ni-'+p)?.classList.remove('active');
+  });
+  document.getElementById('panel-'+id)?.classList.add('active');
+  document.getElementById('ni-'+id)?.classList.add('active');
+  window.scrollTo(0, 0);
+}
 
-      <!-- Step 1: Plans Grid -->
-      <div id="billing-plans-view" class="space-y-3 overflow-y-auto pr-1">
-        <div class="text-xs font-semibold text-zinc-300">Select Credit Package:</div>
-        <div id="billing-plans-cards" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <!-- Populated by app.js -->
-        </div>
-      </div>
+// Quick navigation for audience cards
+function openAudienceMode(mode) {
+  showPanel('skills');
+  setTimeout(() => {
+    const el = document.getElementById('skills-grid');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  }, 100);
+}
 
-      <!-- Step 2: Scan to Pay View (Hidden initially) -->
-      <div id="billing-qr-view" class="hidden flex-col items-center justify-center p-4 rounded-xl bg-zinc-950/80 border border-white/10 space-y-4">
-        <div class="text-center">
-          <span class="text-xs px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-mono font-bold uppercase">Dynamic QR Code</span>
-          <h4 id="qr-plan-title" class="text-sm font-bold text-white mt-1">Pro Creator Pack</h4>
-          <div class="text-xl font-black text-amber-400 mt-0.5 font-mono" id="qr-amount-display">₹2,400 / $29.00</div>
-        </div>
+// ── NAVBAR SCROLL ──
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar')?.classList.toggle('scrolled', window.scrollY > 4);
+});
 
-        <!-- QR Code Container -->
-        <div class="p-4 bg-white rounded-2xl shadow-xl flex flex-col items-center justify-center">
-          <!-- High-Contrast Vector QR Display -->
-          <svg id="qr-svg-canvas" class="w-48 h-48" viewBox="0 0 200 200">
-            <!-- Dynamic QR visual elements inserted by JS -->
-          </svg>
-          <div class="text-[10px] font-mono text-zinc-800 mt-2 text-center font-bold">
-            UPI ID: <span id="qr-upi-id-display" class="text-indigo-600 font-mono font-bold">9994152888-4#ybl</span>
-          </div>
-        </div>
+// ── CODE TABS ──
+function switchCodeTab(name, btn) {
+  document.querySelectorAll('.code-tab-panel').forEach(p => p.style.display = 'none');
+  document.querySelectorAll('#code-tabs button').forEach(b => b.classList.remove('active'));
+  document.getElementById('code-'+name).style.display = 'block';
+  btn.classList.add('active');
+}
 
-        <div class="flex items-center gap-2 text-xs text-zinc-400">
-          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span>Order ID: <code id="qr-order-id" class="text-zinc-200">ORDER-XXXX</code></span>
-          <span>•</span>
-          <span id="qr-timer" class="font-mono text-amber-400">14:59</span>
-        </div>
+// ── CHAT LOGIC ──
+function chatKeydown(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendChatMessage();
+  }
+}
 
-        <div class="flex items-center gap-2 w-full">
-          <button id="btn-back-plans" class="flex-1 py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-semibold transition">
-            ← Change Plan
-          </button>
-          <button id="btn-confirm-payment" class="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-1.5">
-            <span>✓</span> I Have Paid • Verify
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+}
 
-  <!-- Floating AITalk Assistant Button -->
-  <button id="aitalk-btn" onclick="toggleAITalkDrawer()" class="aitalk-floating-btn fixed bottom-6 right-6 z-50 flex items-center gap-2.5 px-4 py-3 rounded-full text-white font-semibold text-xs tracking-wide cursor-pointer transition-transform duration-300">
-    <span class="text-base">💬</span>
-    <span>AITalk Copilot</span>
-    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-  </button>
+function clearChat() {
+  document.getElementById('chat-messages').innerHTML = '<div class="chat-bubble ai">Hi! Start a new conversation.</div>';
+}
 
-  <!-- AITalk Project-Trained Copilot Drawer -->
-  <div id="aitalk-drawer" class="aitalk-drawer">
-    <div class="h-16 border-b border-white/10 px-5 flex items-center justify-between">
-      <div class="flex items-center gap-2.5">
-        <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-500 to-pink-500 flex items-center justify-center font-bold text-xs text-white">AI</div>
-        <div>
-          <h3 class="text-xs font-bold text-white flex items-center gap-1.5">
-            AITalk Copilot
-            <span class="text-[9px] px-1.5 py-0.5 bg-emerald-500/20 text-emerald-300 font-mono rounded">TRAINED</span>
-          </h3>
-          <p class="text-[10px] text-zinc-400">Chatterbox V3 Architecture & APIs</p>
-        </div>
-      </div>
-      <button onclick="toggleAITalkDrawer()" class="text-zinc-400 hover:text-white p-1 rounded-lg hover:bg-white/10 text-xs">✕</button>
-    </div>
+async function sendChatMessage() {
+  const inp = document.getElementById('chat-input');
+  const text = inp.value.trim();
+  if (!text) return;
+  const lang = document.getElementById('chat-lang-select')?.value || 'en';
+  const model = document.getElementById('chat-model-select')?.value || 'local_neural';
+
+  addBubble(text, 'user');
+  inp.value = '';
+  inp.style.height = 'auto';
+
+  const thinking = addBubble('Processing…', 'ai');
+  document.getElementById('chat-send-btn').disabled = true;
+
+  try {
+    const res = await fetch('/api/llm/chat-and-speak', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt: text, language: lang, model_id: model })
+    });
+    const d = await res.json();
+    thinking.textContent = d.text || 'Response received.';
+    if (d.audio_url) {
+      const ar = document.getElementById('chat-audio-result');
+      ar.style.display = 'block';
+      ar.innerHTML = `<div class="audio-result"><audio controls autoplay src="${d.audio_url}"></audio></div>`;
+    }
+  } catch (e) {
+    thinking.textContent = 'Error: ' + e.message;
+  } finally {
+    document.getElementById('chat-send-btn').disabled = false;
+  }
+}
+
+function addBubble(text, role) {
+  const msgs = document.getElementById('chat-messages');
+  const d = document.createElement('div');
+  d.className = 'chat-bubble ' + role;
+  d.textContent = text;
+  msgs.appendChild(d);
+  msgs.scrollTop = msgs.scrollHeight;
+  return d;
+}
+
+// ── CAPABILITIES / WORKSPACES ──
+async function loadSkills() {
+  try {
+    const res = await fetch('/api/skills/list');
+    const { skills } = await res.json();
+    const grid = document.getElementById('skills-grid');
     
-    <!-- Quick Question Chips -->
-    <div class="p-3 border-b border-white/5 flex gap-1.5 overflow-x-auto no-scrollbar text-[11px] bg-zinc-900/50">
-      <button onclick="sendAITalkQuery('What 23 languages are supported?')" class="px-2.5 py-1 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-300 flex-shrink-0 transition">🌐 23 Languages</button>
-      <button onclick="sendAITalkQuery('How do I clone a voice?')" class="px-2.5 py-1 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-300 flex-shrink-0 transition">🎙️ Voice Cloning</button>
-      <button onclick="sendAITalkQuery('How does cross-lingual dubbing work?')" class="px-2.5 py-1 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-300 flex-shrink-0 transition">⚙️ Dubbing</button>
-      <button onclick="sendAITalkQuery('Show pricing plans and scan to pay')" class="px-2.5 py-1 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-300 flex-shrink-0 transition">💳 Scan to Pay</button>
-      <button onclick="sendAITalkQuery('How to use CLI and Terminal?')" class="px-2.5 py-1 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-300 flex-shrink-0 transition">💻 CLI / Terminal</button>
-    </div>
+    // Clean audience-oriented labeling without internal project terms
+    const metaMap = {
+      podcast_host: { label: 'Multi-Speaker Studio', desc: 'Dual-speaker conversational synthesis for interviews, presentations, and team discussions.' },
+      cross_lingual_translator: { label: '23-Language Translator', desc: 'Translate and synthesize speech with zero-shot voice tone preservation.' },
+      document_narrator: { label: 'Long-Form Audio Reader', desc: 'Turn academic research, thesis documents, and coursework into high-fidelity speech.' },
+      voice_director: { label: 'Expressive Voice Director', desc: 'Control pacing, emotional tone, and narration delivery for educational media.' },
+      kids_rhymes: { label: 'Early Learning & Rhymes', desc: 'Interactive rhymes, phonetics practice, and bedtime tales designed for young learners.' },
+    };
 
-    <!-- Messages Container -->
-    <div id="aitalk-messages" class="flex-1 overflow-y-auto p-4 space-y-3.5 text-xs">
-      <div class="p-3.5 rounded-xl bg-zinc-900/80 border border-indigo-500/20 text-zinc-300 space-y-2">
-        <div class="font-bold text-white flex items-center gap-1.5">
-          <span>🤖</span> Welcome to Chatterbox AITalk
+    grid.innerHTML = skills.map(s => {
+      const meta = metaMap[s.id] || { label: s.name, desc: s.desc };
+      const inputs = (s.inputs || []).map(inp => {
+        if (inp.type === 'select' || inp.type === 'language_select') {
+          const opts = inp.type === 'language_select'
+            ? '<option value="en">English</option><option value="es">Spanish</option><option value="hi">Hindi</option><option value="ja">Japanese</option>'
+            : (inp.options || []).map(o => `<option>${o}</option>`).join('');
+          return `<select class="skill-select" id="skill-${s.id}-${inp.name}">${opts}</select>`;
+        }
+        return `<input class="skill-input" id="skill-${s.id}-${inp.name}" placeholder="${inp.label}" value="${inp.default || ''}">`;
+      }).join('');
+
+      return `<div class="skill-card">
+        <div class="skill-hd">
+          <div class="skill-title">${meta.label}</div>
         </div>
-        <p class="leading-relaxed">
-          I am trained on the complete Chatterbox Multilingual architecture, 23 language phonetics, zero-shot voice cloning, autonomous workers, and Scan-to-Pay billing.
-        </p>
-        <p class="text-zinc-400">
-          Ask me anything or click a quick prompt above!
-        </p>
-      </div>
-    </div>
+        <div class="skill-desc">${meta.desc}</div>
+        ${inputs}
+        <button class="btn btn-primary skill-run" onclick="runSkill('${s.id}')">Run Studio</button>
+        <div id="skill-result-${s.id}"></div>
+      </div>`;
+    }).join('');
+  } catch (e) {
+    console.error(e);
+  }
+}
 
-    <!-- Input Box -->
-    <div class="p-3 border-t border-white/10 bg-zinc-950/90">
-      <form onsubmit="event.preventDefault(); submitAITalkInput();" class="flex items-center gap-2">
-        <input type="text" id="aitalk-input" placeholder="Ask about architecture, languages, code..." class="flex-1 bg-zinc-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 transition">
-        <button type="submit" class="px-3 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-medium text-xs shadow-md transition">Send</button>
-      </form>
-    </div>
-  </div>
+async function runSkill(skillId) {
+  const res_div = document.getElementById('skill-result-' + skillId);
+  res_div.innerHTML = '<span class="spinner" style="margin-top:12px"></span>';
+  const params = {};
+  document.querySelectorAll(`[id^="skill-${skillId}-"]`).forEach(el => {
+    const key = el.id.replace(`skill-${skillId}-`, '');
+    params[key] = el.value;
+  });
 
-  <script src="/static/js/app.js"></script>
+  try {
+    const res = await fetch('/api/skills/execute', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ skill_id: skillId, params })
+    });
+    const d = await res.json();
+    let html = `<div class="audio-result">`;
+    if (d.text) html += `<div style="font-size:12.5px;color:var(--ink-2);margin-bottom:10px;line-height:1.6">${d.text.slice(0, 320)}${d.text.length > 320 ? '…' : ''}</div>`;
+    if (d.audio_url) html += `<audio controls src="${d.audio_url}"></audio>`;
+    html += '</div>';
+    res_div.innerHTML = html;
+  } catch (e) {
+    res_div.innerHTML = `<div style="font-size:12px;color:#dc2626;margin-top:10px">${e.message}</div>`;
+  }
+}
+
+// ── MODELS ──
+async function loadModels() {
+  try {
+    const res = await fetch('/api/llm/models');
+    const { models } = await res.json();
+    const grid = document.getElementById('models-grid');
+    const colors = ['pill-blue','pill-purple','pill-green','pill-amber','pill-pink','pill-gray'];
+
+    grid.innerHTML = models.map((m, i) => `
+      <div class="model-card${i === 0 ? ' sel' : ''}" onclick="selectModel('${m.id}', this)">
+        <span class="model-badge ${colors[i % colors.length]}">${m.provider || 'Core'}</span>
+        <div class="model-name">${m.name}</div>
+        <div class="model-desc">${m.desc}</div>
+        <div style="font-size:11px;color:${m.requires_key ? '#d97706' : '#059669'};margin-top:8px">
+          ${m.requires_key ? 'API key configured' : 'Local hardware accelerated'}
+        </div>
+      </div>`).join('');
+    window._selectedModel = models[0]?.id || 'local_neural';
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+function selectModel(id, el) {
+  document.querySelectorAll('.model-card').forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel');
+  window._selectedModel = id;
+  const sel = document.getElementById('chat-model-select');
+  if (sel) sel.value = id;
+  showToast('Model selected: ' + id);
+}
+
+async function runLLMGenerate() {
+  const prompt = document.getElementById('llm-prompt').value.trim();
+  if (!prompt) return;
+  const res_div = document.getElementById('llm-result');
+  res_div.innerHTML = '<span class="spinner"></span>';
+  try {
+    const res = await fetch('/api/llm/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt, model_id: window._selectedModel || 'local_neural' })
+    });
+    const d = await res.json();
+    res_div.innerHTML = `<div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px;font-size:13px;color:var(--ink-2);line-height:1.65">${d.text || JSON.stringify(d)}</div>`;
+  } catch (e) {
+    res_div.innerHTML = `<span style="color:#dc2626;font-size:12px">${e.message}</span>`;
+  }
+}
+
+async function runLLMChatSpeak() {
+  const prompt = document.getElementById('llm-prompt').value.trim();
+  if (!prompt) return;
+  const res_div = document.getElementById('llm-result');
+  res_div.innerHTML = '<span class="spinner"></span>';
+  try {
+    const res = await fetch('/api/llm/chat-and-speak', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt, model_id: window._selectedModel || 'local_neural', language: 'en' })
+    });
+    const d = await res.json();
+    res_div.innerHTML = `<div class="audio-result">
+      <div style="font-size:12px;color:var(--ink-2);margin-bottom:10px">${d.text || ''}</div>
+      ${d.audio_url ? `<audio controls autoplay src="${d.audio_url}"></audio>` : ''}
+    </div>`;
+  } catch (e) {
+    res_div.innerHTML = `<span style="color:#dc2626;font-size:12px">${e.message}</span>`;
+  }
+}
+
+// ── PERSONAS / TEAM ──
+async function loadTeam() {
+  try {
+    const res = await fetch('/api/team');
+    const { team } = await res.json();
+    const grid = document.getElementById('team-grid');
+    grid.innerHTML = team.map(m => `
+      <div class="team-card">
+        ${m.avatar ? `<img src="${m.avatar}" class="team-avatar" onerror="this.style.display='none'">` : `<div class="team-avatar-ph">${m.name[0]}</div>`}
+        <div class="team-name">${m.name}</div>
+        <div class="team-role">${m.role || m.title || 'Voice Profile'}</div>
+        <button class="btn btn-ghost team-speak" style="width:100%;margin-top:12px" onclick="speakTeamMember('${m.id}')">Listen Sample</button>
+      </div>`).join('');
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+async function speakTeamMember(id) {
+  try {
+    const res = await fetch('/api/team/speak', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ member_id: id })
+    });
+    const d = await res.json();
+    if (d.audio_url) {
+      const a = new Audio(d.audio_url);
+      a.play();
+    }
+  } catch (e) {
+    showToast(e.message, 'error');
+  }
+}
+
+// ── CONNECTORS ──
+const CONN_SVGS = {
+  openai:   `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>`,
+  gemini:   `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
+  deepseek: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>`,
+  ollama:   `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>`,
+  whatsapp: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>`,
+  webhook:  `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>`,
+};
+const CONN_SVG_DEFAULT = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18"/></svg>`;
+
+async function loadConnectors() {
+  try {
+    const res = await fetch('/api/connectors/list');
+    const { connectors } = await res.json();
+    const grid = document.getElementById('connectors-grid');
+    grid.innerHTML = connectors.map(c => `
+      <div class="conn-card${c.connected ? ' on' : ''}">
+        <div class="conn-icon">${CONN_SVGS[c.id] || CONN_SVG_DEFAULT}</div>
+        <div class="conn-name">${c.name}</div>
+        <div class="conn-status ${c.connected ? 'on' : 'off'}">${c.connected ? 'Connected' : 'Available'}</div>
+      </div>`).join('');
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+async function saveApiKey() {
+  const prov = document.getElementById('key-provider').value;
+  const val = document.getElementById('key-value').value.trim();
+  if (!val) return;
+  try {
+    await fetch('/api/connectors/keys', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ provider_key: prov + '_api_key', key_value: val })
+    });
+    showToast('Credentials updated', 'success');
+    loadConnectors();
+  } catch (e) {
+    showToast(e.message, 'error');
+  }
+}
+
+// ── CODE API ──
+async function runCodeAPI() {
+  const text = document.getElementById('code-text').value;
+  const lang = document.getElementById('code-lang').value;
+  const res_div = document.getElementById('code-result');
+  res_div.innerHTML = '<span class="spinner"></span>';
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text, language: lang, exaggeration: 0.5, cfg_weight: 0.5 })
+    });
+    const d = await res.json();
+    res_div.innerHTML = `<div class="audio-result"><audio controls autoplay src="${d.audio_url}"></audio></div>`;
+  } catch (e) {
+    res_div.innerHTML = `<span style="color:#dc2626;font-size:12px">${e.message}</span>`;
+  }
+}
+
+// ── PRESETS ──
+document.getElementById('btn-presets')?.addEventListener('click', async () => {
+  const modal = document.getElementById('modal-presets');
+  modal.style.display = 'block';
+  const list = document.getElementById('presets-list');
+  try {
+    const res = await fetch('/api/presets');
+    const { presets } = await res.json();
+    list.innerHTML = presets.map(p => `
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px;border:1px solid var(--border);border-radius:10px;cursor:pointer;transition:all .2s" onclick="selectPreset('${p.id}')">
+        <div>
+          <div style="font-size:13px;font-weight:600;color:var(--ink)">${p.name}</div>
+          <div style="font-size:11px;color:var(--ink-3)">${p.lang || ''} · ${p.style || ''}</div>
+        </div>
+        <button class="btn btn-ghost btn-sm">Select</button>
+      </div>`).join('');
+  } catch (e) {
+    list.innerHTML = '<div style="font-size:13px;color:var(--ink-3)">Unable to load presets</div>';
+  }
+});
+
+function selectPreset(id) {
+  window._selectedPreset = id;
+  closeModal('modal-presets');
+  showToast('Voice profile active');
+}
+
+function closePresets(e) {
+  if (e.target.id === 'modal-presets') closeModal('modal-presets');
+}
+
+function closeModal(id) {
+  document.getElementById(id).style.display = 'none';
+}
+
+// ── HERO PROMPT & QUICK SUGGESTIONS ──
+function fillHeroPrompt(text, lang) {
+  const inp = document.getElementById('hero-prompt-input');
+  const sel = document.getElementById('hero-lang-select');
+  if (inp) inp.value = text;
+  if (sel && lang) sel.value = lang;
+  runHeroPrompt();
+}
+
+async function runHeroPrompt() {
+  const inp = document.getElementById('hero-prompt-input');
+  const text = inp ? inp.value.trim() : '';
+  if (!text) return;
+  const lang = document.getElementById('hero-lang-select')?.value || 'en';
+  const outContainer = document.getElementById('hero-output-container');
+  const outText = document.getElementById('hero-output-text');
+  const outAudio = document.getElementById('hero-output-audio');
+  const btn = document.getElementById('hero-prompt-btn');
+
+  if (outContainer) outContainer.style.display = 'block';
+  if (outText) outText.innerHTML = '<span class="spinner"></span> Synthesizing voice...';
+  if (outAudio) outAudio.innerHTML = '';
+  if (btn) btn.disabled = true;
+
+  try {
+    const res = await fetch('/api/llm/chat-and-speak', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt: text, language: lang, model_id: window._selectedModel || 'local_neural' })
+    });
+    const d = await res.json();
+    window._lastHeroResult = { text: d.text || text, audio_url: d.audio_url, prompt: text, lang: lang };
+    if (outText) outText.textContent = d.text || 'Synthesis complete.';
+    if (d.audio_url && outAudio) {
+      outAudio.innerHTML = `<audio controls autoplay src="${d.audio_url}"></audio>`;
+    }
+  } catch (e) {
+    if (outText) outText.innerHTML = `<span style="color:#dc2626">${e.message}</span>`;
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+
+function continueInStudio() {
+  showPanel('chat');
+  if (window._lastHeroResult) {
+    addBubble(window._lastHeroResult.prompt, 'user');
+    addBubble(window._lastHeroResult.text, 'ai');
+    if (window._lastHeroResult.audio_url) {
+      const ar = document.getElementById('chat-audio-result');
+      if (ar) {
+        ar.style.display = 'block';
+        ar.innerHTML = `<div class="audio-result"><audio controls autoplay src="${window._lastHeroResult.audio_url}"></audio></div>`;
+      }
+    }
+  }
+}
+
+// ── AUTHENTICATION MANAGEMENT ──
+let currentUser = null;
+
+function openAuthModal(tab = 'signin') {
+  const m = document.getElementById('modal-auth');
+  if (m) {
+    m.style.display = 'flex';
+    switchAuthTab(tab);
+    const err = document.getElementById('auth-error-msg');
+    if (err) err.style.display = 'none';
+  }
+}
+
+function closeModalOnBg(e, id) {
+  if (e.target.id === id) closeModal(id);
+}
+
+function switchAuthTab(tab) {
+  const signinForm = document.getElementById('auth-form-signin');
+  const regForm = document.getElementById('auth-form-register');
+  const signinTab = document.getElementById('auth-tab-signin');
+  const regTab = document.getElementById('auth-tab-register');
+  const err = document.getElementById('auth-error-msg');
+  if (err) err.style.display = 'none';
+
+  if (tab === 'signin') {
+    if (signinForm) signinForm.style.display = 'block';
+    if (regForm) regForm.style.display = 'none';
+    signinTab?.classList.add('active');
+    regTab?.classList.remove('active');
+  } else {
+    if (signinForm) signinForm.style.display = 'none';
+    if (regForm) regForm.style.display = 'block';
+    signinTab?.classList.remove('active');
+    regTab?.classList.add('active');
+  }
+}
+
+function fillDemoLogin(email, pwd) {
+  const emailInp = document.getElementById('signin-email');
+  const pwdInp = document.getElementById('signin-password');
+  if (emailInp) emailInp.value = email;
+  if (pwdInp) pwdInp.value = pwd;
+  performLogin();
+}
+
+async function performLogin() {
+  const email = document.getElementById('signin-email')?.value.trim();
+  const password = document.getElementById('signin-password')?.value;
+  const err = document.getElementById('auth-error-msg');
+  if (!email || !password) {
+    if (err) { err.textContent = 'Please enter email and password.'; err.style.display = 'block'; }
+    return;
+  }
+  try {
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const d = await res.json();
+    if (!res.ok || !d.success) {
+      throw new Error(d.detail || d.error || 'Authentication failed.');
+    }
+    localStorage.setItem('auth_token', d.token);
+    localStorage.setItem('auth_user', JSON.stringify(d.user));
+    currentUser = d.user;
+    updateNavAuthUI();
+    closeModal('modal-auth');
+    showToast(`Signed in as ${d.user.name}`, 'success');
+  } catch (e) {
+    if (err) { err.textContent = e.message; err.style.display = 'block'; }
+  }
+}
+
+async function performRegister() {
+  const name = document.getElementById('reg-name')?.value.trim();
+  const email = document.getElementById('reg-email')?.value.trim();
+  const password = document.getElementById('reg-password')?.value;
+  const role = document.getElementById('reg-role')?.value || 'Student';
+  const err = document.getElementById('auth-error-msg');
+
+  if (!email || !password) {
+    if (err) { err.textContent = 'Email and password are required.'; err.style.display = 'block'; }
+    return;
+  }
+  try {
+    const res = await fetch('/api/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, password, role })
+    });
+    const d = await res.json();
+    if (!res.ok || !d.success) {
+      throw new Error(d.detail || d.error || 'Registration failed.');
+    }
+    localStorage.setItem('auth_token', d.token);
+    localStorage.setItem('auth_user', JSON.stringify(d.user));
+    currentUser = d.user;
+    updateNavAuthUI();
+    closeModal('modal-auth');
+    showToast(`Welcome, ${d.user.name}! Account ready.`, 'success');
+  } catch (e) {
+    if (err) { err.textContent = e.message; err.style.display = 'block'; }
+  }
+}
+
+async function performLogout() {
+  const token = localStorage.getItem('auth_token');
+  if (token) {
+    try {
+      await fetch('/api/auth/logout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token })
+      });
+    } catch (e) {}
+  }
+  localStorage.removeItem('auth_token');
+  localStorage.removeItem('auth_user');
+  currentUser = null;
+  updateNavAuthUI();
+  showToast('Logged out successfully');
+}
+
+async function checkCurrentUser() {
+  const token = localStorage.getItem('auth_token');
+  if (!token) {
+    updateNavAuthUI();
+    return;
+  }
+  try {
+    const res = await fetch('/api/auth/me', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (res.ok) {
+      const d = await res.json();
+      currentUser = d.user;
+      localStorage.setItem('auth_user', JSON.stringify(d.user));
+    } else {
+      currentUser = null;
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('auth_user');
+    }
+  } catch (e) {
+    const cached = localStorage.getItem('auth_user');
+    if (cached) {
+      try { currentUser = JSON.parse(cached); } catch (_) {}
+    }
+  }
+  updateNavAuthUI();
+}
+
+function updateNavAuthUI() {
+  const loginBtn = document.getElementById('btn-open-login');
+  const userChip = document.getElementById('nav-user-chip');
+  const initialsEl = document.getElementById('nav-user-initials');
+  const nameEl = document.getElementById('nav-user-name');
+  const roleEl = document.getElementById('nav-user-role');
+
+  if (currentUser) {
+    if (loginBtn) loginBtn.style.display = 'none';
+    if (userChip) userChip.style.display = 'flex';
+    const names = (currentUser.name || currentUser.email).split(' ');
+    const initials = names.length > 1 ? (names[0][0] + names[1][0]).toUpperCase() : names[0].slice(0, 2).toUpperCase();
+    if (initialsEl) initialsEl.textContent = initials;
+    if (nameEl) nameEl.textContent = currentUser.name || currentUser.email.split('@')[0];
+    if (roleEl) roleEl.textContent = currentUser.role || 'Member';
+  } else {
+    if (loginBtn) loginBtn.style.display = 'inline-flex';
+    if (userChip) userChip.style.display = 'none';
+  }
+}
+
+// ── LANGUAGES ──
+async function loadLanguages() {
+  try {
+    const res = await fetch('/api/languages');
+    const { languages } = await res.json();
+    ['chat-lang-select', 'code-lang'].forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.innerHTML = Object.entries(languages).map(([k, v]) => `<option value="${k}">${v}</option>`).join('');
+    });
+  } catch (e) {}
+}
+
+// ── STATUS ──
+async function checkStatus() {
+  try {
+    const r = await fetch('/api/status');
+    const d = await r.json();
+    document.getElementById('status-label').textContent = `${d.model_version || 'Core'} · ${d.device || 'Active'}`;
+  } catch (e) {}
+}
+
+// ── TOAST ──
+function showToast(msg, type = '') {
+  const t = document.createElement('div');
+  t.className = 'toast ' + type;
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2500);
+}
+
+// ── INITIALIZATION ──
+(async () => {
+  await checkStatus();
+  await checkCurrentUser();
+  await loadLanguages();
+  await Promise.all([loadSkills(), loadModels(), loadTeam(), loadConnectors()]);
+})();
+</script>
 </body>
 </html>

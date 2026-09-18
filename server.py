@@ -8,7 +8,7 @@ import os
 import uuid
 import shutil
 from typing import Optional, List, Dict, Any
-from fastapi import FastAPI, HTTPException, UploadFile, File, Form
+from fastapi import FastAPI, HTTPException, UploadFile, File, Form, Request, Header
 from fastapi.responses import StreamingResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
@@ -27,6 +27,7 @@ import skills_engine
 import connectors
 import team_engine
 import image_engine
+import auth
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_DIR = os.path.join(BASE_DIR, "static")
@@ -103,6 +104,76 @@ def get_system_status():
         "status": "ready",
         "features": ["zero-shot-cloning", "mps-acceleration", "24khz-hi-fi", "autonomous-workers"]
     }
+
+
+# =====================================================================
+# AUTHENTICATION & USER MANAGEMENT
+# =====================================================================
+
+class RegisterRequest(BaseModel):
+    email: str = Field(..., description="User email address")
+    password: str = Field(..., description="User password (min 6 chars)")
+    name: str = Field("", description="User display name")
+    role: str = Field("Student", description="User role: Student, Researcher, Professional, Educator")
+
+
+class LoginRequest(BaseModel):
+    email: str = Field(..., description="User email address")
+    password: str = Field(..., description="User password")
+
+
+class LogoutRequest(BaseModel):
+    token: str = Field(..., description="Active session token")
+
+
+@app.post("/api/auth/register")
+def api_auth_register(req: RegisterRequest):
+    """Registers a new user account with role assignment."""
+    res = auth.register_user(
+        email=req.email,
+        password=req.password,
+        name=req.name,
+        role=req.role
+    )
+    if not res.get("success"):
+        raise HTTPException(status_code=400, detail=res.get("error", "Registration failed."))
+    return res
+
+
+@app.post("/api/auth/login")
+def api_auth_login(req: LoginRequest):
+    """Authenticates credentials and returns a secure session token."""
+    res = auth.login_user(email=req.email, password=req.password)
+    if not res.get("success"):
+        raise HTTPException(status_code=401, detail=res.get("error", "Invalid email or password."))
+    return res
+
+
+@app.get("/api/auth/me")
+def api_auth_me(token: Optional[str] = None, authorization: Optional[str] = Header(None)):
+    """Validates session token and returns the current user profile."""
+    auth_token = token
+    if not auth_token and authorization:
+        if authorization.lower().startswith("bearer "):
+            auth_token = authorization[7:].strip()
+        else:
+            auth_token = authorization.strip()
+
+    if not auth_token:
+        raise HTTPException(status_code=401, detail="Authentication token required.")
+
+    user = auth.get_current_user(auth_token)
+    if not user:
+        raise HTTPException(status_code=401, detail="Invalid or expired session token.")
+
+    return {"success": True, "user": user}
+
+
+@app.post("/api/auth/logout")
+def api_auth_logout(req: LogoutRequest):
+    """Terminates an active session."""
+    auth.logout_user(req.token)
+    return {"success": True, "message": "Successfully logged out."}
 
 
 class CreateOrderRequest(BaseModel):
