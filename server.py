@@ -7,7 +7,7 @@ import io
 import os
 import uuid
 import shutil
-from typing import Optional, List
+from typing import Optional, List, Dict, Any
 from fastapi import FastAPI, HTTPException, UploadFile, File, Form
 from fastapi.responses import StreamingResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -22,15 +22,22 @@ from tts_engine import (
 import workers
 import billing
 import copilot
+import llm_engine
+import skills_engine
+import connectors
+import team_engine
+import image_engine
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_DIR = os.path.join(BASE_DIR, "static")
 OUTPUT_DIR = os.path.join(STATIC_DIR, "audio_output")
 UPLOADS_DIR = os.path.join(STATIC_DIR, "uploads")
+IMG_OUTPUT_DIR = os.path.join(STATIC_DIR, "img_output")
 
 os.makedirs(STATIC_DIR, exist_ok=True)
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 os.makedirs(UPLOADS_DIR, exist_ok=True)
+os.makedirs(IMG_OUTPUT_DIR, exist_ok=True)
 
 app = FastAPI(
     title="Chatterbox Z.ai Multilingual Platform",
@@ -150,6 +157,276 @@ def copilot_chat(req: CopilotChatRequest):
         raise HTTPException(status_code=400, detail="Query cannot be empty.")
     res = copilot.ask_aitalk(req.query, req.context)
     return {"success": True, **res}
+
+
+# ==============================================================================
+# LLM Models, Agent Skills & Connectors Endpoints
+# ==============================================================================
+class LLMGenerateRequest(BaseModel):
+    prompt: str = Field(..., description="Prompt to send to selected LLM")
+    model_id: str = Field("local_neural", description="Model ID")
+    system_prompt: Optional[str] = Field(None)
+
+
+class LLMChatAndSpeakRequest(BaseModel):
+    prompt: str = Field(..., description="User prompt for conversational LLM response")
+    model_id: str = Field("local_neural", description="LLM model: local_neural, gemini_flash, gemini_pro, gpt4o, deepseek_v3, llama_33, ollama_local")
+    language: str = Field("en", description="Target language to synthesize response in")
+    audio_prompt_url: Optional[str] = Field(None, description="Reference audio for voice cloning")
+
+
+class ExecuteSkillRequest(BaseModel):
+    skill_id: str = Field(..., description="Skill ID to execute")
+    params: Dict[str, Any] = Field(default_factory=dict, description="Skill execution parameters")
+
+
+class SetApiKeyRequest(BaseModel):
+    provider_key: str = Field(..., description="Provider environment variable name e.g. GEMINI_API_KEY")
+    key_value: str = Field(..., description="API key value")
+
+
+@app.get("/api/llm/models")
+def get_llm_models():
+    """Returns all supported LLM models and their active configuration state."""
+    return {"models": llm_engine.get_available_models()}
+
+
+@app.post("/api/llm/generate")
+def generate_llm_completion(req: LLMGenerateRequest):
+    """Executes prompt on selected LLM."""
+    if not req.prompt.strip():
+        raise HTTPException(status_code=400, detail="Prompt cannot be empty.")
+    return llm_engine.generate_llm_text(req.prompt, req.model_id, req.system_prompt)
+
+
+@app.post("/api/llm/chat-and-speak")
+def chat_and_speak(req: LLMChatAndSpeakRequest):
+    """Full multimodal pipeline: LLM generates text reasoning, Chatterbox synthesizes it to 24kHz audio."""
+    if not req.prompt.strip():
+        raise HTTPException(status_code=400, detail="Prompt cannot be empty.")
+    
+    # 1. Generate text from chosen LLM
+    llm_res = llm_engine.generate_llm_text(req.prompt, req.model_id)
+    text_reply = llm_res.get("text", "")
+    
+    # 2. Synthesize generated response
+    lang = req.language.lower()
+    if lang not in SUPPORTED_LANGUAGES:
+        lang = "en"
+    
+    try:
+        import soundfile as sf
+        sr, wav_np, _ = synthesize(
+            text=text_reply[:400],
+            language_id=lang,
+            audio_prompt_path=req.audio_prompt_url
+        )
+        audio_id = f"llm_voice_{uuid.uuid4().hex[:8]}.wav"
+        output_path = os.path.join(OUTPUT_DIR, audio_id)
+        sf.write(output_path, wav_np, sr, format="WAV")
+
+        return {
+            "success": True,
+            "prompt": req.prompt,
+            "text": text_reply,
+            "model": llm_res.get("model", req.model_id),
+            "provider": llm_res.get("provider", "Local Neural"),
+            "audio_url": f"/static/audio_output/{audio_id}",
+            "duration": round(len(wav_np) / sr, 2),
+            "language": lang
+        }
+    except Exception as e:
+        return {
+            "success": True,
+            "prompt": req.prompt,
+            "text": text_reply,
+            "model": llm_res.get("model", req.model_id),
+            "audio_url": None,
+            "warning": f"Synthesis bypassed: {str(e)}"
+        }
+
+
+@app.get("/api/skills/list")
+def list_agent_skills():
+    """Returns all registered autonomous AI Agent Skills."""
+    return {"skills": skills_engine.list_skills()}
+
+
+@app.post("/api/skills/execute")
+def run_agent_skill(req: ExecuteSkillRequest):
+    """Executes a specific autonomous Agent Skill pipeline."""
+    skill_id = req.skill_id
+    params = req.params
+    try:
+        if skill_id == "podcast_host":
+            return skills_engine.execute_podcast_skill(
+                topic=params.get("topic", "Generative Voice AI"),
+                turns_count=int(params.get("turns_count", 3)),
+                model_id=params.get("model_id", "local_neural")
+            )
+        elif skill_id == "cross_lingual_translator":
+            return skills_engine.execute_translation_skill(
+                source_text=params.get("source_text", "Welcome to Chatterbox multilingual synthesis."),
+                target_lang=params.get("target_language", "ja"),
+                model_id=params.get("model_id", "local_neural")
+            )
+        elif skill_id == "document_narrator":
+            return skills_engine.execute_narrator_skill(
+                document_text=params.get("document_text", "Chapter 1: The Acoustic Horizon."),
+                voice_style=params.get("voice_style", "Warm Conversational")
+            )
+        elif skill_id == "voice_director":
+            return skills_engine.execute_voice_director_skill(
+                script=params.get("script", "Listen closely, the future of voice has arrived."),
+                mood=params.get("mood", "Dramatic Suspense")
+            )
+        elif skill_id == "creative_visual_synthesizer":
+            prompt = params.get("prompt", params.get("user_input", "Neural Flow Matching Acoustic Landscape"))
+            art = image_engine.generate_cinematic_artwork(prompt)
+            narration_text = f"Visualizing scene: {prompt}. Rendered with high-dimensional acoustic flow matching."
+            sr, wav_np, _ = synthesize(text=narration_text, language_id="en")
+            filename = f"visual_{uuid.uuid4().hex[:6]}.wav"
+            out_path = os.path.join(OUTPUT_DIR, filename)
+            sf.write(out_path, wav_np, sr)
+            art["audio_url"] = f"/static/audio_output/{filename}"
+            art["narration"] = narration_text
+            return art
+        elif skill_id == "kids_rhymes":
+            return skills_engine.execute_kids_rhymes_skill(
+                theme=params.get("theme", "Rainbow Butterfly"),
+                content_type=params.get("content_type", "Nursery Rhyme Song"),
+                language=params.get("language", "en")
+            )
+        elif any(s["id"] == skill_id for s in skills_engine.list_skills()):
+            return skills_engine.execute_custom_agent_skill(
+                agent_id=skill_id,
+                user_input=params.get("user_input", params.get("prompt", "Hello")),
+                language=params.get("language", "en")
+            )
+        else:
+            raise HTTPException(status_code=400, detail=f"Unrecognized skill: '{skill_id}'")
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Skill execution failed: {str(e)}")
+
+
+class ImageGenerateRequest(BaseModel):
+    prompt: str = Field(..., description="Visual scene prompt")
+    style: str = Field("cinematic", description="Style of visual artwork")
+
+
+@app.post("/api/image/generate")
+def generate_image_endpoint(req: ImageGenerateRequest):
+    """Synthesizes high-impact cinematic artwork and visual scene compositions like Antigravity."""
+    if not req.prompt.strip():
+        raise HTTPException(status_code=400, detail="Prompt cannot be empty.")
+    try:
+        return image_engine.generate_cinematic_artwork(req.prompt, req.style)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+class InstallSkillRequest(BaseModel):
+    skill_id: str
+
+
+class CustomAgentRequest(BaseModel):
+    name: str
+    role: str = ""
+    description: str = ""
+    system_prompt: str = ""
+    voice_archetype: str = "Warm Conversational"
+    tools: List[str] = Field(default_factory=lambda: ["llm_reasoning", "voice_synthesis"])
+
+
+class TeamSpeakRequest(BaseModel):
+    member_id: str
+    text: Optional[str] = None
+
+
+@app.get("/api/team")
+def get_team():
+    """Returns team roster and AI personas."""
+    return {"team": team_engine.get_team_roster()}
+
+
+@app.post("/api/team/speak")
+def team_member_speak(req: TeamSpeakRequest):
+    """Auditions team persona or speaks custom quote."""
+    member = team_engine.get_member_by_id(req.member_id)
+    quote = req.text if req.text else member.get("sample_quote", "Hello, I am ready to assist you.")
+    preset_id = member.get("preset_voice", "en_female")
+    
+    preset = next((p for p in PRESET_VOICES if p["id"] == preset_id), None)
+    audio_prompt = preset["audio"] if preset else None
+    
+    import soundfile as sf
+    sr, wav_np, _ = synthesize(text=quote, language_id="en", audio_prompt_path=audio_prompt)
+    filename = f"team_{member['id']}_{uuid.uuid4().hex[:6]}.wav"
+    out_path = os.path.join(OUTPUT_DIR, filename)
+    sf.write(out_path, wav_np, sr)
+    return {
+        "success": True,
+        "member": member["name"],
+        "text": quote,
+        "audio_url": f"/static/audio_output/{filename}",
+        "duration": round(len(wav_np) / sr, 2)
+    }
+
+
+@app.get("/api/skills/marketplace")
+def get_skills_marketplace():
+    """Returns installable skills from the Antigravity Agent Marketplace."""
+    return {"marketplace": skills_engine.list_marketplace()}
+
+
+@app.post("/api/skills/install")
+def install_agent_skill(req: InstallSkillRequest):
+    """Installs a skill into the active studio."""
+    try:
+        return skills_engine.install_skill(req.skill_id)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+@app.post("/api/skills/custom")
+def define_custom_agent(req: CustomAgentRequest):
+    """Creates a custom autonomous agent skill just like Antigravity."""
+    try:
+        return skills_engine.create_custom_agent(
+            name=req.name,
+            role=req.role,
+            desc=req.description,
+            system_prompt=req.system_prompt,
+            voice_archetype=req.voice_archetype,
+            tools=req.tools
+        )
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+
+@app.get("/api/connectors/list")
+def get_connectors():
+    """Returns active state of all integration connectors."""
+    return {"connectors": connectors.list_connectors()}
+
+
+@app.post("/api/connectors/keys")
+def set_connector_key(req: SetApiKeyRequest):
+    """Saves provider API key."""
+    llm_engine.set_api_key(req.provider_key, req.key_value)
+    return {"success": True, "message": f"Updated {req.provider_key}"}
+
+
+@app.post("/api/connectors/webhook")
+def receive_inbound_webhook(payload: Dict[str, Any]):
+    """Receives external webhook trigger and generates audio."""
+    try:
+        return connectors.handle_inbound_webhook(payload)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 
 @app.get("/api/languages")

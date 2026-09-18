@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <radialGradient id="bgGradK" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#311042" />
+      <stop offset="100%" stop-color="#090a0f" />
+    </radialGradient>
+    <linearGradient id="neonPurple" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#a855f7" />
+      <stop offset="100%" stop-color="#6366f1" />
+    </linearGradient>
+    <linearGradient id="neonAmber" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#ef4444" />
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="100" fill="url(#bgGradK)" />
+  <!-- Outer Cyber Ring -->
+  <circle cx="100" cy="100" r="90" fill="none" stroke="url(#neonPurple)" stroke-width="3" stroke-dasharray="16 4" opacity="0.8"/>
+  <!-- Head Silhouette -->
+  <path d="M70 70 C70 45, 130 45, 130 70 C135 95, 130 115, 120 128 C110 138, 90 138, 80 128 C70 115, 65 95, 70 70 Z" fill="#18181b" />
+  <!-- Short Cyber Cut -->
+  <path d="M68 62 C70 35, 130 35, 132 62 C120 48, 80 48, 68 62 Z" fill="url(#neonPurple)" />
+  <!-- Monocle / Cyber HUD Lens -->
+  <circle cx="115" cy="88" r="10" fill="none" stroke="url(#neonAmber)" stroke-width="2.5" />
+  <circle cx="115" cy="88" r="3" fill="url(#neonAmber)" />
+  <!-- Glasses side bridge -->
+  <line x1="80" y1="88" x2="105" y2="88" stroke="#71717a" stroke-width="2" />
+  <!-- Cyber Neck Collar -->
+  <path d="M50 180 C55 145, 80 142, 100 142 C120 142, 145 145, 150 180 Z" fill="#27272a" />
+  <polygon points="100,145 92,165 108,165" fill="url(#neonAmber)" />
+</svg>

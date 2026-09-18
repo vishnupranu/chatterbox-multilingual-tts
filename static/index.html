@@ -27,20 +27,30 @@
   <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body class="bg-[#090a0f] text-zinc-100 flex h-screen w-screen overflow-hidden select-none">
+  <!-- Soothing Ambient Cyber Grid Overlay -->
+  <div class="grid-mesh-overlay"></div>
 
   <!-- Left Sidebar (Collapsible) -->
   <aside class="w-64 flex-shrink-0 bg-[#0c0e15] border-r border-white/5 flex flex-col justify-between p-3.5 z-20">
     <div>
-      <!-- Brand Header -->
-      <div class="flex items-center gap-2.5 px-2.5 py-2 mb-4">
-        <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-cyan-400 flex items-center justify-center shadow-lg shadow-indigo-500/20 text-white font-black text-sm">
-          Z
-        </div>
-        <div>
-          <div class="text-sm font-bold tracking-tight text-white flex items-center gap-1.5">
-            Z.ai <span class="text-[10px] px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-mono">TTS</span>
+      <!-- Brand Header with Official GS Logo & Key Secure Foundation Partner -->
+      <div class="p-2.5 mb-3 rounded-2xl bg-gradient-to-br from-white/5 to-white/0 border border-white/5 space-y-2">
+        <div class="flex items-center gap-2.5">
+          <img src="/static/img/brand_logo_gs.png" alt="GS Brand Logo" class="w-9 h-9 rounded-full shadow-lg shadow-indigo-500/20 border border-white/10 object-contain hover:scale-105 transition flex-shrink-0">
+          <div class="overflow-hidden">
+            <div class="text-xs font-bold tracking-tight text-white flex items-center gap-1.5 truncate">
+              Khyathi.Sri AI <span class="text-[9px] px-1.5 py-0.2 rounded bg-pink-500/20 text-pink-300 font-mono">LLM-CHAT</span>
+            </div>
+            <div class="text-[10px] text-zinc-400 truncate">Entertainment & 24kHz Voice</div>
           </div>
-          <div class="text-[10px] text-zinc-400 font-medium">Chatterbox Multilingual</div>
+        </div>
+        <!-- Partner Badge -->
+        <div class="flex items-center gap-2 pt-1.5 border-t border-white/5">
+          <img src="/static/img/partner_key_secure_foundation.png" alt="Key Secure Foundation" class="w-6 h-6 object-contain rounded-md flex-shrink-0">
+          <div class="text-[9px] leading-tight text-zinc-400">
+            <span class="text-amber-300 font-bold block">Key Secure Foundation</span>
+            <span>Cloud + Security Partner</span>
+          </div>
         </div>
       </div>
 
@@ -52,21 +62,49 @@
 
       <!-- Primary Workspace Navigation -->
       <nav class="space-y-1 mb-6">
-        <button id="nav-btn-landing" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium nav-tab-active transition">
+        <button id="nav-btn-landing" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium nav-tab-active transition">
           <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
-          Showcase & Vision
+          <span>Showcase & Vision</span>
         </button>
-        <button id="nav-btn-chat" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium text-zinc-400 hover:text-white hover:bg-white/5 transition">
+        <button id="nav-btn-team" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-zinc-400 hover:text-white hover:bg-white/5 transition group">
+          <div class="flex items-center gap-3">
+            <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+            <span>Team & Characters</span>
+          </div>
+          <span class="text-[9px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono font-bold">HUMAN AI</span>
+        </button>
+        <button id="nav-btn-chat" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-zinc-400 hover:text-white hover:bg-white/5 transition">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
-          Chat Assistant
+          <span>Chat Assistant</span>
         </button>
-        <button id="nav-btn-code" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium text-zinc-400 hover:text-white hover:bg-white/5 transition">
+        <button id="nav-btn-skills" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-zinc-400 hover:text-white hover:bg-white/5 transition group">
+          <div class="flex items-center gap-3">
+            <svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+            <span>Autonomous Skills</span>
+          </div>
+          <span class="text-[9px] px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 font-mono font-bold">AGENTS</span>
+        </button>
+        <button id="nav-btn-models" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-zinc-400 hover:text-white hover:bg-white/5 transition group">
+          <div class="flex items-center gap-3">
+            <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/></svg>
+            <span>LLM AI Matrix</span>
+          </div>
+          <span class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono font-bold">6 LLMs</span>
+        </button>
+        <button id="nav-btn-connectors" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-zinc-400 hover:text-white hover:bg-white/5 transition group">
+          <div class="flex items-center gap-3">
+            <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+            <span>Connectors & Apps</span>
+          </div>
+          <span class="text-[9px] px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-300 font-mono font-bold">HOOKS</span>
+        </button>
+        <button id="nav-btn-code" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-zinc-400 hover:text-white hover:bg-white/5 transition">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
-          Code & API
+          <span>Code & API</span>
         </button>
-        <button id="nav-btn-workers" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium text-zinc-400 hover:text-white hover:bg-white/5 transition">
+        <button id="nav-btn-workers" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-zinc-400 hover:text-white hover:bg-white/5 transition">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-          Autonomous Workers
+          <span>Autonomous Workers</span>
         </button>
       </nav>
 
@@ -99,7 +137,29 @@
         <span class="text-xs text-zinc-400 hidden md:inline">23 Languages • Zero-Shot Voice Cloning</span>
       </div>
 
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2.5">
+        <!-- Partner Badge: Key Secure Foundation -->
+        <div class="hidden sm:flex items-center gap-2 bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent border border-amber-500/20 rounded-xl px-2.5 py-1 text-xs text-amber-200">
+          <img src="/static/img/partner_key_secure_foundation.png" alt="Key Secure Shield" class="w-5 h-5 object-contain">
+          <span class="font-bold text-[11px]">Key Secure Foundation</span>
+          <span class="text-zinc-600">•</span>
+          <span class="text-[10px] text-zinc-400 font-mono">Cloud + Security</span>
+        </div>
+
+        <!-- LLM Selector -->
+        <div class="flex items-center gap-1.5 bg-zinc-900/90 border border-white/10 rounded-xl px-2.5 py-1.5 text-xs text-zinc-200">
+          <span class="text-indigo-400">🧠</span>
+          <select id="header-llm-model-select" class="bg-transparent text-xs text-zinc-200 focus:outline-none cursor-pointer">
+            <option value="local_neural" selected>GS Neural Flow Core (24kHz)</option>
+            <option value="gemini_pro">GS Deep-Thinker Ultra</option>
+            <option value="gemini_flash">GS Multilingual Flash</option>
+            <option value="gpt4o">GS Neural Omni-Core</option>
+            <option value="deepseek_v3">GS Frontier MoE (671B)</option>
+            <option value="llama_33">GS Open-Weights Neural Core</option>
+            <option value="ollama_local">GS Air-Gapped Private Node</option>
+          </select>
+        </div>
+
         <!-- Language Selector -->
         <div class="flex items-center gap-1.5 bg-zinc-900/80 border border-white/10 rounded-xl px-2.5 py-1.5 text-xs text-zinc-200">
           <span class="text-zinc-400">🌐</span>
@@ -312,6 +372,110 @@
           </div>
         </div>
 
+    </section>
+
+    <!-- WORKSPACE: TEAM & HUMAN AI CHARACTERS -->
+    <section id="workspace-view-team" class="flex-1 hidden flex-col h-full overflow-y-auto p-6 space-y-6">
+      <div class="max-w-6xl mx-auto w-full space-y-6 pb-16">
+        
+        <!-- Header Banner -->
+        <div class="glass-panel p-5 rounded-2xl border border-white/5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div class="flex items-center gap-3.5">
+            <img src="/static/img/brand_logo_gs.png" alt="GS Logo" class="w-10 h-10 rounded-full border border-white/10 shadow-lg object-contain">
+            <div>
+              <div class="flex items-center gap-2 mb-0.5">
+                <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span>
+                <span class="text-xs font-mono font-bold text-amber-300 uppercase tracking-wider">Human AI Characters & Team</span>
+              </div>
+              <h2 class="text-xl font-black text-white">GS Leadership & Acoustic Personas</h2>
+              <p class="text-xs text-zinc-400">Interactive team avatars with 2D/3D tactile tilt, authentic voice auditioning, and one-click voice cloning.</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="loadTeamRoster()" class="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-xs text-zinc-300 font-medium transition flex items-center gap-1.5">
+              <span>↻</span> Sync Personas
+            </button>
+            <span class="px-3 py-1.5 rounded-xl bg-amber-500/20 text-amber-300 text-xs font-mono font-bold border border-amber-500/30">4 Specialist Avatars</span>
+          </div>
+        </div>
+
+        <!-- Featured Creator Hero Card: G.S. Lead Architect -->
+        <div class="glass-panel rounded-3xl p-6 sm:p-8 border border-orange-500/30 bg-gradient-to-br from-[#131726]/90 via-[#0e1019]/90 to-[#19111f]/90 relative overflow-hidden shadow-2xl card-3d-character">
+          <!-- Background Glowing Aura -->
+          <div class="absolute -right-20 -top-20 w-80 h-80 bg-orange-500/15 rounded-full blur-3xl pointer-events-none"></div>
+          <div class="absolute -left-20 -bottom-20 w-80 h-80 bg-purple-500/15 rounded-full blur-3xl pointer-events-none"></div>
+
+          <div class="relative z-10 flex flex-col md:flex-row items-center md:items-start gap-6 sm:gap-8">
+            <!-- Avatar with Neural Ring & Float Animation -->
+            <div class="flex-shrink-0 flex flex-col items-center">
+              <div class="avatar-neural-glow">
+                <img src="/static/img/avatar_founder_human.jpg" alt="G.S. Lead Architect" class="w-36 h-36 sm:w-44 sm:h-44 rounded-full object-cover border-2 border-white/20 shadow-2xl animate-character-float">
+              </div>
+              <div class="mt-3 flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-500/20 border border-orange-500/40 text-[11px] font-mono font-bold text-orange-300">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span>ONLINE • LEAD ARCHITECT</span>
+              </div>
+            </div>
+
+            <!-- Bio & Quotes -->
+            <div class="flex-1 space-y-3.5 text-center md:text-left">
+              <div class="flex flex-wrap items-center justify-center md:justify-start gap-2">
+                <h3 class="text-2xl font-black text-white tracking-tight">G.S.</h3>
+                <span class="text-xs px-2.5 py-0.5 rounded-full bg-gradient-to-r from-orange-500/30 to-purple-500/30 border border-orange-500/40 text-orange-200 font-mono font-bold">FOUNDER & CHIEF ARCHITECT</span>
+              </div>
+              
+              <div class="text-xs font-semibold text-indigo-300 font-mono">
+                Creator of Chatterbox Multilingual Flow Matching Engine
+              </div>
+
+              <blockquote class="p-3.5 rounded-2xl bg-black/40 border border-white/5 text-xs sm:text-sm text-zinc-200 italic leading-relaxed">
+                "We designed Chatterbox flow matching to capture subtle vocal acoustics and authentic human breath in under 3 seconds. Sound carries human memory, emotion, and presence."
+              </blockquote>
+
+              <!-- Specialties Chips -->
+              <div class="flex flex-wrap items-center justify-center md:justify-start gap-1.5 pt-1">
+                <span class="text-[10px] px-2.5 py-1 rounded-lg bg-white/5 text-zinc-300 border border-white/10 font-mono">⚡ Flow Matching</span>
+                <span class="text-[10px] px-2.5 py-1 rounded-lg bg-white/5 text-zinc-300 border border-white/10 font-mono">🎙️ Zero-Shot Timbre</span>
+                <span class="text-[10px] px-2.5 py-1 rounded-lg bg-white/5 text-zinc-300 border border-white/10 font-mono">🌐 23 Languages</span>
+                <span class="text-[10px] px-2.5 py-1 rounded-lg bg-white/5 text-zinc-300 border border-white/10 font-mono">🚀 24kHz HiFi-GAN</span>
+              </div>
+
+              <!-- Audition & Action Row -->
+              <div class="flex flex-wrap items-center justify-center md:justify-start gap-3 pt-2">
+                <button onclick="auditionTeamVoice('char_founder', this)" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold text-xs transition shadow-lg shadow-orange-500/30 flex items-center gap-2">
+                  <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  <span>Audition Founder Voice (Baritone)</span>
+                </button>
+                <button onclick="adoptTeamVoicePersona('char_founder')" class="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-zinc-200 hover:text-white transition flex items-center gap-2">
+                  <span>🎭</span> Adopt Voice Clone
+                </button>
+                <button onclick="chatWithTeamPersona('char_founder')" class="px-4 py-2.5 rounded-xl bg-indigo-600/30 hover:bg-indigo-600/40 border border-indigo-500/40 text-xs font-semibold text-indigo-300 transition flex items-center gap-1.5">
+                  <span>💬</span> Chat with G.S.
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Team Roster Grid: 4 Characters -->
+        <div id="team-roster-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <!-- Populated dynamically by app.js from /api/team -->
+        </div>
+
+        <!-- Live Team Audio Preview Bar -->
+        <div id="team-audio-player-box" class="hidden glass-panel p-4 rounded-2xl border border-indigo-500/30 space-y-2 animate-fade-in">
+          <div class="flex items-center justify-between text-xs">
+            <span id="team-audio-speaker-label" class="font-bold text-white flex items-center gap-2">
+              <span>🔊</span> Character Vocal Audition
+            </span>
+            <span id="team-audio-duration" class="text-[10px] font-mono text-zinc-400">Duration: ~4s</span>
+          </div>
+          <p id="team-audio-quote-text" class="text-xs text-zinc-300 italic"></p>
+          <div class="flex items-center gap-3 pt-1">
+            <audio id="team-audio-element" controls class="w-full h-8"></audio>
+          </div>
+        </div>
+
       </div>
     </section>
 
@@ -356,6 +520,564 @@
             </button>
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- WORKSPACE: AUTONOMOUS AGENT SKILLS -->
+    <section id="workspace-view-skills" class="flex-1 hidden flex-col h-full overflow-y-auto p-6 space-y-6">
+      <div class="max-w-6xl mx-auto w-full space-y-6">
+        
+        <!-- Header Banner -->
+        <div class="glass-panel p-5 rounded-2xl border border-white/5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="w-2.5 h-2.5 rounded-full bg-purple-400 animate-pulse"></span>
+              <span class="text-xs font-mono font-bold text-purple-300 uppercase tracking-wider">Autonomous AI Agents</span>
+            </div>
+            <h2 class="text-xl font-black text-white">Agent Skills Studio</h2>
+            <p class="text-xs text-zinc-400 mt-1">Multi-step autonomous workflows combining frontier LLMs with 24kHz zero-shot voice cloning.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="refreshSkillsList()" class="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-xs text-zinc-300 font-medium transition flex items-center gap-1.5">
+              <span>↻</span> Sync Skills
+            </button>
+            <span class="px-3 py-1.5 rounded-xl bg-purple-500/20 text-purple-300 text-xs font-mono font-bold border border-purple-500/30">4 Active Skills</span>
+          </div>
+        </div>
+
+        <!-- Skills Sub-Tab Navigation (Antigravity Style) -->
+        <div class="flex items-center gap-2 border-b border-white/5 pb-2 text-xs">
+          <button id="skills-subtab-active" onclick="switchSkillsSubTab('active')" class="px-3.5 py-1.5 rounded-xl bg-purple-600/30 border border-purple-500/40 text-purple-200 font-semibold transition">
+            ⚡ Active Studio Skills
+          </button>
+          <button id="skills-subtab-marketplace" onclick="switchSkillsSubTab('marketplace')" class="px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white font-medium transition flex items-center gap-1.5">
+            <span>📦</span> Marketplace & Installer
+            <span class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono font-bold">INSTALLER</span>
+          </button>
+          <button id="skills-subtab-builder" onclick="switchSkillsSubTab('builder')" class="px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white font-medium transition flex items-center gap-1.5">
+            <span>🛠️</span> + Define Custom Subagent
+          </button>
+        </div>
+
+        <!-- 1. ACTIVE STUDIO SKILLS CONTAINER -->
+        <div id="skills-container-active" class="space-y-5">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+            <!-- Skill 1: Podcast Studio Producer -->
+            <div class="glass-panel rounded-2xl p-5 border border-white/5 flex flex-col justify-between worker-card">
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2.5">
+                    <span class="p-2 rounded-xl bg-purple-500/20 text-purple-300 text-base">🎙️</span>
+                    <div>
+                      <h3 class="text-sm font-bold text-white">Podcast Studio Producer</h3>
+                      <p class="text-[11px] text-zinc-400">Autonomous dual-host conversational broadcast with alternating voices</p>
+                    </div>
+                  </div>
+                  <span class="text-[10px] px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-mono font-bold">MULTI-VOICE</span>
+                </div>
+
+                <div class="space-y-2.5 pt-2">
+                  <div>
+                    <label class="block text-[11px] font-semibold text-zinc-400 mb-1">Episode Discussion Topic</label>
+                    <input id="skill-podcast-topic" type="text" value="The Breakthrough in Flow Matching & Zero-Shot Neural Speech" class="w-full bg-zinc-950/90 rounded-xl p-2.5 text-xs text-white border border-white/5 focus:outline-none focus:border-purple-500/50">
+                  </div>
+                  <div class="grid grid-cols-2 gap-2.5">
+                    <div>
+                      <label class="block text-[11px] font-semibold text-zinc-400 mb-1">Turns / Exchanges</label>
+                      <select id="skill-podcast-turns" class="w-full bg-zinc-900 border border-white/10 rounded-xl p-2 text-xs text-white">
+                        <option value="2">2 Exchanges (Quick)</option>
+                        <option value="3" selected>3 Exchanges (Standard)</option>
+                        <option value="4">4 Exchanges (In-Depth)</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="block text-[11px] font-semibold text-zinc-400 mb-1">Script Reasoning LLM</label>
+                      <select id="skill-podcast-llm" class="w-full bg-zinc-900 border border-white/10 rounded-xl p-2 text-xs text-white">
+                        <option value="local_neural" selected>Local Neural AI</option>
+                        <option value="gemini_flash">Google Gemini Flash</option>
+                        <option value="gpt4o">OpenAI GPT-4o</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pt-4 mt-2">
+                <button id="btn-skill-run-podcast" onclick="executePodcastSkill()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-xs transition shadow-lg shadow-purple-600/20 flex items-center justify-center gap-2">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Produce Podcast Episode
+                </button>
+                <div id="skill-podcast-result" class="mt-3 hidden"></div>
+              </div>
+            </div>
+
+            <!-- Skill 2: Cross-Lingual Cultural Dubber -->
+            <div class="glass-panel rounded-2xl p-5 border border-white/5 flex flex-col justify-between worker-card">
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2.5">
+                    <span class="p-2 rounded-xl bg-cyan-500/20 text-cyan-300 text-base">🌐</span>
+                    <div>
+                      <h3 class="text-sm font-bold text-white">Cross-Lingual Cultural Dubber</h3>
+                      <p class="text-[11px] text-zinc-400">Translates culturally & synthesizes speech preserving speaker identity</p>
+                    </div>
+                  </div>
+                  <span class="text-[10px] px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 font-mono font-bold">23 TONGUES</span>
+                </div>
+
+                <div class="space-y-2.5 pt-2">
+                  <div>
+                    <label class="block text-[11px] font-semibold text-zinc-400 mb-1">Source Speech Input</label>
+                    <textarea id="skill-dub-text" rows="2" class="w-full bg-zinc-950/90 rounded-xl p-2.5 text-xs text-white border border-white/5 focus:outline-none focus:border-cyan-500/50 resize-none">Welcome to our international product announcement. This technology breaks down every language barrier.</textarea>
+                  </div>
+                  <div class="grid grid-cols-2 gap-2.5">
+                    <div>
+                      <label class="block text-[11px] font-semibold text-zinc-400 mb-1">Target Language</label>
+                      <select id="skill-dub-lang" class="w-full bg-zinc-900 border border-white/10 rounded-xl p-2 text-xs text-white">
+                        <option value="ja" selected>Japanese (ja)</option>
+                        <option value="fr">French (fr)</option>
+                        <option value="es">Spanish (es)</option>
+                        <option value="de">German (de)</option>
+                        <option value="zh">Chinese (zh)</option>
+                        <option value="hi">Hindi (hi)</option>
+                        <option value="ar">Arabic (ar)</option>
+                        <option value="ru">Russian (ru)</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="block text-[11px] font-semibold text-zinc-400 mb-1">Preserve Tone</label>
+                      <div class="p-2 rounded-xl bg-zinc-900/90 border border-white/10 text-xs text-zinc-300 flex items-center gap-2">
+                        <input type="checkbox" id="skill-dub-preserve" checked class="rounded">
+                        <span class="text-[11px]">Zero-Shot Timbre</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pt-4 mt-2">
+                <button id="btn-skill-run-dub" onclick="executeDubbingSkill()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold text-xs transition shadow-lg shadow-cyan-600/20 flex items-center justify-center gap-2">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg>
+                  Translate & Dub Voice
+                </button>
+                <div id="skill-dub-result" class="mt-3 hidden"></div>
+              </div>
+            </div>
+
+            <!-- Skill 3: Document & Audiobook Narrator -->
+            <div class="glass-panel rounded-2xl p-5 border border-white/5 flex flex-col justify-between worker-card">
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2.5">
+                    <span class="p-2 rounded-xl bg-amber-500/20 text-amber-300 text-base">📖</span>
+                    <div>
+                      <h3 class="text-sm font-bold text-white">Document & Audiobook Narrator</h3>
+                      <p class="text-[11px] text-zinc-400">Pacing-aware longform chapter recitation with natural breath cadence</p>
+                    </div>
+                  </div>
+                  <span class="text-[10px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono font-bold">LONG-FORM</span>
+                </div>
+
+                <div class="space-y-2.5 pt-2">
+                  <div>
+                    <label class="block text-[11px] font-semibold text-zinc-400 mb-1">Manuscript / Chapter Excerpt</label>
+                    <textarea id="skill-narrator-text" rows="2" class="w-full bg-zinc-950/90 rounded-xl p-2.5 text-xs text-white border border-white/5 focus:outline-none focus:border-amber-500/50 resize-none">The neon spires of Neo-Kyoto pierced the perpetual smog, glowing with electric amethyst reflections.</textarea>
+                  </div>
+                  <div class="grid grid-cols-2 gap-2.5">
+                    <div>
+                      <label class="block text-[11px] font-semibold text-zinc-400 mb-1">Vocal Narration Style</label>
+                      <select id="skill-narrator-style" class="w-full bg-zinc-900 border border-white/10 rounded-xl p-2 text-xs text-white">
+                        <option value="Warm Conversational" selected>Warm Conversational</option>
+                        <option value="Epic Cinematic">Epic Cinematic</option>
+                        <option value="Crisp Executive">Crisp Executive</option>
+                        <option value="Calm Bedtime">Calm Bedtime</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="block text-[11px] font-semibold text-zinc-400 mb-1">Cadence Pacing</label>
+                      <select id="skill-narrator-pacing" class="w-full bg-zinc-900 border border-white/10 rounded-xl p-2 text-xs text-white">
+                        <option value="normal" selected>Natural (1.0x)</option>
+                        <option value="deliberate">Deliberate & Slow (0.85x)</option>
+                        <option value="brisk">Brisk Audio (1.15x)</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pt-4 mt-2">
+                <button id="btn-skill-run-narrator" onclick="executeNarratorSkill()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white font-bold text-xs transition shadow-lg shadow-amber-600/20 flex items-center justify-center gap-2">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                  Narrate Chapter Audio
+                </button>
+                <div id="skill-narrator-result" class="mt-3 hidden"></div>
+              </div>
+            </div>
+
+            <!-- Skill 4: Cinematic Voice Director -->
+            <div class="glass-panel rounded-2xl p-5 border border-white/5 flex flex-col justify-between worker-card">
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2.5">
+                    <span class="p-2 rounded-xl bg-emerald-500/20 text-emerald-300 text-base">🎬</span>
+                    <div>
+                      <h3 class="text-sm font-bold text-white">Cinematic Voice Director</h3>
+                      <p class="text-[11px] text-zinc-400">Dynamic emotional acoustic shaping with expressive CFG & temperature</p>
+                    </div>
+                  </div>
+                  <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono font-bold">EMOTION</span>
+                </div>
+
+                <div class="space-y-2.5 pt-2">
+                  <div>
+                    <label class="block text-[11px] font-semibold text-zinc-400 mb-1">Actor Script Line</label>
+                    <input id="skill-director-text" type="text" value="Listen closely... What we have discovered tonight changes humanity forever." class="w-full bg-zinc-950/90 rounded-xl p-2.5 text-xs text-white border border-white/5 focus:outline-none focus:border-emerald-500/50">
+                  </div>
+                  <div class="grid grid-cols-2 gap-2.5">
+                    <div>
+                      <label class="block text-[11px] font-semibold text-zinc-400 mb-1">Emotional Archetype</label>
+                      <select id="skill-director-mood" class="w-full bg-zinc-900 border border-white/10 rounded-xl p-2 text-xs text-white">
+                        <option value="Dramatic Suspense" selected>Dramatic Suspense</option>
+                        <option value="Enthusiastic Hype">Enthusiastic Hype</option>
+                        <option value="Calm Meditation">Calm Meditation</option>
+                        <option value="Urgent Breaking News">Urgent Breaking News</option>
+                        <option value="Noir Mystery">Noir Mystery</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="block text-[11px] font-semibold text-zinc-400 mb-1">Voice Reference</label>
+                      <select id="skill-director-preset" class="w-full bg-zinc-900 border border-white/10 rounded-xl p-2 text-xs text-white">
+                        <option value="en_female">Sarah (English)</option>
+                        <option value="fr_female">Camille (French)</option>
+                        <option value="es_female">Elena (Spanish)</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pt-4 mt-2">
+                <button id="btn-skill-run-director" onclick="executeDirectorSkill()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs transition shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                  Direct & Synthesize Scene
+                </button>
+                <div id="skill-director-result" class="mt-3 hidden"></div>
+              </div>
+            </div>
+
+            <!-- Skill 5: Khyathi.Sri Kids Songs & Story Studio (Partner: Key Secure Foundation) -->
+            <div class="glass-panel rounded-2xl p-5 border border-pink-500/30 bg-gradient-to-br from-pink-950/20 via-zinc-900/60 to-purple-950/20 flex flex-col justify-between worker-card md:col-span-2">
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-3">
+                    <img src="/static/img/avatar_khyathi_sri.png" alt="Khyathi Sri" class="w-11 h-11 rounded-2xl object-cover border border-pink-500/40 shadow-md">
+                    <div>
+                      <div class="flex items-center gap-2">
+                        <h3 class="text-sm font-bold text-white">Khyathi.Sri Kids Songs & Story Studio</h3>
+                        <span class="text-[9px] px-1.5 py-0.5 rounded bg-pink-500/20 text-pink-300 font-mono font-bold">KIDS & FAMILY</span>
+                      </div>
+                      <p class="text-[11px] text-zinc-400">Sweet rhyming melodies, moral bedtime stories, and joyful multilingual education • Partner: <strong class="text-amber-300">Key Secure Foundation</strong></p>
+                    </div>
+                  </div>
+                  <img src="/static/img/partner_key_secure_foundation.png" alt="Key Secure" class="w-8 h-8 object-contain hidden sm:block">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-2">
+                  <div class="sm:col-span-2">
+                    <label class="block text-[11px] font-semibold text-zinc-400 mb-1">Song or Story Theme</label>
+                    <input id="skill-kids-theme" type="text" value="Little Rainbow Butterfly dancing across the garden flowers" class="w-full bg-zinc-950/90 rounded-xl p-2.5 text-xs text-white border border-white/5 focus:outline-none focus:border-pink-500/50">
+                  </div>
+                  <div>
+                    <label class="block text-[11px] font-semibold text-zinc-400 mb-1">Content Format</label>
+                    <select id="skill-kids-type" class="w-full bg-zinc-900 border border-white/10 rounded-xl p-2 text-xs text-white">
+                      <option value="Nursery Rhyme Song" selected>Nursery Rhyme Song</option>
+                      <option value="Bedtime Adventure Story">Bedtime Adventure Story</option>
+                      <option value="Alphabet & Numbers Song">Alphabet & Numbers Song</option>
+                      <option value="Joyful Animal Tale">Joyful Animal Tale</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pt-4 mt-2">
+                <button id="btn-skill-run-kids" onclick="executeKidsSkill()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600 hover:from-pink-500 hover:to-indigo-500 text-white font-bold text-xs transition shadow-lg shadow-pink-600/20 flex items-center justify-center gap-2">
+                  <span>🎈</span>
+                  Create Kids Song, Illustration & Audio
+                </button>
+                <div id="skill-kids-result" class="mt-3 hidden"></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- 2. SKILL MARKETPLACE & AGENT INSTALLER (Antigravity System) -->
+        <div id="skills-container-marketplace" class="hidden space-y-5">
+          <div class="glass-panel p-4 rounded-xl border border-white/5 flex items-center justify-between text-xs">
+            <div>
+              <span class="font-bold text-white">Antigravity Agent Skills Marketplace</span>
+              <p class="text-zinc-400 text-[11px]">Install specialized agent skills equipped with tool access and custom prompts into your studio.</p>
+            </div>
+            <button onclick="loadSkillsMarketplace()" class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-zinc-300 text-xs transition">
+              ↻ Refresh Catalog
+            </button>
+          </div>
+
+          <div id="skills-marketplace-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Populated dynamically by app.js from /api/skills/marketplace -->
+          </div>
+        </div>
+
+        <!-- 3. CUSTOM AGY SUBAGENT BUILDER (Antigravity define_subagent Method) -->
+        <div id="skills-container-builder" class="hidden space-y-5">
+          <div class="glass-panel rounded-2xl p-6 border border-purple-500/30 space-y-4">
+            <div class="flex items-center justify-between border-b border-white/10 pb-3">
+              <div>
+                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                  <span>🛠️</span> Antigravity Subagent Architect
+                </h3>
+                <p class="text-[11px] text-zinc-400">Define a new autonomous AI agent with system prompt, tool capabilities, and voice personality.</p>
+              </div>
+              <span class="text-[10px] px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-mono font-bold">define_subagent()</span>
+            </div>
+
+            <div class="space-y-3.5 text-xs">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-zinc-300 font-semibold mb-1">Agent Name</label>
+                  <input id="builder-agent-name" type="text" placeholder="e.g. Cyberpunk Storyteller" value="Cyberpunk Storyteller" class="w-full bg-zinc-950/90 rounded-xl p-2.5 text-white border border-white/10 focus:outline-none focus:border-purple-500">
+                </div>
+                <div>
+                  <label class="block text-zinc-300 font-semibold mb-1">Role / Domain Title</label>
+                  <input id="builder-agent-role" type="text" placeholder="e.g. Worldbuilder & Narrative Actor" value="Worldbuilder & Narrative Actor" class="w-full bg-zinc-950/90 rounded-xl p-2.5 text-white border border-white/10 focus:outline-none focus:border-purple-500">
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-zinc-300 font-semibold mb-1">Description</label>
+                <input id="builder-agent-desc" type="text" placeholder="Brief explanation of what this agent accomplishes..." value="Generates immersive neo-noir dystopian vignettes with suspenseful audio delivery." class="w-full bg-zinc-950/90 rounded-xl p-2.5 text-white border border-white/10 focus:outline-none focus:border-purple-500">
+              </div>
+
+              <div>
+                <label class="block text-zinc-300 font-semibold mb-1">System Prompt (Antigravity Instruction)</label>
+                <textarea id="builder-agent-prompt" rows="3" class="w-full bg-zinc-950/90 rounded-xl p-2.5 text-white border border-white/10 focus:outline-none focus:border-purple-500 font-mono text-xs leading-relaxed">You are an atmospheric sci-fi storyteller. You craft short, vivid narrative scenes set in rain-slicked neon cities and voice them with dramatic noir pacing.</textarea>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-zinc-300 font-semibold mb-1">Voice Archetype</label>
+                  <select id="builder-agent-voice" class="w-full bg-zinc-900 border border-white/10 rounded-xl p-2 text-white">
+                    <option value="Epic Cinematic">Epic Cinematic (Dmitri / Alex)</option>
+                    <option value="Warm Conversational">Warm Conversational (Sarah)</option>
+                    <option value="Crisp Executive">Crisp Executive (Marco)</option>
+                    <option value="Empathetic Counselor">Empathetic Counselor (Elena)</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-zinc-300 font-semibold mb-1">Tool Capabilities</label>
+                  <div class="flex flex-wrap gap-2 pt-1 text-[11px] text-zinc-300">
+                    <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" checked class="builder-tool-check" value="llm_reasoning"> Multi-LLM Reasoning</label>
+                    <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" checked class="builder-tool-check" value="voice_synthesis"> 24kHz Synthesis</label>
+                    <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" checked class="builder-tool-check" value="webhook_trigger"> Webhooks</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pt-3 border-t border-white/10 flex justify-end gap-3">
+                <button onclick="deployCustomAgent()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-xs transition shadow-lg shadow-purple-600/30 flex items-center gap-2">
+                  <span>🚀</span> Deploy Autonomous Subagent
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- WORKSPACE: MULTI-MODEL LLM MATRIX -->
+    <section id="workspace-view-models" class="flex-1 hidden flex-col h-full overflow-y-auto p-6 space-y-6">
+      <div class="max-w-6xl mx-auto w-full space-y-6">
+        
+        <!-- Header Banner -->
+        <div class="glass-panel p-5 rounded-2xl border border-white/5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span class="text-xs font-mono font-bold text-emerald-300 uppercase tracking-wider">Multi-Model LLM Matrix</span>
+            </div>
+            <h2 class="text-xl font-black text-white">Frontier AI Intelligence + 24kHz Audio</h2>
+            <p class="text-xs text-zinc-400 mt-1">Connect leading AI reasoning providers directly to Chatterbox flow-matching voice synthesis.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="loadLLMModelsMatrix()" class="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-xs text-zinc-300 font-medium transition flex items-center gap-1.5">
+              <span>↻</span> Refresh Models
+            </button>
+            <span class="px-3 py-1.5 rounded-xl bg-emerald-500/20 text-emerald-300 text-xs font-mono font-bold border border-emerald-500/30">6 Providers</span>
+          </div>
+        </div>
+
+        <!-- Interactive Playground: Chat & Speak with Chosen Model -->
+        <div class="glass-panel rounded-2xl p-5 border border-indigo-500/30 space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+              <span>⚡</span> Multimodal Inference & Voice Synthesis Tester
+            </h3>
+            <span class="text-[11px] text-zinc-400">Type a prompt, chosen LLM responds, Chatterbox vocalizes it</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div class="md:col-span-2">
+              <input id="llm-play-prompt" type="text" placeholder="Explain quantum computing in one sentence..." value="What makes generative neural speech so revolutionary?" class="w-full bg-zinc-950/90 rounded-xl p-3 text-xs text-white border border-white/10 focus:outline-none focus:border-indigo-500">
+            </div>
+            <div class="flex items-center gap-2">
+              <select id="llm-play-model" class="flex-1 bg-zinc-900 border border-white/10 rounded-xl p-3 text-xs text-white">
+                <option value="local_neural" selected>GS Neural Flow Core (24kHz)</option>
+                <option value="gemini_pro">GS Deep-Thinker Ultra</option>
+                <option value="gemini_flash">GS Multilingual Flash</option>
+                <option value="gpt4o">GS Neural Omni-Core</option>
+                <option value="deepseek_v3">GS Frontier MoE (671B)</option>
+                <option value="llama_33">GS Open-Weights Neural Core</option>
+                <option value="ollama_local">GS Air-Gapped Private Node</option>
+              </select>
+              <button id="btn-llm-generate-speak" onclick="runLLMPlayground()" class="px-4 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition shadow-lg shadow-indigo-600/30 flex items-center gap-1.5 flex-shrink-0">
+                <span>⚡</span> Speak
+              </button>
+            </div>
+          </div>
+
+          <div id="llm-play-result" class="hidden p-4 rounded-xl bg-zinc-950/90 border border-white/10 space-y-2">
+            <!-- Rendered by app.js -->
+          </div>
+        </div>
+
+        <!-- Models Grid Matrix -->
+        <div id="llm-models-matrix-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Populated dynamically by app.js from /api/llm/models -->
+        </div>
+
+      </div>
+    </section>
+
+    <!-- WORKSPACE: CONNECTORS & INTEGRATIONS -->
+    <section id="workspace-view-connectors" class="flex-1 hidden flex-col h-full overflow-y-auto p-6 space-y-6">
+      <div class="max-w-6xl mx-auto w-full space-y-6">
+        
+        <!-- Header Banner -->
+        <div class="glass-panel p-5 rounded-2xl border border-white/5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse"></span>
+              <span class="text-xs font-mono font-bold text-cyan-300 uppercase tracking-wider">Ecosystem & Hooks</span>
+            </div>
+            <h2 class="text-xl font-black text-white">Connectors & Apps Hub</h2>
+            <p class="text-xs text-zinc-400 mt-1">Configure provider API keys, inbound webhooks, and cloud storage pipelines.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="loadConnectorsList()" class="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-xs text-zinc-300 font-medium transition flex items-center gap-1.5">
+              <span>↻</span> Refresh Connectors
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+          
+          <!-- Column 1: API Key Vault -->
+          <div class="glass-panel rounded-2xl p-5 border border-white/5 space-y-4">
+            <div class="flex items-center justify-between border-b border-white/5 pb-3">
+              <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                <span>🔐</span> Provider API Key Vault
+              </h3>
+              <span class="text-[10px] text-zinc-500 font-mono">SECURE</span>
+            </div>
+
+            <!-- GS Multilingual Key -->
+            <div class="space-y-1.5">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-semibold text-zinc-300">GS Multilingual Cloud Key</span>
+                <span id="badge-key-gemini" class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono">READY</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <input id="key-input-gemini" type="password" placeholder="Enter GEMINI_API_KEY..." class="flex-1 bg-zinc-950/80 rounded-xl p-2 text-xs text-white border border-white/10 focus:outline-none">
+                <button onclick="saveApiKey('GEMINI_API_KEY', 'key-input-gemini')" class="px-2.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition">Save</button>
+              </div>
+            </div>
+
+            <!-- GS Omni Intelligence Key -->
+            <div class="space-y-1.5">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-semibold text-zinc-300">GS Omni-Intelligence Cloud Key</span>
+                <span id="badge-key-openai" class="text-[9px] px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-400 font-mono">OPTIONAL</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <input id="key-input-openai" type="password" placeholder="Enter OPENAI_API_KEY..." class="flex-1 bg-zinc-950/80 rounded-xl p-2 text-xs text-white border border-white/10 focus:outline-none">
+                <button onclick="saveApiKey('OPENAI_API_KEY', 'key-input-openai')" class="px-2.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition">Save</button>
+              </div>
+            </div>
+
+            <!-- GS Frontier MoE Key -->
+            <div class="space-y-1.5">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-semibold text-zinc-300">GS Frontier MoE Cognitive Key</span>
+                <span id="badge-key-deepseek" class="text-[9px] px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-400 font-mono">OPTIONAL</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <input id="key-input-deepseek" type="password" placeholder="Enter DEEPSEEK_API_KEY..." class="flex-1 bg-zinc-950/80 rounded-xl p-2 text-xs text-white border border-white/10 focus:outline-none">
+                <button onclick="saveApiKey('DEEPSEEK_API_KEY', 'key-input-deepseek')" class="px-2.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition">Save</button>
+              </div>
+            </div>
+
+            <!-- GS Local Mesh Node -->
+            <div class="space-y-1.5">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-semibold text-zinc-300">GS Air-Gapped Local Node URL</span>
+                <span class="text-[9px] px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-300 font-mono">LOCAL</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <input id="key-input-ollama" type="text" value="http://localhost:11434" class="flex-1 bg-zinc-950/80 rounded-xl p-2 text-xs text-white border border-white/10 focus:outline-none">
+                <button onclick="saveApiKey('OLLAMA_HOST', 'key-input-ollama')" class="px-2.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition">Save</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 2: Inbound Audio Webhook Simulator -->
+          <div class="glass-panel rounded-2xl p-5 border border-white/5 space-y-4 lg:col-span-2">
+            <div class="flex items-center justify-between border-b border-white/5 pb-3">
+              <div>
+                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                  <span>📡</span> Inbound Audio Webhook Console
+                </h3>
+                <p class="text-[11px] text-zinc-400">Trigger programmatic synthesis via HTTP POST</p>
+              </div>
+              <code class="text-[10px] px-2 py-0.5 rounded bg-zinc-900 text-cyan-300 font-mono border border-white/10">POST /api/connectors/webhook</code>
+            </div>
+
+            <div class="space-y-2">
+              <label class="block text-xs font-semibold text-zinc-300">JSON Payload Simulator:</label>
+              <textarea id="webhook-test-payload" rows="5" class="w-full bg-[#0d0f17] text-cyan-300 font-mono text-xs p-3 rounded-xl border border-white/10 focus:outline-none resize-none leading-relaxed">{
+  "event": "voice.synthesize",
+  "text": "Inbound webhook triggered speech rendering successfully.",
+  "language": "en",
+  "exaggeration": 0.5,
+  "cfg_weight": 0.5
+}</textarea>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] text-zinc-400">Instant audio return with sample rate & duration</span>
+              <button id="btn-test-webhook" onclick="triggerTestWebhook()" class="px-4 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs transition shadow-lg shadow-cyan-600/30 flex items-center gap-1.5">
+                <span>▶</span> Post Test Event
+              </button>
+            </div>
+
+            <div id="webhook-test-result" class="hidden p-3.5 rounded-xl bg-[#0d0f17] border border-white/10 space-y-2 text-xs">
+              <!-- Rendered by app.js -->
+            </div>
+          </div>
+
+        </div>
+
       </div>
     </section>
 
@@ -564,6 +1286,8 @@
         </button>
       </div>
     </div>
+  </div>
+
   <!-- Billing & Scan to Pay Modal -->
   <div id="billing-modal" class="fixed inset-0 bg-black/70 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
     <div class="glass-panel bg-[#11131c] rounded-2xl max-w-xl w-full p-6 border border-white/10 shadow-2xl space-y-5 max-h-[90vh] flex flex-col">

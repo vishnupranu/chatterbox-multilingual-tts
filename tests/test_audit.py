@@ -374,6 +374,207 @@ class TestAuditChatterboxPlatform(unittest.TestCase):
         self.assertEqual(order["pay_address"], "9994152888-4#ybl")
         self.assertIn("pa=9994152888-4%23ybl", order["upi_url"])
 
+    def test_21_llm_models_and_generation(self):
+        """Audit /api/llm/models and /api/llm/generate endpoints."""
+        # 1. Models matrix
+        res = self.client.get("/api/llm/models")
+        self.assertEqual(res.status_code, 200)
+        data = res.json()
+        self.assertIn("models", data)
+        self.assertGreaterEqual(len(data["models"]), 6)
+        model_ids = [m["id"] for m in data["models"]]
+        self.assertIn("local_neural", model_ids)
+        self.assertIn("gemini_pro", model_ids)
+        self.assertIn("deepseek_v3", model_ids)
+        self.assertNotIn("claude_35", model_ids)
+
+        # 2. Text generation on Local Neural AI
+        gen_res = self.client.post("/api/llm/generate", json={
+            "prompt": "What is the capital of France?",
+            "model_id": "local_neural"
+        })
+        self.assertEqual(gen_res.status_code, 200)
+        gen_data = gen_res.json()
+        self.assertTrue(gen_data["success"])
+        self.assertIn("text", gen_data)
+
+        # 3. Validation on empty prompt
+        err_res = self.client.post("/api/llm/generate", json={
+            "prompt": "   ",
+            "model_id": "local_neural"
+        })
+        self.assertEqual(err_res.status_code, 400)
+
+    @patch("tts_engine.synthesize", return_value=(24000, np.zeros(24000, dtype=np.float32), None))
+    @patch("skills_engine.synthesize", return_value=(24000, np.zeros(24000, dtype=np.float32), None))
+    def test_22_autonomous_skills_execution(self, mock_skill_synth, mock_tts_synth):
+        """Audit /api/skills/list and /api/skills/execute endpoints."""
+        # 1. List skills
+        res = self.client.get("/api/skills/list")
+        self.assertEqual(res.status_code, 200)
+        skills = res.json()["skills"]
+        skill_ids = [s["id"] for s in skills]
+        self.assertIn("podcast_host", skill_ids)
+        self.assertIn("cross_lingual_translator", skill_ids)
+        self.assertIn("document_narrator", skill_ids)
+        self.assertIn("voice_director", skill_ids)
+
+        # 2. Execute podcast skill
+        pod_res = self.client.post("/api/skills/execute", json={
+            "skill_id": "podcast_host",
+            "params": {"topic": "Generative Speech", "turns_count": 2, "model_id": "local_neural"}
+        })
+        self.assertEqual(pod_res.status_code, 200)
+        pod_data = pod_res.json()
+        self.assertTrue(pod_data["success"])
+        self.assertIn("script", pod_data)
+        self.assertIn("audio_url", pod_data)
+
+        # 3. Execute translator skill
+        trans_res = self.client.post("/api/skills/execute", json={
+            "skill_id": "cross_lingual_translator",
+            "params": {"source_text": "Hello world", "target_language": "ja"}
+        })
+        self.assertEqual(trans_res.status_code, 200)
+        self.assertTrue(trans_res.json()["success"])
+
+        # 4. Unknown skill rejection
+        err_skill = self.client.post("/api/skills/execute", json={
+            "skill_id": "invalid_skill_xyz",
+            "params": {}
+        })
+        self.assertEqual(err_skill.status_code, 400)
+
+    @patch("tts_engine.synthesize", return_value=(24000, np.zeros(24000, dtype=np.float32), None))
+    def test_23_connectors_catalog_and_webhook(self, mock_synth):
+        """Audit /api/connectors/list, key registration, and inbound webhook synthesis."""
+        # 1. List connectors
+        res = self.client.get("/api/connectors/list")
+        self.assertEqual(res.status_code, 200)
+        connectors_list = res.json()["connectors"]
+        conn_ids = [c["id"] for c in connectors_list]
+        self.assertIn("gemini_connector", conn_ids)
+        self.assertIn("openai_connector", conn_ids)
+        self.assertIn("deepseek_connector", conn_ids)
+        self.assertNotIn("anthropic_connector", conn_ids)
+        self.assertIn("webhook_connector", conn_ids)
+
+        # 2. Save API key
+        key_res = self.client.post("/api/connectors/keys", json={
+            "provider_key": "GEMINI_API_KEY",
+            "key_value": "test-key-audit-12345"
+        })
+        self.assertEqual(key_res.status_code, 200)
+        self.assertTrue(key_res.json()["success"])
+
+        # 3. Inbound webhook triggering synthesis
+        webhook_res = self.client.post("/api/connectors/webhook", json={
+            "event": "voice.synthesize",
+            "text": "Audit test inbound webhook payload.",
+            "language": "en"
+        })
+        self.assertEqual(webhook_res.status_code, 200)
+        w_data = webhook_res.json()
+        self.assertTrue(w_data["success"])
+        self.assertIn("audio_url", w_data)
+
+    @patch("server.synthesize", return_value=(24000, np.zeros(24000, dtype=np.float32), None))
+    def test_24_team_roster_and_voice_audition(self, mock_synth):
+        """Audit /api/team roster, human founder persona, and voice audition synthesis."""
+        # 1. Team roster endpoint
+        res = self.client.get("/api/team")
+        self.assertEqual(res.status_code, 200)
+        team = res.json()["team"]
+        self.assertGreaterEqual(len(team), 4)
+
+        founder = next((m for m in team if m["id"] == "char_founder"), None)
+        self.assertIsNotNone(founder)
+        self.assertEqual(founder["name"], "G.S.")
+        self.assertIn("Flow Matching", founder["specialties"])
+        self.assertTrue(os.path.exists(founder["avatar"].lstrip("/")))
+
+        # 2. Character audition speak endpoint
+        speak_res = self.client.post("/api/team/speak", json={
+            "member_id": "char_founder",
+            "text": "Voice audition test line."
+        })
+        self.assertEqual(speak_res.status_code, 200)
+        data = speak_res.json()
+        self.assertTrue(data["success"])
+        self.assertEqual(data["member"], "G.S.")
+        self.assertIn("audio_url", data)
+
+    @patch("skills_engine.synthesize", return_value=(24000, np.zeros(24000, dtype=np.float32), None))
+    def test_25_antigravity_skills_marketplace_and_custom_agent(self, mock_synth):
+        """Audit Antigravity Skills Marketplace listing, installation, and custom subagent definition."""
+        # 1. Marketplace catalog
+        res = self.client.get("/api/skills/marketplace")
+        self.assertEqual(res.status_code, 200)
+        marketplace = res.json()["marketplace"]
+        self.assertGreaterEqual(len(marketplace), 3)
+
+        # 2. Install skill
+        install_res = self.client.post("/api/skills/install", json={"skill_id": "interactive_tutor"})
+        self.assertEqual(install_res.status_code, 200)
+        self.assertTrue(install_res.json()["success"])
+
+        # 3. Define custom autonomous subagent
+        custom_res = self.client.post("/api/skills/custom", json={
+            "name": "Audit Test Storyteller",
+            "role": "Narrative Synthesis",
+            "description": "Tests custom Antigravity subagent definition",
+            "system_prompt": "You are a test agent.",
+            "voice_archetype": "Epic Cinematic",
+            "tools": ["llm_reasoning", "voice_synthesis"]
+        })
+        self.assertEqual(custom_res.status_code, 200)
+        custom_data = custom_res.json()
+        self.assertTrue(custom_data["success"])
+        new_skill_id = custom_data["skill"]["id"]
+
+        # 4. Execute custom subagent
+        exec_res = self.client.post("/api/skills/execute", json={
+            "skill_id": new_skill_id,
+            "params": {"prompt": "Tell a brief audit tale"}
+        })
+        self.assertEqual(exec_res.status_code, 200)
+        self.assertTrue(exec_res.json()["success"])
+
+    def test_26_image_generation_and_visual_artwork(self):
+        """Audit Antigravity-style creative vision & image generation endpoint."""
+        res = self.client.post("/api/image/generate", json={
+            "prompt": "Cyberpunk Neural Soundwave Horizon",
+            "style": "cinematic"
+        })
+        self.assertEqual(res.status_code, 200)
+        data = res.json()
+        self.assertTrue(data["success"])
+        self.assertIn("image_url", data)
+        self.assertIn("filename", data)
+        self.assertTrue(data["image_url"].endswith(".svg"))
+        # Verify file exists on disk
+        img_path = os.path.join("static", "img_output", data["filename"])
+        self.assertTrue(os.path.exists(img_path))
+
+    @patch("skills_engine.synthesize", return_value=(24000, np.zeros(24000, dtype=np.float32), None))
+    def test_27_kids_entertainment_skill(self, mock_synth):
+        """Audit Khyathi.Sri Kids Songs & Story Studio with Key Secure Foundation partner."""
+        res = self.client.post("/api/skills/execute", json={
+            "skill_id": "kids_rhymes",
+            "params": {
+                "theme": "Smiling Star in Midnight Sky",
+                "content_type": "Nursery Rhyme Song",
+                "language": "en"
+            }
+        })
+        self.assertEqual(res.status_code, 200)
+        data = res.json()
+        self.assertTrue(data["success"])
+        self.assertEqual(data["character"], "Khyathi Sri")
+        self.assertIn("image_url", data)
+        self.assertIn("audio_url", data)
+        self.assertEqual(data["partner"], "Key Secure Foundation")
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

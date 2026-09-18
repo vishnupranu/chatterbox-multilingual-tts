@@ -6,8 +6,9 @@
 
 // Application State
 const state = {
-  currentTab: 'chat',
+  currentTab: 'landing',
   selectedLanguage: 'en',
+  selectedModel: 'local_neural',
   referenceAudioUrl: null,
   referenceAudioFilename: null,
   settings: {
@@ -20,6 +21,9 @@ const state = {
   languages: {},
   samples: {},
   presets: [],
+  skills: [],
+  models: [],
+  connectors: [],
   chatMessages: [],
   workersInterval: null,
   mediaRecorder: null,
@@ -113,9 +117,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   initMicRecording();
   initCodeWorkspace();
   initWorkers();
+  initHeaderModelSelector();
   await loadSystemStatusAndLanguages();
   await loadPresetVoices();
   await loadBillingPlansAndBalance();
+  await refreshSkillsList();
+  await loadSkillsMarketplace();
+  await loadTeamRoster();
+  await loadLLMModelsMatrix();
+  await loadConnectorsList();
   addWelcomeChatMessage();
 });
 
@@ -314,7 +324,7 @@ function updatePromptPlaceholder() {
 
 // Tab Navigation
 function initTabs() {
-  const tabs = ['landing', 'chat', 'code', 'workers'];
+  const tabs = ['landing', 'team', 'chat', 'skills', 'models', 'connectors', 'code', 'workers'];
   tabs.forEach(tabName => {
     const btn = document.getElementById(`nav-btn-${tabName}`);
     if (btn) {
@@ -323,9 +333,25 @@ function initTabs() {
   });
 }
 
+const TAB_TITLES = {
+  landing: "Chatterbox GS • Multilingual Flow-Matching Showcase",
+  team: "Human AI Characters & Team • GS Leadership & Acoustic Personas",
+  chat: "Chat Assistant • 23 Languages & Zero-Shot Voice Cloning",
+  skills: "Antigravity Autonomous Agent Skills Studio • Multi-Voice & Cultural Dubbing",
+  models: "Multi-Model LLM Matrix • Frontier AI Reasoning & Speech",
+  connectors: "Connectors & Ecosystem • Provider Keys & Inbound Webhooks",
+  code: "Interactive Code Runner & REST API Sandbox",
+  workers: "Autonomous Background Workers & Mass Dubbing Pipeline"
+};
+
 function switchTab(targetTab) {
   state.currentTab = targetTab;
-  const tabs = ['landing', 'chat', 'code', 'workers'];
+  const tabs = ['landing', 'team', 'chat', 'skills', 'models', 'connectors', 'code', 'workers'];
+
+  const topTitle = document.getElementById('top-title');
+  if (topTitle && TAB_TITLES[targetTab]) {
+    topTitle.textContent = TAB_TITLES[targetTab];
+  }
 
   tabs.forEach(tab => {
     const btn = document.getElementById(`nav-btn-${tab}`);
@@ -356,6 +382,12 @@ function switchTab(targetTab) {
       }
     }
   });
+
+  if (targetTab === 'team') {
+    loadTeamRoster();
+  } else if (targetTab === 'skills') {
+    loadSkillsMarketplace();
+  }
 
   // Start polling workers if on workers tab
   if (targetTab === 'workers') {
@@ -561,37 +593,63 @@ async function handleChatSubmit() {
   if (btn) btn.disabled = true;
 
   try {
-    const payload = {
-      text: text,
-      language: lang,
-      audio_prompt_url: state.referenceAudioUrl,
-      exaggeration: state.settings.exaggeration,
-      cfg_weight: state.settings.cfg_weight,
-      temperature: state.settings.temperature,
-      seed: state.settings.seed,
-      model_version: state.settings.model_version,
-    };
+    let data;
+    if (state.selectedModel && state.selectedModel !== 'local_neural') {
+      const res = await fetch('/api/llm/chat-and-speak', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          prompt: text,
+          model_id: state.selectedModel,
+          language: lang,
+          audio_prompt_url: state.referenceAudioUrl
+        })
+      });
+      data = await res.json();
+      loadingDiv.remove();
+      if (!res.ok) {
+        throw new Error(data.detail || "LLM Chat request failed");
+      }
+      addChatMessage({
+        role: 'assistant',
+        text: `[${data.model.toUpperCase()} • ${data.provider}]: ${data.text}`,
+        language: data.language || lang,
+        audio_url: data.audio_url,
+        duration: data.duration || 0,
+      });
+    } else {
+      const payload = {
+        text: text,
+        language: lang,
+        audio_prompt_url: state.referenceAudioUrl,
+        exaggeration: state.settings.exaggeration,
+        cfg_weight: state.settings.cfg_weight,
+        temperature: state.settings.temperature,
+        seed: state.settings.seed,
+        model_version: state.settings.model_version,
+      };
 
-    const res = await fetch('/api/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
 
-    const data = await res.json();
-    loadingDiv.remove();
+      data = await res.json();
+      loadingDiv.remove();
 
-    if (!res.ok) {
-      throw new Error(data.detail || "Synthesis request failed");
+      if (!res.ok) {
+        throw new Error(data.detail || "Synthesis request failed");
+      }
+
+      addChatMessage({
+        role: 'assistant',
+        text: data.text,
+        language: data.language,
+        audio_url: data.audio_url,
+        duration: data.duration,
+      });
     }
-
-    addChatMessage({
-      role: 'assistant',
-      text: data.text,
-      language: data.language,
-      audio_url: data.audio_url,
-      duration: data.duration,
-    });
   } catch (err) {
     loadingDiv.remove();
     addChatMessage({
@@ -1417,5 +1475,842 @@ function speakAITalkText(btn) {
   .catch(() => { btn.innerHTML = `<span>🔊</span> Listen`; });
 }
 window.speakAITalkText = speakAITalkText;
+
+// ==============================================================================
+// Header LLM Model Selector
+// ==============================================================================
+function initHeaderModelSelector() {
+  const selector = document.getElementById('header-llm-model-select');
+  if (selector) {
+    selector.value = state.selectedModel || 'local_neural';
+    selector.addEventListener('change', (e) => {
+      state.selectedModel = e.target.value;
+      console.log(`[Chatterbox] Switched active reasoning model to: ${state.selectedModel}`);
+    });
+  }
+}
+window.initHeaderModelSelector = initHeaderModelSelector;
+
+// ==============================================================================
+// Autonomous Agent Skills Studio Controller
+// ==============================================================================
+async function refreshSkillsList() {
+  try {
+    const res = await fetch('/api/skills/list');
+    const data = await res.json();
+    state.skills = data.skills || [];
+    console.log(`[Skills] Loaded ${state.skills.length} autonomous agent skills.`);
+  } catch (err) {
+    console.error("[Skills] Failed to fetch skills:", err);
+  }
+}
+window.refreshSkillsList = refreshSkillsList;
+
+// 1. Podcast Studio Producer Skill
+async function executePodcastSkill() {
+  const topic = document.getElementById('skill-podcast-topic')?.value.trim() || "Advances in Neural Flow Matching";
+  const turns = parseInt(document.getElementById('skill-podcast-turns')?.value || '3');
+  const llm = document.getElementById('skill-podcast-llm')?.value || 'local_neural';
+  const btn = document.getElementById('btn-skill-run-podcast');
+  const resContainer = document.getElementById('skill-podcast-result');
+
+  if (!resContainer) return;
+  resContainer.classList.remove('hidden');
+  resContainer.innerHTML = `
+    <div class="p-3.5 rounded-xl bg-zinc-950/90 border border-purple-500/30 text-xs text-purple-300 flex items-center gap-2">
+      <svg class="animate-spin w-4 h-4 text-purple-400" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg>
+      Generating dual-host podcast dialog and recording alternating 24kHz tracks...
+    </div>
+  `;
+  if (btn) btn.disabled = true;
+
+  try {
+    const res = await fetch('/api/skills/execute', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        skill_id: 'podcast_host',
+        params: { topic: topic, turns_count: turns, model_id: llm }
+      })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || "Podcast generation failed");
+
+    let dialogHtml = '';
+    if (data.dialog && data.dialog.length > 0) {
+      dialogHtml = data.dialog.map(d => `
+        <div class="p-2.5 rounded-lg ${d.speaker === 'Host A' ? 'bg-purple-950/40 border border-purple-500/20' : 'bg-indigo-950/40 border border-indigo-500/20'} text-xs">
+          <span class="font-bold font-mono text-[10px] ${d.speaker === 'Host A' ? 'text-purple-400' : 'text-indigo-400'}">${d.speaker}</span>: 
+          <span class="text-zinc-200">${escapeHtml(d.text)}</span>
+        </div>
+      `).join('');
+    }
+
+    resContainer.innerHTML = `
+      <div class="p-4 rounded-xl bg-zinc-950/90 border border-purple-500/30 space-y-3">
+        <div class="flex items-center justify-between text-xs border-b border-white/10 pb-2">
+          <div class="font-bold text-white flex items-center gap-2">
+            <span>🎙️</span> ${escapeHtml(data.episode_title || topic)}
+          </div>
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-purple-500/20 text-purple-300">${data.duration_est || '~15s'}</span>
+        </div>
+        <div class="space-y-1.5 max-h-48 overflow-y-auto pr-1">
+          ${dialogHtml}
+        </div>
+        ${data.audio_url ? `
+          <div class="pt-2 border-t border-white/10 flex items-center justify-between gap-3">
+            <audio controls src="${data.audio_url}" class="w-full h-8"></audio>
+            <a href="${data.audio_url}" download="podcast_episode.wav" class="px-2.5 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-semibold text-xs flex-shrink-0 transition">
+              Download WAV
+            </a>
+          </div>
+        ` : ''}
+      </div>
+    `;
+  } catch (err) {
+    resContainer.innerHTML = `<div class="p-3 rounded-xl bg-rose-950/50 border border-rose-500/30 text-xs text-rose-300">Error: ${err.message}</div>`;
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+window.executePodcastSkill = executePodcastSkill;
+
+// 2. Cross-Lingual Cultural Dubber Skill
+async function executeDubbingSkill() {
+  const text = document.getElementById('skill-dub-text')?.value.trim() || "Welcome to Chatterbox multilingual synthesis.";
+  const lang = document.getElementById('skill-dub-lang')?.value || "ja";
+  const btn = document.getElementById('btn-skill-run-dub');
+  const resContainer = document.getElementById('skill-dub-result');
+
+  if (!resContainer) return;
+  resContainer.classList.remove('hidden');
+  resContainer.innerHTML = `
+    <div class="p-3.5 rounded-xl bg-zinc-950/90 border border-cyan-500/30 text-xs text-cyan-300 flex items-center gap-2">
+      <svg class="animate-spin w-4 h-4 text-cyan-400" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg>
+      Translating culturally into ${lang.toUpperCase()} and synthesizing with matching timbre...
+    </div>
+  `;
+  if (btn) btn.disabled = true;
+
+  try {
+    const res = await fetch('/api/skills/execute', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        skill_id: 'cross_lingual_translator',
+        params: { source_text: text, target_language: lang }
+      })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || "Dubbing failed");
+
+    resContainer.innerHTML = `
+      <div class="p-4 rounded-xl bg-zinc-950/90 border border-cyan-500/30 space-y-3">
+        <div class="flex items-center justify-between text-xs border-b border-white/10 pb-2">
+          <span class="font-bold text-white flex items-center gap-2">
+            <span>🌐</span> Target: ${data.target_language.toUpperCase()}
+          </span>
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300">${data.duration ? data.duration + 's' : 'Ready'}</span>
+        </div>
+        <div class="text-xs p-2.5 rounded-lg bg-cyan-950/30 border border-cyan-500/20 text-cyan-200">
+          ${escapeHtml(data.translated_text)}
+        </div>
+        ${data.audio_url ? `
+          <div class="pt-2 border-t border-white/10 flex items-center justify-between gap-3">
+            <audio controls src="${data.audio_url}" class="w-full h-8"></audio>
+            <a href="${data.audio_url}" download="dubbed_${lang}.wav" class="px-2.5 py-1.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white font-semibold text-xs flex-shrink-0 transition">
+              Download WAV
+            </a>
+          </div>
+        ` : ''}
+      </div>
+    `;
+  } catch (err) {
+    resContainer.innerHTML = `<div class="p-3 rounded-xl bg-rose-950/50 border border-rose-500/30 text-xs text-rose-300">Error: ${err.message}</div>`;
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+window.executeDubbingSkill = executeDubbingSkill;
+
+// 3. Document Narrator Skill
+async function executeNarratorSkill() {
+  const doc = document.getElementById('skill-narrator-text')?.value.trim() || "Chapter 1: The Acoustic Horizon.";
+  const style = document.getElementById('skill-narrator-style')?.value || "Warm Conversational";
+  const btn = document.getElementById('btn-skill-run-narrator');
+  const resContainer = document.getElementById('skill-narrator-result');
+
+  if (!resContainer) return;
+  resContainer.classList.remove('hidden');
+  resContainer.innerHTML = `
+    <div class="p-3.5 rounded-xl bg-zinc-950/90 border border-amber-500/30 text-xs text-amber-300 flex items-center gap-2">
+      <svg class="animate-spin w-4 h-4 text-amber-400" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg>
+      Analyzing paragraph flow and narrating chapter audio...
+    </div>
+  `;
+  if (btn) btn.disabled = true;
+
+  try {
+    const res = await fetch('/api/skills/execute', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        skill_id: 'document_narrator',
+        params: { document_text: doc, voice_style: style }
+      })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || "Narration failed");
+
+    resContainer.innerHTML = `
+      <div class="p-4 rounded-xl bg-zinc-950/90 border border-amber-500/30 space-y-3">
+        <div class="flex items-center justify-between text-xs border-b border-white/10 pb-2">
+          <span class="font-bold text-white flex items-center gap-2">
+            <span>📖</span> Style: ${data.style || style}
+          </span>
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-500/20 text-amber-300">${data.word_count || 0} Words</span>
+        </div>
+        ${data.audio_url ? `
+          <div class="pt-2 border-t border-white/10 flex items-center justify-between gap-3">
+            <audio controls src="${data.audio_url}" class="w-full h-8"></audio>
+            <a href="${data.audio_url}" download="narrated_chapter.wav" class="px-2.5 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-500 text-white font-semibold text-xs flex-shrink-0 transition">
+              Download WAV
+            </a>
+          </div>
+        ` : ''}
+      </div>
+    `;
+  } catch (err) {
+    resContainer.innerHTML = `<div class="p-3 rounded-xl bg-rose-950/50 border border-rose-500/30 text-xs text-rose-300">Error: ${err.message}</div>`;
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+window.executeNarratorSkill = executeNarratorSkill;
+
+// 4. Voice Director Skill
+async function executeDirectorSkill() {
+  const script = document.getElementById('skill-director-text')?.value.trim() || "Listen closely, the future of voice has arrived.";
+  const mood = document.getElementById('skill-director-mood')?.value || "Dramatic Suspense";
+  const btn = document.getElementById('btn-skill-run-director');
+  const resContainer = document.getElementById('skill-director-result');
+
+  if (!resContainer) return;
+  resContainer.classList.remove('hidden');
+  resContainer.innerHTML = `
+    <div class="p-3.5 rounded-xl bg-zinc-950/90 border border-emerald-500/30 text-xs text-emerald-300 flex items-center gap-2">
+      <svg class="animate-spin w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg>
+      Directing acoustic emotion parameters (${mood}) and rendering audio...
+    </div>
+  `;
+  if (btn) btn.disabled = true;
+
+  try {
+    const res = await fetch('/api/skills/execute', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        skill_id: 'voice_director',
+        params: { script: script, mood: mood }
+      })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || "Voice direct failed");
+
+    const tuning = data.tuning_applied || {};
+    resContainer.innerHTML = `
+      <div class="p-4 rounded-xl bg-zinc-950/90 border border-emerald-500/30 space-y-3">
+        <div class="flex items-center justify-between text-xs border-b border-white/10 pb-2">
+          <span class="font-bold text-white flex items-center gap-2">
+            <span>🎬</span> Mood: ${data.mood || mood}
+          </span>
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300">CFG: ${tuning.cfg_weight || 0.5} • Exag: ${tuning.exaggeration || 0.5}</span>
+        </div>
+        ${data.audio_url ? `
+          <div class="pt-2 border-t border-white/10 flex items-center justify-between gap-3">
+            <audio controls src="${data.audio_url}" class="w-full h-8"></audio>
+            <a href="${data.audio_url}" download="directed_scene.wav" class="px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs flex-shrink-0 transition">
+              Download WAV
+            </a>
+          </div>
+        ` : ''}
+      </div>
+    `;
+  } catch (err) {
+    resContainer.innerHTML = `<div class="p-3 rounded-xl bg-rose-950/50 border border-rose-500/30 text-xs text-rose-300">Error: ${err.message}</div>`;
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+window.executeDirectorSkill = executeDirectorSkill;
+
+// 5. Khyathi.Sri Kids Songs & Story Studio Skill
+async function executeKidsSkill() {
+  const theme = document.getElementById('skill-kids-theme')?.value.trim() || "Rainbow Butterfly in Sunny Garden";
+  const type = document.getElementById('skill-kids-type')?.value || "Nursery Rhyme Song";
+  const btn = document.getElementById('btn-skill-run-kids');
+  const resContainer = document.getElementById('skill-kids-result');
+
+  if (!resContainer) return;
+  resContainer.classList.remove('hidden');
+  resContainer.innerHTML = `
+    <div class="p-3.5 rounded-xl bg-zinc-950/90 border border-pink-500/30 text-xs text-pink-300 flex items-center gap-2">
+      <svg class="animate-spin w-4 h-4 text-pink-400" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg>
+      Khyathi.Sri is composing your song, generating colorful artwork, and recording 24kHz audio...
+    </div>
+  `;
+  if (btn) btn.disabled = true;
+
+  try {
+    const res = await fetch('/api/skills/execute', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        skill_id: 'kids_rhymes',
+        params: { theme: theme, content_type: type, language: 'en' }
+      })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || "Kids studio failed");
+
+    resContainer.innerHTML = `
+      <div class="p-4 rounded-xl bg-zinc-950/90 border border-pink-500/30 space-y-3">
+        <div class="flex items-center justify-between text-xs border-b border-white/10 pb-2">
+          <div class="flex items-center gap-2 text-white font-bold">
+            <img src="/static/img/avatar_khyathi_sri.png" alt="Khyathi Sri" class="w-6 h-6 rounded-full object-cover border border-pink-400">
+            <span>Khyathi.Sri • ${escapeHtml(data.content_type || type)}</span>
+          </div>
+          <div class="flex items-center gap-1.5 text-[10px] text-amber-300 font-mono">
+            <img src="/static/img/partner_key_secure_foundation.png" class="w-4 h-4 object-contain">
+            <span>Key Secure Verified</span>
+          </div>
+        </div>
+
+        ${data.image_url ? `
+          <div class="rounded-xl overflow-hidden border border-white/10 shadow-lg">
+            <img src="${data.image_url}" alt="${escapeHtml(data.theme || '')}" class="w-full h-48 object-cover">
+          </div>
+        ` : ''}
+
+        <p class="text-xs text-zinc-200 leading-relaxed italic bg-black/40 p-3 rounded-xl border border-white/5">
+          "${escapeHtml(data.text || '')}"
+        </p>
+
+        ${data.audio_url ? `
+          <div class="pt-2 border-t border-white/10 flex items-center justify-between gap-3">
+            <audio controls src="${data.audio_url}" class="w-full h-8"></audio>
+            <a href="${data.audio_url}" download="khyathi_kids_song.wav" class="px-3 py-1.5 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 text-white font-semibold text-xs flex-shrink-0 transition">
+              Download WAV
+            </a>
+          </div>
+        ` : ''}
+      </div>
+    `;
+  } catch (err) {
+    resContainer.innerHTML = `<div class="p-3 rounded-xl bg-rose-950/50 border border-rose-500/30 text-xs text-rose-300">Error: ${err.message}</div>`;
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+window.executeKidsSkill = executeKidsSkill;
+
+// ==============================================================================
+// GS Human & AI Team Roster Controller
+// ==============================================================================
+async function loadTeamRoster() {
+  const grid = document.getElementById('team-roster-grid');
+  if (!grid) return;
+
+  try {
+    const res = await fetch('/api/team');
+    const data = await res.json();
+    state.teamMembers = data.team || [];
+
+    grid.innerHTML = state.teamMembers.map(m => {
+      const isFounder = m.id === 'char_founder';
+      return `
+        <div class="glass-panel rounded-2xl p-5 border border-white/5 hover:border-indigo-500/40 transition flex flex-col justify-between card-3d-character group">
+          <div class="space-y-3">
+            <div class="flex items-start justify-between gap-2">
+              <div class="relative avatar-neural-glow">
+                <img src="${m.avatar}" alt="${escapeHtml(m.name)}" class="w-14 h-14 rounded-2xl object-cover border border-white/20 shadow-md ${isFounder ? 'animate-character-float' : ''}">
+                <span class="absolute -bottom-1 -right-1 w-3 h-3 rounded-full bg-emerald-400 border-2 border-[#0c0e15]"></span>
+              </div>
+              <span class="text-[9px] px-2 py-0.5 rounded-full font-mono font-bold uppercase border ${m.tag_color || 'border-indigo-500/40 text-indigo-300 bg-indigo-500/10'}">
+                ${escapeHtml(m.tag || 'AGENT')}
+              </span>
+            </div>
+
+            <div>
+              <h4 class="text-sm font-bold text-white group-hover:text-indigo-300 transition">${escapeHtml(m.name)}</h4>
+              <div class="text-[11px] text-zinc-400 font-medium">${escapeHtml(m.title)}</div>
+              <div class="text-[10px] text-zinc-500 font-mono">${escapeHtml(m.role)}</div>
+            </div>
+
+            <p class="text-xs text-zinc-300 leading-relaxed line-clamp-3">
+              ${escapeHtml(m.bio)}
+            </p>
+
+            <div class="flex flex-wrap gap-1 pt-1">
+              ${(m.specialties || []).map(s => `
+                <span class="text-[9px] px-2 py-0.5 rounded bg-white/5 text-zinc-400 font-mono border border-white/5">${escapeHtml(s)}</span>
+              `).join('')}
+            </div>
+          </div>
+
+          <div class="pt-4 mt-3 border-t border-white/5 space-y-2">
+            <button onclick="auditionTeamVoice('${m.id}', this)" class="w-full py-2 rounded-xl bg-white/5 hover:bg-white/10 text-xs text-zinc-200 font-semibold transition flex items-center justify-center gap-1.5">
+              <svg class="w-3.5 h-3.5 text-amber-400" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              <span>Audition Voice</span>
+            </button>
+            <div class="grid grid-cols-2 gap-2">
+              <button onclick="adoptTeamVoicePersona('${m.id}')" class="py-1.5 rounded-xl bg-white/5 hover:bg-indigo-600/20 text-[10px] text-zinc-300 font-medium border border-white/5 transition text-center">
+                🎭 Clone Voice
+              </button>
+              <button onclick="chatWithTeamPersona('${m.id}')" class="py-1.5 rounded-xl bg-indigo-600/30 hover:bg-indigo-600/50 text-[10px] text-indigo-300 font-medium border border-indigo-500/30 transition text-center">
+                💬 Chat
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  } catch (err) {
+    console.error("[Team] Failed to load team roster:", err);
+  }
+}
+window.loadTeamRoster = loadTeamRoster;
+
+async function auditionTeamVoice(memberId, btn) {
+  const originalText = btn ? btn.innerHTML : '';
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = `<svg class="animate-spin w-3.5 h-3.5 text-amber-400 inline" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg> Auditioning...`;
+  }
+
+  try {
+    const res = await fetch('/api/team/speak', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ member_id: memberId })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || "Audition failed");
+
+    const playerBox = document.getElementById('team-audio-player-box');
+    const speakerLabel = document.getElementById('team-audio-speaker-label');
+    const quoteText = document.getElementById('team-audio-quote-text');
+    const durationLabel = document.getElementById('team-audio-duration');
+    const audioElement = document.getElementById('team-audio-element');
+
+    if (playerBox && audioElement) {
+      playerBox.classList.remove('hidden');
+      if (speakerLabel) speakerLabel.innerHTML = `<span>🔊</span> ${escapeHtml(data.member)} Voice Audition`;
+      if (quoteText) quoteText.textContent = `"${data.text}"`;
+      if (durationLabel) durationLabel.textContent = `Duration: ~${data.duration || 3.5}s`;
+      audioElement.src = data.audio_url;
+      audioElement.play().catch(() => {});
+      playerBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  } catch (err) {
+    alert(`Audition error: ${err.message}`);
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = originalText;
+    }
+  }
+}
+window.auditionTeamVoice = auditionTeamVoice;
+
+function adoptTeamVoicePersona(memberId) {
+  const member = (state.teamMembers || []).find(m => m.id === memberId) || { name: "G.S. Founder", preset_voice: "ru_male" };
+  if (member.preset_voice) {
+    selectPresetVoice(member.preset_voice);
+  }
+  const badge = document.getElementById('voice-clone-badge');
+  const filenameEl = document.getElementById('voice-clone-filename');
+  if (badge && filenameEl) {
+    badge.classList.remove('hidden');
+    badge.classList.add('flex');
+    filenameEl.textContent = `${member.name} Persona`;
+  }
+  alert(`Active voice timbre set to ${member.name}! Ready for zero-shot cloning.`);
+}
+window.adoptTeamVoicePersona = adoptTeamVoicePersona;
+
+function chatWithTeamPersona(memberId) {
+  adoptTeamVoicePersona(memberId);
+  switchTab('chat');
+  const chatInput = document.getElementById('chat-input-text');
+  const member = (state.teamMembers || []).find(m => m.id === memberId) || { name: "G.S." };
+  if (chatInput) {
+    chatInput.value = `Hello ${member.name}, I would love to test your voice flow-matching and neural speech model!`;
+    chatInput.focus();
+  }
+}
+window.chatWithTeamPersona = chatWithTeamPersona;
+
+// ==============================================================================
+// Antigravity Skills Sub-Tab & Marketplace Controller
+// ==============================================================================
+function switchSkillsSubTab(subTab) {
+  const tabs = ['active', 'marketplace', 'builder'];
+  tabs.forEach(t => {
+    const btn = document.getElementById(`skills-subtab-${t}`);
+    const container = document.getElementById(`skills-container-${t}`);
+    if (btn) {
+      if (t === subTab) {
+        btn.classList.add('bg-purple-600/30', 'border-purple-500/40', 'text-purple-200');
+        btn.classList.remove('bg-white/5', 'text-zinc-400');
+      } else {
+        btn.classList.remove('bg-purple-600/30', 'border-purple-500/40', 'text-purple-200');
+        btn.classList.add('bg-white/5', 'text-zinc-400');
+      }
+    }
+    if (container) {
+      if (t === subTab) {
+        container.classList.remove('hidden');
+        container.classList.add('animate-fade-in');
+      } else {
+        container.classList.add('hidden');
+        container.classList.remove('animate-fade-in');
+      }
+    }
+  });
+
+  if (subTab === 'marketplace') {
+    loadSkillsMarketplace();
+  }
+}
+window.switchSkillsSubTab = switchSkillsSubTab;
+
+async function loadSkillsMarketplace() {
+  const grid = document.getElementById('skills-marketplace-grid');
+  if (!grid) return;
+
+  try {
+    const res = await fetch('/api/skills/marketplace');
+    const data = await res.json();
+    const items = data.marketplace || [];
+
+    grid.innerHTML = items.map(item => `
+      <div class="glass-panel rounded-2xl p-5 border border-white/5 hover:border-purple-500/40 transition flex flex-col justify-between group">
+        <div>
+          <div class="flex items-start justify-between gap-2 mb-2">
+            <div class="flex items-center gap-2.5">
+              <span class="p-2 rounded-xl bg-purple-500/20 text-purple-300 text-lg">${escapeHtml(item.icon || '📦')}</span>
+              <div>
+                <h4 class="text-sm font-bold text-white group-hover:text-purple-300 transition">${escapeHtml(item.name)}</h4>
+                <div class="text-[10px] text-zinc-400 font-mono">${escapeHtml(item.category || 'Agent Skill')} • v${escapeHtml(item.version || '1.0')}</div>
+              </div>
+            </div>
+            <span class="text-[9px] px-2 py-0.5 rounded-full ${item.installed ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-purple-500/20 text-purple-300 border border-purple-500/30'} font-mono font-bold">
+              ${item.installed ? 'INSTALLED' : 'ANTIGRAVITY'}
+            </span>
+          </div>
+
+          <p class="text-xs text-zinc-300 leading-relaxed my-3">${escapeHtml(item.desc)}</p>
+
+          <div class="p-2.5 rounded-xl bg-black/40 border border-white/5 space-y-1 my-2">
+            <div class="text-[10px] font-mono text-zinc-400">Agent Instruction & Tools:</div>
+            <div class="text-[11px] font-mono text-purple-200/90 truncate">${escapeHtml(item.system_prompt || '')}</div>
+            <div class="flex flex-wrap gap-1 pt-1">
+              ${(item.tools || []).map(t => `<span class="text-[9px] px-1.5 py-0.5 rounded bg-white/5 text-zinc-400 font-mono">${escapeHtml(t)}</span>`).join('')}
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-3 border-t border-white/5 flex items-center justify-between gap-2">
+          <span class="text-[10px] font-mono text-zinc-500">Autonomous Execution Ready</span>
+          <button onclick="installSkillFromMarketplace('${item.id}', this)" ${item.installed ? 'disabled' : ''} class="px-4 py-2 rounded-xl ${item.installed ? 'bg-zinc-800 text-zinc-500 cursor-not-allowed' : 'bg-purple-600 hover:bg-purple-500 text-white shadow-lg shadow-purple-600/30'} text-xs font-bold transition flex items-center gap-1.5">
+            <span>${item.installed ? '✓ Installed' : '+ Install Skill'}</span>
+          </button>
+        </div>
+      </div>
+    `).join('');
+  } catch (err) {
+    console.error("[Marketplace] Failed to fetch marketplace:", err);
+  }
+}
+window.loadSkillsMarketplace = loadSkillsMarketplace;
+
+async function installSkillFromMarketplace(skillId, btn) {
+  if (btn) btn.disabled = true;
+  try {
+    const res = await fetch('/api/skills/install', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ skill_id: skillId })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || "Install failed");
+    alert(`Successfully installed "${data.skill.name}" into your autonomous studio!`);
+    await refreshSkillsList();
+    await loadSkillsMarketplace();
+  } catch (err) {
+    alert(`Install failed: ${err.message}`);
+    if (btn) btn.disabled = false;
+  }
+}
+window.installSkillFromMarketplace = installSkillFromMarketplace;
+
+async function deployCustomAgent() {
+  const name = document.getElementById('builder-agent-name')?.value.trim();
+  const role = document.getElementById('builder-agent-role')?.value.trim();
+  const desc = document.getElementById('builder-agent-desc')?.value.trim();
+  const systemPrompt = document.getElementById('builder-agent-prompt')?.value.trim();
+  const voice = document.getElementById('builder-agent-voice')?.value;
+
+  const toolCheckboxes = document.querySelectorAll('.builder-tool-check:checked');
+  const tools = Array.from(toolCheckboxes).map(c => c.value);
+
+  if (!name || !desc || !systemPrompt) {
+    alert("Please fill in Agent Name, Description, and System Prompt.");
+    return;
+  }
+
+  try {
+    const res = await fetch('/api/skills/custom', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: name,
+        role: role,
+        description: desc,
+        system_prompt: systemPrompt,
+        voice_archetype: voice,
+        tools: tools
+      })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || "Deploy failed");
+
+    alert(`Autonomous Subagent "${name}" deployed successfully via Antigravity Agent Runtime!`);
+    await refreshSkillsList();
+    switchSkillsSubTab('active');
+  } catch (err) {
+    alert(`Deploy failed: ${err.message}`);
+  }
+}
+window.deployCustomAgent = deployCustomAgent;
+
+// ==============================================================================
+// Multi-Model LLM Matrix Controller
+// ==============================================================================
+async function loadLLMModelsMatrix() {
+  const container = document.getElementById('llm-models-matrix-grid');
+  if (!container) return;
+
+  try {
+    const res = await fetch('/api/llm/models');
+    const data = await res.json();
+    state.models = data.models || [];
+
+    container.innerHTML = state.models.map(m => `
+      <div class="glass-panel rounded-2xl p-5 border border-white/5 hover:border-emerald-500/30 transition flex flex-col justify-between group">
+        <div>
+          <div class="flex items-start justify-between gap-2 mb-3">
+            <div>
+              <div class="text-xs font-bold text-white group-hover:text-emerald-300 transition flex items-center gap-1.5">
+                <span>🧠</span> ${escapeHtml(m.name)}
+              </div>
+              <div class="text-[10px] text-zinc-400 font-mono">${escapeHtml(m.provider)}</div>
+            </div>
+            <span class="text-[9px] px-2 py-0.5 rounded-full ${m.ready ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-zinc-800 text-zinc-400'} font-mono font-bold uppercase">
+              ${m.ready ? 'READY' : 'SETUP'}
+            </span>
+          </div>
+          
+          <div class="grid grid-cols-2 gap-2 my-3 p-2.5 rounded-xl bg-black/40 border border-white/5 text-[10px] font-mono text-zinc-400">
+            <div>Context: <span class="text-white">${m.context_window || '128k'}</span></div>
+            <div>Speed: <span class="text-emerald-400">${m.speed_tokens_sec || 'Fast'}</span></div>
+          </div>
+          <p class="text-xs text-zinc-300 leading-relaxed mb-3">${escapeHtml(m.desc || '')}</p>
+        </div>
+
+        <div class="pt-3 border-t border-white/5 flex items-center justify-between gap-2">
+          <button onclick="selectLLMModel('${m.id}')" class="flex-1 py-1.5 rounded-xl bg-white/5 hover:bg-emerald-600/30 text-[11px] font-semibold text-zinc-300 hover:text-white transition text-center">
+            Select Active
+          </button>
+          <button onclick="document.getElementById('llm-play-model').value = '${m.id}'; document.getElementById('llm-play-prompt').focus();" class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-[11px] font-semibold text-white transition shadow-sm">
+            Test
+          </button>
+        </div>
+      </div>
+    `).join('');
+  } catch (err) {
+    console.error("[LLM Matrix] Failed to load models:", err);
+  }
+}
+window.loadLLMModelsMatrix = loadLLMModelsMatrix;
+
+function selectLLMModel(modelId) {
+  state.selectedModel = modelId;
+  const headerSelect = document.getElementById('header-llm-model-select');
+  if (headerSelect) headerSelect.value = modelId;
+  const playSelect = document.getElementById('llm-play-model');
+  if (playSelect) playSelect.value = modelId;
+  alert(`Active reasoning model switched to: ${modelId}`);
+}
+window.selectLLMModel = selectLLMModel;
+
+async function runLLMPlayground() {
+  const prompt = document.getElementById('llm-play-prompt')?.value.trim();
+  const modelId = document.getElementById('llm-play-model')?.value || 'local_neural';
+  const resContainer = document.getElementById('llm-play-result');
+  const btn = document.getElementById('btn-llm-generate-speak');
+
+  if (!prompt || !resContainer) return;
+  resContainer.classList.remove('hidden');
+  resContainer.innerHTML = `
+    <div class="text-xs text-indigo-300 flex items-center gap-2 py-2">
+      <svg class="animate-spin w-4 h-4 text-indigo-400" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg>
+      Inferring on ${modelId.toUpperCase()} and synthesizing 24kHz audio...
+    </div>
+  `;
+  if (btn) btn.disabled = true;
+
+  try {
+    const res = await fetch('/api/llm/chat-and-speak', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        prompt: prompt,
+        model_id: modelId,
+        language: state.selectedLanguage || 'en',
+        audio_prompt_url: state.referenceAudioUrl
+      })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || "Multimodal generation failed");
+
+    resContainer.innerHTML = `
+      <div class="space-y-2.5">
+        <div class="flex items-center justify-between text-xs border-b border-white/10 pb-2">
+          <span class="font-bold text-white flex items-center gap-1.5">
+            <span class="text-emerald-400">●</span> ${data.provider} (${data.model})
+          </span>
+          <span class="text-[10px] font-mono text-zinc-400">Duration: ${data.duration || '~4s'}</span>
+        </div>
+        <p class="text-xs text-zinc-200 leading-relaxed">${escapeHtml(data.text)}</p>
+        ${data.audio_url ? `
+          <div class="pt-2 border-t border-white/10 flex items-center gap-3">
+            <audio controls src="${data.audio_url}" class="w-full h-8"></audio>
+            <a href="${data.audio_url}" download="speech_${modelId}.wav" class="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs flex-shrink-0 transition">
+              Download WAV
+            </a>
+          </div>
+        ` : ''}
+      </div>
+    `;
+  } catch (err) {
+    resContainer.innerHTML = `<div class="text-xs text-rose-400">Error: ${err.message}</div>`;
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+window.runLLMPlayground = runLLMPlayground;
+
+// ==============================================================================
+// Connectors & Integrations Controller
+// ==============================================================================
+async function loadConnectorsList() {
+  try {
+    const res = await fetch('/api/connectors/list');
+    const data = await res.json();
+    state.connectors = data.connectors || [];
+
+    // Update badges
+    state.connectors.forEach(c => {
+      if (c.id === 'gemini') {
+        const b = document.getElementById('badge-key-gemini');
+        if (b) b.textContent = c.status.toUpperCase();
+      }
+      if (c.id === 'openai') {
+        const b = document.getElementById('badge-key-openai');
+        if (b) b.textContent = c.status.toUpperCase();
+      }
+      if (c.id === 'anthropic') {
+        const b = document.getElementById('badge-key-anthropic');
+        if (b) b.textContent = c.status.toUpperCase();
+      }
+    });
+  } catch (err) {
+    console.error("[Connectors] Failed to load connectors:", err);
+  }
+}
+window.loadConnectorsList = loadConnectorsList;
+
+async function saveApiKey(providerKey, inputId) {
+  const val = document.getElementById(inputId)?.value.trim();
+  if (!val) {
+    alert("Please enter a valid API key string.");
+    return;
+  }
+
+  try {
+    const res = await fetch('/api/connectors/keys', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ provider_key: providerKey, key_value: val })
+    });
+    const data = await res.json();
+    if (res.ok) {
+      alert(`Successfully saved ${providerKey}!`);
+      loadConnectorsList();
+      loadLLMModelsMatrix();
+    } else {
+      alert(`Error: ${data.detail || 'Failed to save'}`);
+    }
+  } catch (err) {
+    alert(`Network Error: ${err.message}`);
+  }
+}
+window.saveApiKey = saveApiKey;
+
+async function triggerTestWebhook() {
+  const rawPayload = document.getElementById('webhook-test-payload')?.value;
+  const resContainer = document.getElementById('webhook-test-result');
+  const btn = document.getElementById('btn-test-webhook');
+
+  if (!resContainer) return;
+  resContainer.classList.remove('hidden');
+  resContainer.innerHTML = `<span class="text-zinc-400">Sending webhook payload...</span>`;
+  if (btn) btn.disabled = true;
+
+  try {
+    const parsed = JSON.parse(rawPayload);
+    const res = await fetch('/api/connectors/webhook', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(parsed)
+    });
+    const data = await res.json();
+
+    if (res.ok && data.success) {
+      resContainer.innerHTML = `
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-emerald-400 font-bold font-mono">● 200 OK • Inbound Event Accepted</span>
+            <span class="text-zinc-400 font-mono text-[10px]">Duration: ${data.duration || '~3s'}</span>
+          </div>
+          <div class="text-zinc-300">${escapeHtml(data.text || '')}</div>
+          ${data.audio_url ? `
+            <audio controls src="${data.audio_url}" class="w-full h-8 mt-2"></audio>
+          ` : ''}
+        </div>
+      `;
+    } else {
+      resContainer.innerHTML = `<span class="text-rose-400">Webhook Failed: ${data.detail || 'Error'}</span>`;
+    }
+  } catch (err) {
+    resContainer.innerHTML = `<span class="text-rose-400">Invalid JSON or network failure: ${err.message}</span>`;
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+window.triggerTestWebhook = triggerTestWebhook;
+
 
 
