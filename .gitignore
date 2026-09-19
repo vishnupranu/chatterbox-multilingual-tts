@@ -47,3 +47,8 @@ static/uploads/*
 logs/
 *.log
 users.db
+
+# Generated image outputs & GitHub workflow scope isolation
+static/img_output/art_*.svg
+.github/
+

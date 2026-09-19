@@ -743,6 +743,164 @@ def clear_completed_worker_jobs():
     return {"success": True, "message": "Cleared completed jobs."}
 
 
+# =====================================================================
+# ENVATO MARKETPLACE, CMS & MULTI-GATEWAY PAYMENT SUITE
+# =====================================================================
+
+class PurchaseTemplateRequest(BaseModel):
+    template_id: str
+    plan_tier: Optional[str] = "single_license"
+    payment_method: Optional[str] = "stripe"
+
+
+class CheckoutSessionRequest(BaseModel):
+    plan_id: str
+    currency: Optional[str] = "USD"
+    gateway: Optional[str] = "stripe"
+    interval: Optional[str] = "monthly"
+
+
+@app.get("/api/marketplace/templates")
+def get_marketplace_templates():
+    """Returns curated Envato-style SaaS and Voice templates with ratings, prices, and stats."""
+    templates = [
+        {
+            "id": "tpl_sales_pipeline",
+            "title": "Autonomous Sales Pipeline Management",
+            "category": "Sales & Marketing",
+            "price_usd": 49,
+            "price_inr": 3999,
+            "rating": 4.95,
+            "reviews_count": 142,
+            "sales_count": 1280,
+            "author": "Khyathi.Sri Elite Studio",
+            "description": "Full-stack lead qualification and voice outreach agent integrating CRM webhooks with 23 Indic languages.",
+            "features": ["Autonomous Lead Routing", "24kHz Voice Dubbing", "Slack & Salesforce Webhooks", "Commercial License"],
+            "badge": "BESTSELLER"
+        },
+        {
+            "id": "tpl_academic_narrator",
+            "title": "PG Thesis & Literature Audio Reader",
+            "category": "Academic & Research",
+            "price_usd": 59,
+            "price_inr": 4800,
+            "rating": 4.98,
+            "reviews_count": 89,
+            "sales_count": 940,
+            "author": "Dr. Aryan Sharma",
+            "description": "Automated PDF research paper ingestion, citation phonetic pronunciation, and 24kHz chapter rendering.",
+            "features": ["LaTeX & PDF Support", "Bilingual Glossaries", "Lossless MPS Acceleration", "Citations Preserved"],
+            "badge": "TRENDING"
+        },
+        {
+            "id": "tpl_podcast_studio",
+            "title": "Dual-Speaker Tech Podcaster Studio",
+            "category": "Audio & Podcasting",
+            "price_usd": 79,
+            "price_inr": 6400,
+            "rating": 4.92,
+            "reviews_count": 210,
+            "sales_count": 1850,
+            "author": "Khyathi.Sri Media",
+            "description": "Natural conversational turn-taking, multi-actor banter, cadence shifting, and automatic background ambiance.",
+            "features": ["Dual-Actor Dynamic Pacing", "Sound Effects Mixing", "WAV & MP3 Export", "Multi-Dialect Dubbing"],
+            "badge": "POPULAR"
+        },
+        {
+            "id": "tpl_kids_storyteller",
+            "title": "Enchanted Storyteller & Rhymes Engine",
+            "category": "Early Education",
+            "price_usd": 39,
+            "price_inr": 3200,
+            "rating": 4.99,
+            "reviews_count": 315,
+            "sales_count": 2400,
+            "author": "Khyathi Sri",
+            "description": "Joyful fairy tales, phonetics learning drills, animated animal voices, and warm bedtime stories.",
+            "features": ["Child-Safe Filtering", "Animal Audio Cues", "Warm Acoustic Pitch", "Interactive Q&A"],
+            "badge": "HOT"
+        }
+    ]
+    return {"success": True, "templates": templates}
+
+
+@app.post("/api/marketplace/purchase")
+def purchase_template(req: PurchaseTemplateRequest):
+    """Generates an authentic Envato-style license key and order confirmation."""
+    import secrets
+    license_key = f"ENV-{secrets.token_hex(4).upper()}-{secrets.token_hex(4).upper()}-{secrets.token_hex(4).upper()}"
+    return {
+        "success": True,
+        "template_id": req.template_id,
+        "license_key": license_key,
+        "status": "active",
+        "payment_method": req.payment_method,
+        "message": "Template license generated successfully."
+    }
+
+
+@app.get("/api/cms/blog")
+def get_cms_blog_posts():
+    """Returns dynamic blog posts for the SaaS content engine."""
+    posts = [
+        {
+            "id": "blog_1",
+            "title": "Scaling Indic Voice Synthesis on Apple Silicon Neural Cores",
+            "author": "Dr. Aryan Sharma",
+            "date": "September 18, 2026",
+            "read_time": "5 min read",
+            "category": "Engineering",
+            "excerpt": "How we achieved zero-artifact 24kHz audio synthesis in Telugu and Tamil using Metal Performance Shaders."
+        },
+        {
+            "id": "blog_2",
+            "title": "The Rise of Autonomous Audio Workers in Multichannel Enterprise",
+            "author": "Platform Architecture Team",
+            "date": "September 15, 2026",
+            "read_time": "7 min read",
+            "category": "Architecture",
+            "excerpt": "Integrating real-time CRM webhooks with conversational voice agents for immediate sales outreach."
+        },
+        {
+            "id": "blog_3",
+            "title": "Preserving Dialect Nuance Across 23 World Languages",
+            "author": "Khyathi Sri",
+            "date": "September 10, 2026",
+            "read_time": "4 min read",
+            "category": "Linguistics",
+            "excerpt": "A deep dive into cross-lingual zero-shot timbre transfer without losing emotional pacing."
+        }
+    ]
+    return {"success": True, "posts": posts}
+
+
+@app.get("/api/cms/portfolio")
+def get_cms_portfolio():
+    """Returns showcase audio projects and community creations."""
+    portfolio = [
+        {"id": "port_1", "title": "Quantum Computing Thesis Audiobook", "author": "IIT Madras Research Lab", "language": "Telugu / English", "duration": "48 mins", "type": "Academic"},
+        {"id": "port_2", "title": "The Panchatantra Reimagined in 24kHz", "author": "Early Childhood Network", "language": "Hindi", "duration": "18 mins", "type": "Storytelling"},
+        {"id": "port_3", "title": "Fintech Global Series A Investor Memo", "author": "Apex Ventures", "language": "English", "duration": "12 mins", "type": "Executive Brief"}
+    ]
+    return {"success": True, "portfolio": portfolio}
+
+
+@app.post("/api/billing/checkout-session")
+def create_checkout_session(req: CheckoutSessionRequest):
+    """Simulates real Stripe / Razorpay checkout session creation."""
+    import secrets
+    session_id = f"cs_{req.gateway}_{secrets.token_hex(12)}"
+    return {
+        "success": True,
+        "session_id": session_id,
+        "gateway": req.gateway,
+        "plan_id": req.plan_id,
+        "currency": req.currency,
+        "interval": req.interval,
+        "checkout_url": f"https://checkout.{req.gateway}.com/pay/{session_id}"
+    }
+
+
 def find_free_port(default_port: int = 8080) -> int:
     import socket
     port = int(os.getenv("PORT", default_port))

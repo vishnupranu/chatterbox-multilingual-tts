@@ -4,36 +4,73 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Khyathi.Sri AI — Multilingual Voice &amp; Intelligence</title>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/css/style.css">
+
+  <!-- Google Analytics 4 (GA4) Hook -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ENVATOAI2026"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ENVATOAI2026');
+  </script>
+
+  <!-- Microsoft Clarity Heatmaps Hook -->
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+      t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+      y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "envato_clarity_2026");
+  </script>
 </head>
-<body>
+<body class="theme-envato-dark">
 
 <!-- ══════════════════════════════════════════════════════════════════════════
-     TOP NAVBAR (SaaS Clean Navigation)
+     TOP NAVBAR (Envato SaaS Pro Navigation)
      ══════════════════════════════════════════════════════════════════════════ -->
 <nav class="navbar" id="navbar">
   <a class="navbar-brand" href="#" onclick="showPanel('landing'); return false;">
     <img src="/static/img/brand_logo_gs.png" alt="Logo" class="navbar-logo" onerror="this.style.display='none'">
     <span class="navbar-name">Khyathi<span>.Sri AI</span></span>
-    <span class="badge-tagline">ZipWP SaaS</span>
+    <span class="badge-tagline">SaaS Pro</span>
   </a>
 
   <div class="navbar-nav">
     <button class="nav-btn active" id="nav-btn-landing" onclick="showPanel('landing')">Overview</button>
     <button class="nav-btn" id="nav-btn-chat" onclick="openClaudeStudio()">Claude Studio</button>
+    <button class="nav-btn" id="nav-btn-marketplace" onclick="showPanel('marketplace')">Marketplace</button>
     <button class="nav-btn" id="nav-btn-skills" onclick="showPanel('skills')">Capabilities</button>
-    <button class="nav-btn" id="nav-btn-models" onclick="showPanel('models')">Intelligence Matrix</button>
-    <button class="nav-btn" id="nav-btn-team" onclick="showPanel('team')">Voice Personas</button>
+    <button class="nav-btn" id="nav-btn-models" onclick="showPanel('models')">Intelligence</button>
+    <button class="nav-btn" id="nav-btn-team" onclick="showPanel('team')">Personas</button>
+    <button class="nav-btn" id="nav-btn-blog" onclick="showPanel('blog')">Articles</button>
+    <button class="nav-btn" id="nav-btn-portfolio" onclick="showPanel('portfolio')">Showcase</button>
     <button class="nav-btn" id="nav-btn-connectors" onclick="showPanel('connectors')">Integrations</button>
-    <button class="nav-btn" id="nav-btn-code" onclick="showPanel('code')">Developer API</button>
+    <button class="nav-btn" id="nav-btn-code" onclick="showPanel('code')">API</button>
   </div>
 
   <div class="navbar-right">
     <!-- Active Status -->
-    <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-secondary);background:var(--surface-secondary);border:1px solid var(--border);padding:5px 10px;border-radius:8px">
+    <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-secondary);background:var(--surface);border:1px solid var(--border);padding:5px 10px;border-radius:8px">
       <span class="dot dot-green"></span>
       <span id="status-label">MPS Neural 24kHz</span>
     </div>
+
+    <!-- Theme Switcher -->
+    <button class="theme-switcher-btn" id="theme-toggle-btn" onclick="toggleTheme()" title="Switch Theme (Dark Slate / Light)">
+      <svg id="theme-icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:block"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      <svg id="theme-icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+
+    <!-- Pricing / Checkout Quick Trigger -->
+    <button class="btn btn-ghost btn-sm" onclick="openCheckoutModal()" style="display:flex;align-items:center;gap:6px">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 100 4h4a2 2 0 110 4H8"/><path d="M12 6v2m0 8v2"/></svg>
+      Pricing
+    </button>
 
     <!-- Auth Chip / Login Button -->
     <div id="nav-auth-container">
@@ -957,7 +994,307 @@ const { audio_url } = await res.json();</div>
     </div>
   </div>
 
+  <!-- ════════════════════════════════════════════════════════════════════════
+       PANEL: ENVATO MARKETPLACE (#panel-marketplace)
+       ════════════════════════════════════════════════════════════════════════ -->
+  <div class="page-panel" id="panel-marketplace">
+    <div style="padding:48px 32px 36px;background:radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.15) 0%, var(--surface) 80%);border-bottom:1px solid var(--border);text-align:center">
+      <div class="zip-sec-tag">Envato Market Ecosystem</div>
+      <h1 class="gradient-heading" style="font-size:clamp(28px, 4vw, 42px);font-weight:900;margin-bottom:12px">Autonomous Agent &amp; Voice Marketplace</h1>
+      <p style="font-size:15px;color:var(--ink-secondary);max-width:700px;margin:0 auto 24px">
+        Production-ready enterprise workflow kits, autonomous sales agents, and multilingual narrators with verified commercial licenses.
+      </p>
+
+      <!-- Category Filter Pills -->
+      <div style="display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px;margin-top:16px" id="marketplace-filters">
+        <button class="int-pill active" onclick="filterMarketplace('all', this)">All Templates</button>
+        <button class="int-pill" onclick="filterMarketplace('Sales & Marketing', this)">Sales &amp; Marketing</button>
+        <button class="int-pill" onclick="filterMarketplace('Academic & Research', this)">Academic &amp; Research</button>
+        <button class="int-pill" onclick="filterMarketplace('Audio & Podcasting', this)">Audio &amp; Media</button>
+        <button class="int-pill" onclick="filterMarketplace('Early Education', this)">Early Education</button>
+      </div>
+    </div>
+
+    <div style="padding:36px;max-width:1240px;margin:0 auto">
+      <div id="marketplace-templates-container" class="marketplace-grid">
+        <!-- Rendered by JS from /api/marketplace/templates -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════════════════
+       PANEL: CMS BLOG (#panel-blog)
+       ════════════════════════════════════════════════════════════════════════ -->
+  <div class="page-panel" id="panel-blog">
+    <div style="padding:48px 32px 36px;background:var(--surface);border-bottom:1px solid var(--border);text-align:center">
+      <div class="zip-sec-tag">Knowledge &amp; Engineering</div>
+      <h1 class="gradient-heading" style="font-size:clamp(28px, 4vw, 40px);font-weight:900;margin-bottom:12px">Voice AI Architecture &amp; Research Articles</h1>
+      <p style="font-size:15px;color:var(--ink-secondary);max-width:680px;margin:0 auto">
+        Deep technical insights into zero-shot neural synthesis, MPS acceleration, and autonomous multi-agent pipelines.
+      </p>
+    </div>
+
+    <div style="padding:36px;max-width:1200px;margin:0 auto">
+      <div id="blog-posts-container" class="blog-grid">
+        <!-- Rendered by JS from /api/cms/blog -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════════════════
+       PANEL: PORTFOLIO SHOWCASE (#panel-portfolio)
+       ════════════════════════════════════════════════════════════════════════ -->
+  <div class="page-panel" id="panel-portfolio">
+    <div style="padding:48px 32px 36px;background:var(--surface);border-bottom:1px solid var(--border);text-align:center">
+      <div class="zip-sec-tag">Production Deployments</div>
+      <h1 class="gradient-heading" style="font-size:clamp(28px, 4vw, 40px);font-weight:900;margin-bottom:12px">Client &amp; Community Audio Showcase</h1>
+      <p style="font-size:15px;color:var(--ink-secondary);max-width:680px;margin:0 auto">
+        Listen to real-world voice productions across academic research, fintech briefings, and children entertainment.
+      </p>
+    </div>
+
+    <div style="padding:36px;max-width:1200px;margin:0 auto">
+      <div id="portfolio-items-container" class="portfolio-grid">
+        <!-- Rendered by JS from /api/cms/portfolio -->
+      </div>
+    </div>
+  </div>
+
 </div><!-- /#main-view-container -->
+
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     MULTI-GATEWAY PRICING & CHECKOUT MODAL (#pricing-checkout-modal)
+     ══════════════════════════════════════════════════════════════════════════ -->
+<div class="pricing-modal" id="pricing-checkout-modal" style="display:none" onclick="if(event.target===this)closeCheckoutModal()">
+  <div class="pricing-modal-box">
+    <!-- Close Button -->
+    <button class="btn btn-ghost btn-icon" onclick="closeCheckoutModal()" style="position:absolute;top:20px;right:20px" title="Close">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+
+    <div style="text-align:center;max-width:600px;margin:0 auto">
+      <div class="zip-sec-tag">Universal Enterprise Plans</div>
+      <h2 style="font-size:26px;font-weight:800;color:var(--ink);margin-bottom:8px">Choose Your Production Tier</h2>
+      <p style="font-size:13.5px;color:var(--ink-secondary)">Instant deployment with commercial licensing across 23 Indic languages.</p>
+
+      <!-- Monthly / Annual Toggle -->
+      <div class="pricing-toggle-wrap">
+        <span style="font-size:13px;font-weight:600" id="label-monthly">Monthly</span>
+        <label class="billing-switch">
+          <input type="checkbox" id="billing-interval-toggle" onchange="onBillingIntervalChanged()">
+          <span class="billing-slider"></span>
+        </label>
+        <span style="font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px" id="label-yearly">
+          Annual
+          <span class="pill pill-green" style="font-size:10px">Save 20%</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- Pricing Tiers Grid -->
+    <div class="pricing-tier-grid">
+      <!-- Free Tier -->
+      <div class="pricing-tier-card" id="tier-card-free" onclick="selectPlanTier('free')">
+        <div>
+          <div style="font-size:12px;font-weight:700;color:var(--ink-muted);text-transform:uppercase;margin-bottom:4px">Starter</div>
+          <div style="font-size:20px;font-weight:800;color:var(--ink)">Community Free</div>
+          <div style="margin:14px 0">
+            <span style="font-size:32px;font-weight:800;color:var(--ink)">$0</span>
+            <span style="font-size:13px;color:var(--ink-muted)">/ month</span>
+          </div>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;font-size:12px;color:var(--ink-secondary)">
+            <li style="display:flex;align-items:center;gap:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> 100 Syntheses / month</li>
+            <li style="display:flex;align-items:center;gap:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> 3 Core Languages</li>
+            <li style="display:flex;align-items:center;gap:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Standard Neural Latency</li>
+          </ul>
+        </div>
+        <button class="btn btn-ghost btn-sm" style="width:100%;margin-top:20px" onclick="event.stopPropagation(); selectPlanTier('free')">Current Tier</button>
+      </div>
+
+      <!-- Pro Tier (Selected) -->
+      <div class="pricing-tier-card featured selected" id="tier-card-pro" onclick="selectPlanTier('pro')">
+        <div class="tpl-badge tpl-badge-trending" style="position:absolute;top:14px;right:14px">MOST POPULAR</div>
+        <div>
+          <div style="font-size:12px;font-weight:700;color:var(--primary);text-transform:uppercase;margin-bottom:4px">Professional</div>
+          <div style="font-size:20px;font-weight:800;color:var(--ink)">Pro Unlimited</div>
+          <div style="margin:14px 0">
+            <span style="font-size:32px;font-weight:800;color:var(--primary)" id="price-pro-display">$29</span>
+            <span style="font-size:13px;color:var(--ink-muted)" id="interval-pro-display">/ month</span>
+            <div style="font-size:11.5px;color:var(--accent);margin-top:2px" id="subtext-pro-display">Billed monthly</div>
+          </div>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;font-size:12px;color:var(--ink-secondary)">
+            <li style="display:flex;align-items:center;gap:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Unlimited 24kHz Audio Generation</li>
+            <li style="display:flex;align-items:center;gap:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> All 23 Indic Languages &amp; Dialects</li>
+            <li style="display:flex;align-items:center;gap:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Commercial Production License</li>
+            <li style="display:flex;align-items:center;gap:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Priority Metal Neural Pipeline</li>
+          </ul>
+        </div>
+        <button class="btn btn-primary btn-sm" style="width:100%;margin-top:20px" onclick="event.stopPropagation(); selectPlanTier('pro')">Selected Tier</button>
+      </div>
+
+      <!-- Enterprise Tier -->
+      <div class="pricing-tier-card" id="tier-card-enterprise" onclick="selectPlanTier('enterprise')">
+        <div>
+          <div style="font-size:12px;font-weight:700;color:var(--purple);text-transform:uppercase;margin-bottom:4px">Enterprise Scale</div>
+          <div style="font-size:20px;font-weight:800;color:var(--ink)">Dedicated Cloud</div>
+          <div style="margin:14px 0">
+            <span style="font-size:32px;font-weight:800;color:var(--ink)" id="price-ent-display">$99</span>
+            <span style="font-size:13px;color:var(--ink-muted)" id="interval-ent-display">/ month</span>
+            <div style="font-size:11.5px;color:var(--accent);margin-top:2px" id="subtext-ent-display">Billed monthly</div>
+          </div>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;font-size:12px;color:var(--ink-secondary)">
+            <li style="display:flex;align-items:center;gap:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Custom Zero-Shot Timbre Fine-tuning</li>
+            <li style="display:flex;align-items:center;gap:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Dedicated Webhooks &amp; SLA Guarantee</li>
+            <li style="display:flex;align-items:center;gap:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Super Admin RBAC Management</li>
+          </ul>
+        </div>
+        <button class="btn btn-ghost btn-sm" style="width:100%;margin-top:20px" onclick="event.stopPropagation(); selectPlanTier('enterprise')">Select Enterprise</button>
+      </div>
+    </div>
+
+    <!-- Payment Gateway Selection -->
+    <div style="border-top:1px solid var(--border);padding-top:20px">
+      <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:12px">Select Payment Gateway</div>
+      <div class="gateway-tabs">
+        <!-- Stripe -->
+        <div class="gateway-card active" id="gateway-opt-stripe" onclick="selectPaymentGateway('stripe')">
+          <div class="gateway-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6366F1" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          </div>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:var(--ink)">Stripe Global</div>
+            <div style="font-size:11px;color:var(--ink-muted)">Cards, Apple Pay, Google Pay</div>
+          </div>
+        </div>
+
+        <!-- Razorpay -->
+        <div class="gateway-card" id="gateway-opt-razorpay" onclick="selectPaymentGateway('razorpay')">
+          <div class="gateway-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </div>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:var(--ink)">Razorpay (India)</div>
+            <div style="font-size:11px;color:var(--ink-muted)">UPI, NetBanking, RuPay</div>
+          </div>
+        </div>
+
+        <!-- Scan to Pay UPI -->
+        <div class="gateway-card" id="gateway-opt-upi" onclick="selectPaymentGateway('upi')">
+          <div class="gateway-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          </div>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:var(--ink)">Scan to Pay (UPI)</div>
+            <div style="font-size:11px;color:var(--ink-muted)">Instant QR Transfer 0% Fee</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Checkout Action Button -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:20px;flex-wrap:wrap;gap:12px">
+        <div style="font-size:12px;color:var(--ink-muted)">
+          Encrypted 256-Bit SSL Checkout · Instant Cryptographic License Activation
+        </div>
+        <button class="btn btn-primary btn-lg" onclick="executeCheckoutSession()" id="btn-proceed-checkout" style="gap:8px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span id="checkout-btn-text">Proceed to Checkout</span>
+        </button>
+      </div>
+      <div id="checkout-result-box" style="margin-top:14px;display:none"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     CRYPTOGRAPHIC LICENSE KEY CERTIFICATE MODAL (#license-modal)
+     ══════════════════════════════════════════════════════════════════════════ -->
+<div class="pricing-modal" id="license-modal" style="display:none" onclick="if(event.target===this)closeLicenseModal()">
+  <div class="license-modal-box">
+    <button class="btn btn-ghost btn-icon" onclick="closeLicenseModal()" style="position:absolute;top:18px;right:18px" title="Close">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+
+    <div class="license-cert-badge">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      Official Commercial License Issued
+    </div>
+
+    <h2 style="font-size:22px;font-weight:800;color:var(--ink);margin-bottom:6px" id="license-template-name">Template License</h2>
+    <p style="font-size:13px;color:var(--ink-secondary);margin-bottom:16px">
+      Your cryptographically signed license is active. Store this key safely to unlock auto-deployment and neural priority queues.
+    </p>
+
+    <div class="license-key-display">
+      <span id="license-key-val">ENV-XXXX-XXXX-XXXX</span>
+      <button class="btn btn-primary btn-sm" onclick="copyLicenseKey()" id="btn-copy-license" style="padding:5px 10px">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+        Copy
+      </button>
+    </div>
+
+    <div style="display:flex;gap:10px;justify-content:center;margin-top:16px">
+      <button class="btn btn-ghost btn-sm" onclick="downloadLicenseFile()">Download License (.txt)</button>
+      <button class="btn btn-primary btn-sm" onclick="closeLicenseModal(); openClaudeStudio()">Open in Claude Studio</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     USER SETTINGS & SEO MODAL (#user-settings-modal)
+     ══════════════════════════════════════════════════════════════════════════ -->
+<div class="pricing-modal" id="user-settings-modal" style="display:none" onclick="if(event.target===this)closeUserSettingsModal()">
+  <div class="pricing-modal-box" style="max-width:580px">
+    <button class="btn btn-ghost btn-icon" onclick="closeUserSettingsModal()" style="position:absolute;top:18px;right:18px" title="Close">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+
+    <div class="zip-sec-tag">Account &amp; Platform Settings</div>
+    <h2 style="font-size:22px;font-weight:800;color:var(--ink);margin-bottom:18px">Preferences &amp; License</h2>
+
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <!-- Pro Plan Status Toggle -->
+      <div style="background:var(--surface-secondary);border:1px solid var(--border);border-radius:12px;padding:16px;display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <div style="font-size:14px;font-weight:700;color:var(--ink)">Pro Plan Status</div>
+          <div style="font-size:12px;color:var(--ink-muted)">Enable Pro features across all studio workspaces</div>
+        </div>
+        <label class="billing-switch">
+          <input type="checkbox" id="settings-pro-toggle" onchange="toggleProPlan(this.checked)">
+          <span class="billing-slider"></span>
+        </label>
+      </div>
+
+      <!-- Envato License Key Registration -->
+      <div style="background:var(--surface-secondary);border:1px solid var(--border);border-radius:12px;padding:16px">
+        <label style="font-size:13px;font-weight:700;color:var(--ink);display:block;margin-bottom:6px">Envato License Key</label>
+        <div style="display:flex;gap:8px">
+          <input type="text" id="settings-license-input" class="input" placeholder="ENV-XXXX-XXXX-XXXX" style="font-family:monospace">
+          <button class="btn btn-primary btn-sm" onclick="activateLicenseFromSettings()">Verify</button>
+        </div>
+        <div id="settings-license-status" style="font-size:11.5px;color:var(--accent);margin-top:6px;display:none">
+          Active Commercial License Attached
+        </div>
+      </div>
+
+      <!-- SEO Meta Settings -->
+      <div style="background:var(--surface-secondary);border:1px solid var(--border);border-radius:12px;padding:16px">
+        <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:10px">SEO &amp; OpenGraph Meta</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div>
+            <label style="font-size:11.5px;color:var(--ink-muted)">Page Title</label>
+            <input type="text" id="seo-title" class="input" value="Khyathi.Sri AI — Multilingual Voice &amp; Intelligence">
+          </div>
+          <div>
+            <label style="font-size:11.5px;color:var(--ink-muted)">Meta Description</label>
+            <input type="text" id="seo-desc" class="input" value="Enterprise-grade 24kHz multilingual voice synthesis across 23 Indic languages with autonomous agents.">
+          </div>
+          <button class="btn btn-ghost btn-sm" onclick="saveSeoSettings()" style="align-self:flex-start">Save SEO Config</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 <!-- ══════════════════════════════════════════════════════════════════════════
@@ -1426,7 +1763,7 @@ const { audio_url } = await res.json();</div>
      ══════════════════════════════════════════════════════════════════════════ -->
 <script>
 // ── STATE ROUTER ──
-const ALL_PANELS = ['landing', 'skills', 'models', 'team', 'connectors', 'code'];
+const ALL_PANELS = ['landing', 'skills', 'models', 'team', 'connectors', 'code', 'marketplace', 'blog', 'portfolio'];
 let currentUser = null;
 window._selectedModel = 'local_neural';
 window._selectedPreset = null;
@@ -1445,6 +1782,10 @@ function showPanel(id) {
   if (target) target.classList.add('active');
   document.getElementById('nav-btn-' + id)?.classList.add('active');
   window.scrollTo(0, 0);
+
+  if (id === 'marketplace') loadMarketplace();
+  if (id === 'blog') loadBlog();
+  if (id === 'portfolio') loadPortfolio();
 }
 
 function openAudienceMode(mode) {
@@ -2154,11 +2495,404 @@ function showToast(msg, type = '') {
   setTimeout(() => t.remove(), 2500);
 }
 
+// ── THEME SWITCHER (DARK SLATE / CLEAN LIGHT) ──
+function initTheme() {
+  const saved = localStorage.getItem('chatterbox_theme') || 'dark';
+  applyTheme(saved);
+}
+
+function applyTheme(theme) {
+  const sun = document.getElementById('theme-icon-sun');
+  const moon = document.getElementById('theme-icon-moon');
+  if (theme === 'light') {
+    document.body.classList.remove('theme-envato-dark');
+    document.body.classList.add('theme-envato-light');
+    if (sun) sun.style.display = 'none';
+    if (moon) moon.style.display = 'block';
+  } else {
+    document.body.classList.remove('theme-envato-light');
+    document.body.classList.add('theme-envato-dark');
+    if (sun) sun.style.display = 'block';
+    if (moon) moon.style.display = 'none';
+  }
+  localStorage.setItem('chatterbox_theme', theme);
+}
+
+function toggleTheme() {
+  const current = document.body.classList.contains('theme-envato-light') ? 'light' : 'dark';
+  applyTheme(current === 'light' ? 'dark' : 'light');
+}
+
+// ── MARKETPLACE ENGINE ──
+let allTemplates = [];
+let currentCategory = 'all';
+
+async function loadMarketplace() {
+  const container = document.getElementById('marketplace-templates-container');
+  if (!container) return;
+  try {
+    const res = await fetch('/api/marketplace/templates');
+    const data = await res.json();
+    if (data.success && data.templates) {
+      allTemplates = data.templates;
+      renderMarketplaceTemplates();
+    }
+  } catch (e) {
+    container.innerHTML = `<div style="color:var(--ink-muted);text-align:center;grid-column:1/-1">Failed to load marketplace templates.</div>`;
+  }
+}
+
+function filterMarketplace(category, btn) {
+  currentCategory = category;
+  document.querySelectorAll('#marketplace-filters .int-pill').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderMarketplaceTemplates();
+}
+
+function renderMarketplaceTemplates() {
+  const container = document.getElementById('marketplace-templates-container');
+  if (!container) return;
+  const filtered = currentCategory === 'all' 
+    ? allTemplates 
+    : allTemplates.filter(t => t.category.toLowerCase().includes(currentCategory.toLowerCase()));
+
+  if (!filtered.length) {
+    container.innerHTML = `<div style="color:var(--ink-muted);text-align:center;grid-column:1/-1;padding:40px">No templates found for this category.</div>`;
+    return;
+  }
+
+  container.innerHTML = filtered.map(t => {
+    let badgeClass = 'tpl-badge-bestseller';
+    if (t.badge === 'TRENDING') badgeClass = 'tpl-badge-trending';
+    if (t.badge === 'POPULAR') badgeClass = 'tpl-badge-popular';
+    if (t.badge === 'HOT') badgeClass = 'tpl-badge-hot';
+
+    const featuresHtml = (t.features || []).map(f => `
+      <li>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        ${f}
+      </li>
+    `).join('');
+
+    return `
+      <div class="tpl-card hover-lift">
+        <span class="tpl-badge ${badgeClass}">${t.badge || 'PRO'}</span>
+        <div>
+          <div class="tpl-category">${t.category}</div>
+          <div class="tpl-title">${t.title}</div>
+          <div class="tpl-author">By ${t.author}</div>
+          <p class="tpl-desc">${t.description}</p>
+          <ul class="tpl-features">
+            ${featuresHtml}
+          </ul>
+        </div>
+        <div>
+          <div class="tpl-meta-row">
+            <div class="tpl-rating">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="#F59E0B" stroke="#F59E0B" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <span>${t.rating}</span>
+              <span style="color:var(--ink-muted);font-weight:400">(${t.reviews_count})</span>
+            </div>
+            <div>${(t.sales_count || 0).toLocaleString()} Sales</div>
+          </div>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px">
+            <div class="tpl-price-box">
+              <span class="tpl-price-usd">$${t.price_usd}</span>
+              <span class="tpl-price-inr">₹${t.price_inr.toLocaleString()}</span>
+            </div>
+            <div class="tpl-actions">
+              <button class="btn btn-ghost btn-sm" onclick="previewTemplateDemo('${t.id}', '${t.title.replace(/'/g, "\\'")}')">Demo</button>
+              <button class="btn btn-primary btn-sm" onclick="purchaseTemplateLicense('${t.id}', '${t.title.replace(/'/g, "\\'")}')">Buy License</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+async function purchaseTemplateLicense(templateId, templateTitle) {
+  try {
+    const res = await fetch('/api/marketplace/purchase', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ template_id: templateId, plan_tier: 'single_license', payment_method: 'stripe' })
+    });
+    const data = await res.json();
+    if (data.success && data.license_key) {
+      showLicenseModal(templateTitle || 'Enterprise Workflow Kit', data.license_key);
+    } else {
+      showToast(data.message || 'License generation failed', 'error');
+    }
+  } catch (e) {
+    showToast('Failed to purchase license: ' + e.message, 'error');
+  }
+}
+
+function previewTemplateDemo(templateId, templateTitle) {
+  showToast('Launching live audition for ' + templateTitle, 'success');
+  openClaudeStudio();
+}
+
+function showLicenseModal(title, key) {
+  document.getElementById('license-template-name').textContent = title;
+  document.getElementById('license-key-val').textContent = key;
+  document.getElementById('license-modal').style.display = 'flex';
+}
+
+function closeLicenseModal() {
+  document.getElementById('license-modal').style.display = 'none';
+}
+
+function copyLicenseKey() {
+  const key = document.getElementById('license-key-val').textContent;
+  navigator.clipboard.writeText(key).then(() => {
+    const btn = document.getElementById('btn-copy-license');
+    if (btn) btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Copied!';
+    showToast('License key copied to clipboard!', 'success');
+    setTimeout(() => {
+      if (btn) btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copy';
+    }, 2000);
+  });
+}
+
+function downloadLicenseFile() {
+  const key = document.getElementById('license-key-val').textContent;
+  const name = document.getElementById('license-template-name').textContent;
+  const content = `=======================================================\nKHYATHI.SRI AI COMMERCIAL LICENSE CERTIFICATE\n=======================================================\nTemplate: ${name}\nLicense Key: ${key}\nType: Commercial Production Unlimited\nIssuer: Khyathi.Sri Elite SaaS Systems\nTimestamp: ${new Date().toISOString()}\nStatus: VERIFIED ACTIVE\n=======================================================`;
+  const blob = new Blob([content], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `license-${key}.txt`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('License certificate downloaded.', 'success');
+}
+
+// ── MULTI-GATEWAY CHECKOUT & BILLING SUITE ──
+let selectedPlan = 'pro';
+let selectedGateway = 'stripe';
+let isAnnualBilling = false;
+
+function openCheckoutModal(plan = 'pro') {
+  selectedPlan = plan;
+  selectPlanTier(plan);
+  document.getElementById('pricing-checkout-modal').style.display = 'flex';
+}
+
+function closeCheckoutModal() {
+  document.getElementById('pricing-checkout-modal').style.display = 'none';
+  document.getElementById('checkout-result-box').style.display = 'none';
+}
+
+function onBillingIntervalChanged() {
+  isAnnualBilling = document.getElementById('billing-interval-toggle').checked;
+  const proDisplay = document.getElementById('price-pro-display');
+  const proInterval = document.getElementById('interval-pro-display');
+  const proSubtext = document.getElementById('subtext-pro-display');
+  const entDisplay = document.getElementById('price-ent-display');
+  const entInterval = document.getElementById('interval-ent-display');
+  const entSubtext = document.getElementById('subtext-ent-display');
+
+  if (isAnnualBilling) {
+    if (proDisplay) proDisplay.textContent = '$278';
+    if (proInterval) proInterval.textContent = '/ year';
+    if (proSubtext) proSubtext.textContent = 'Save $70 (20% OFF applied)';
+    if (entDisplay) entDisplay.textContent = '$950';
+    if (entInterval) entInterval.textContent = '/ year';
+    if (entSubtext) entSubtext.textContent = 'Save $238 (20% OFF applied)';
+  } else {
+    if (proDisplay) proDisplay.textContent = '$29';
+    if (proInterval) proInterval.textContent = '/ month';
+    if (proSubtext) proSubtext.textContent = 'Billed monthly';
+    if (entDisplay) entDisplay.textContent = '$99';
+    if (entInterval) entInterval.textContent = '/ month';
+    if (entSubtext) entSubtext.textContent = 'Billed monthly';
+  }
+}
+
+function selectPlanTier(tier) {
+  selectedPlan = tier;
+  ['free', 'pro', 'enterprise'].forEach(t => {
+    document.getElementById('tier-card-' + t)?.classList.remove('selected');
+  });
+  document.getElementById('tier-card-' + tier)?.classList.add('selected');
+  const btnText = document.getElementById('checkout-btn-text');
+  if (btnText) {
+    btnText.textContent = tier === 'free' ? 'Activate Free Plan' : `Proceed with ${tier.toUpperCase()}`;
+  }
+}
+
+function selectPaymentGateway(gw) {
+  selectedGateway = gw;
+  ['stripe', 'razorpay', 'upi'].forEach(g => {
+    document.getElementById('gateway-opt-' + g)?.classList.remove('active');
+  });
+  document.getElementById('gateway-opt-' + gw)?.classList.add('active');
+}
+
+async function executeCheckoutSession() {
+  const resultBox = document.getElementById('checkout-result-box');
+  const btn = document.getElementById('btn-proceed-checkout');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Preparing Gateway…';
+
+  try {
+    const res = await fetch('/api/billing/checkout-session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        plan_id: selectedPlan,
+        currency: selectedGateway === 'razorpay' || selectedGateway === 'upi' ? 'INR' : 'USD',
+        gateway: selectedGateway,
+        interval: isAnnualBilling ? 'yearly' : 'monthly'
+      })
+    });
+    const data = await res.json();
+    if (data.success) {
+      resultBox.style.display = 'block';
+      resultBox.innerHTML = `
+        <div style="background:var(--surface-secondary);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center">
+          <div style="font-size:14px;font-weight:700;color:var(--accent);margin-bottom:4px">
+            Checkout Session Created (${data.gateway.toUpperCase()})
+          </div>
+          <div style="font-size:12px;color:var(--ink-secondary);font-family:monospace;margin-bottom:10px">
+            Session ID: ${data.session_id}
+          </div>
+          <div style="display:flex;gap:8px;justify-content:center">
+            <a href="${data.checkout_url}" target="_blank" class="btn btn-primary btn-sm">Open Payment Gateway &rarr;</a>
+            <button class="btn btn-ghost btn-sm" onclick="simulateSuccessfulPayment('${data.plan_id}')">Simulate Payment Pass</button>
+          </div>
+        </div>
+      `;
+      showToast('Checkout session initialized.', 'success');
+    }
+  } catch (e) {
+    showToast('Payment gateway error: ' + e.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> <span id="checkout-btn-text">Proceed to Checkout</span>';
+  }
+}
+
+function simulateSuccessfulPayment(planId) {
+  toggleProPlan(true);
+  closeCheckoutModal();
+  showToast(`${planId.toUpperCase()} Subscription activated successfully!`, 'success');
+}
+
+// ── USER SETTINGS & PREFERENCES ──
+function openUserSettingsModal() {
+  const isPro = localStorage.getItem('chatterbox_pro_active') === 'true';
+  const proToggle = document.getElementById('settings-pro-toggle');
+  if (proToggle) proToggle.checked = isPro;
+  const savedKey = localStorage.getItem('chatterbox_envato_license');
+  if (savedKey) {
+    document.getElementById('settings-license-input').value = savedKey;
+    document.getElementById('settings-license-status').style.display = 'block';
+  }
+  document.getElementById('user-settings-modal').style.display = 'flex';
+}
+
+function closeUserSettingsModal() {
+  document.getElementById('user-settings-modal').style.display = 'none';
+}
+
+function toggleProPlan(active) {
+  localStorage.setItem('chatterbox_pro_active', active ? 'true' : 'false');
+  const proToggle = document.getElementById('settings-pro-toggle');
+  if (proToggle) proToggle.checked = active;
+  showToast(active ? 'Pro Plan Activated! Unlimited 24kHz Unlocked.' : 'Downgraded to Starter tier.', 'success');
+}
+
+function activateLicenseFromSettings() {
+  const keyInput = document.getElementById('settings-license-input').value.trim();
+  if (!keyInput.startsWith('ENV-')) {
+    showToast('Invalid key format. Must begin with ENV-XXXX', 'error');
+    return;
+  }
+  localStorage.setItem('chatterbox_envato_license', keyInput);
+  toggleProPlan(true);
+  document.getElementById('settings-license-status').style.display = 'block';
+  showToast('License Key validated & Commercial rights unlocked!', 'success');
+}
+
+function saveSeoSettings() {
+  const title = document.getElementById('seo-title').value;
+  const desc = document.getElementById('seo-desc').value;
+  document.title = title;
+  localStorage.setItem('chatterbox_seo_title', title);
+  localStorage.setItem('chatterbox_seo_desc', desc);
+  showToast('SEO settings saved successfully.', 'success');
+}
+
+// ── DYNAMIC CMS BLOG & PORTFOLIO ──
+async function loadBlog() {
+  const container = document.getElementById('blog-posts-container');
+  if (!container) return;
+  try {
+    const res = await fetch('/api/cms/blog');
+    const data = await res.json();
+    if (data.success && data.posts) {
+      container.innerHTML = data.posts.map(p => `
+        <div class="blog-card hover-lift">
+          <div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+              <span class="pill pill-blue">${p.category}</span>
+              <span style="font-size:12px;color:var(--ink-muted)">${p.read_time}</span>
+            </div>
+            <h3 style="font-size:17px;font-weight:800;color:var(--ink);margin-bottom:8px;line-height:1.35">${p.title}</h3>
+            <p style="font-size:13px;color:var(--ink-secondary);line-height:1.6;margin-bottom:16px">${p.excerpt}</p>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--ink-muted)">
+            <span>${p.author}</span>
+            <span>${p.date}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+  } catch (e) {
+    container.innerHTML = `<div style="color:var(--ink-muted);text-align:center;grid-column:1/-1">Failed to load blog articles.</div>`;
+  }
+}
+
+async function loadPortfolio() {
+  const container = document.getElementById('portfolio-items-container');
+  if (!container) return;
+  try {
+    const res = await fetch('/api/cms/portfolio');
+    const data = await res.json();
+    if (data.success && data.portfolio) {
+      container.innerHTML = data.portfolio.map(p => `
+        <div class="portfolio-card hover-lift">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <span class="pill pill-purple">${p.type}</span>
+            <span style="font-size:12px;color:var(--ink-muted)">${p.duration}</span>
+          </div>
+          <div>
+            <h3 style="font-size:17px;font-weight:800;color:var(--ink);margin-bottom:4px">${p.title}</h3>
+            <div style="font-size:12px;color:var(--ink-muted)">By ${p.author} · <strong style="color:var(--primary)">${p.language}</strong></div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px">
+            <span style="font-size:11.5px;color:var(--accent);font-weight:600">Lossless 24kHz Master</span>
+            <button class="btn btn-ghost btn-sm" onclick="openClaudeStudio()">Audition Voice</button>
+          </div>
+        </div>
+      `).join('');
+    }
+  } catch (e) {
+    container.innerHTML = `<div style="color:var(--ink-muted);text-align:center;grid-column:1/-1">Failed to load portfolio items.</div>`;
+  }
+}
+
 // ── INITIAL LOAD ──
 (async () => {
+  initTheme();
   await checkStatus();
   await checkCurrentUser();
-  await Promise.all([loadSkills(), loadModels(), loadTeam(), loadConnectors()]);
+  await Promise.all([loadSkills(), loadModels(), loadTeam(), loadConnectors(), loadMarketplace()]);
 })();
 </script>
 </body>

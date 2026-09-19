@@ -1,54 +1,89 @@
 /* ==============================================================================
-   KHYATHI.SRI AI — ZIPWP SAAS DESIGN SYSTEM & CLAUDE DESKTOP APP LAYOUT
+   KHYATHI.SRI AI — ENVATO PREMIUM SAAS DESIGN SYSTEM ($50+ VALUE)
    ============================================================================== */
 
 :root {
-  --primary: #3b66f5;
-  --primary-hover: #2a52de;
-  --primary-light: #eef2ff;
-  --primary-glow: rgba(59, 102, 245, 0.18);
+  /* Envato SaaS Pro Palette (Dark Slate Default) */
+  --primary: #3B82F6;         /* Electric Blue */
+  --primary-hover: #2563EB;
+  --primary-light: rgba(59, 130, 246, 0.15);
+  --primary-glow: rgba(59, 130, 246, 0.35);
+
+  --secondary: #6366F1;       /* Indigo */
+  --secondary-hover: #4F46E5;
+  --accent: #10B981;          /* Emerald */
+  --accent-light: rgba(16, 185, 129, 0.15);
+
+  --bg: #0F172A;              /* Dark Slate */
+  --surface: #1E293B;         /* Lighter Slate */
+  --surface-secondary: #0B1120;
+  --surface-alt: #334155;
+  --ink: #F8FAFC;             /* Off-White */
+  --ink-secondary: #CBD5E1;
+  --ink-muted: #94A3B8;
+  --ink-subtle: #64748B;
   
-  --ink: #0b132b;
-  --ink-secondary: #334155;
-  --ink-muted: #64748b;
-  --ink-subtle: #94a3b8;
-  
-  --surface: #ffffff;
-  --surface-secondary: #f8fafc;
-  --surface-alt: #f1f5f9;
-  --bg: #f8fafc;
-  --border: #e2e8f0;
-  --border-focus: #3b66f5;
-  
-  --gold: #f59e0b;
-  --gold-light: #fef3c7;
-  --green: #10b981;
-  --green-light: #ecfdf5;
-  --purple: #8b5cf6;
-  --purple-light: #f5f3ff;
-  
+  --border: rgba(255, 255, 255, 0.1);
+  --border-focus: #3B82F6;
+
+  --gold: #F59E0B;
+  --gold-light: rgba(245, 158, 11, 0.15);
+  --green: #10B981;
+  --green-light: rgba(16, 185, 129, 0.15);
+  --purple: #8B5CF6;
+  --purple-light: rgba(139, 92, 246, 0.15);
+
   --radius-sm: 8px;
   --radius: 14px;
   --radius-lg: 20px;
   --radius-full: 9999px;
-  
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2);
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.25), 0 1px 3px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.35);
+  --shadow-primary: 0 8px 30px rgba(59, 130, 246, 0.35);
+
+  --trans: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.theme-envato-light {
+  --primary: #3B82F6;
+  --primary-hover: #2563EB;
+  --primary-light: #EFF6FF;
+  --primary-glow: rgba(59, 130, 246, 0.18);
+
+  --secondary: #6366F1;
+  --secondary-hover: #4F46E5;
+  --accent: #10B981;
+  --accent-light: #ECFDF5;
+
+  --bg: #F8FAFC;
+  --surface: #FFFFFF;
+  --surface-secondary: #F1F5F9;
+  --surface-alt: #E2E8F0;
+  --ink: #0F172A;
+  --ink-secondary: #334155;
+  --ink-muted: #64748B;
+  --ink-subtle: #94A3B8;
+
+  --border: #E2E8F0;
+  --border-focus: #3B82F6;
+
   --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
   --shadow: 0 4px 16px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(15, 23, 42, 0.04);
   --shadow-lg: 0 12px 36px rgba(15, 23, 42, 0.09), 0 4px 12px rgba(15, 23, 42, 0.05);
-  --shadow-primary: 0 8px 24px rgba(59, 102, 245, 0.25);
-  
-  --trans: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --shadow-primary: 0 8px 24px rgba(59, 130, 246, 0.25);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   background: var(--bg);
   color: var(--ink);
   min-height: 100vh;
-  line-height: 1.5;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -104,11 +139,11 @@ body {
 /* ── INPUTS ── */
 .input {
   border: 1px solid var(--border); border-radius: 9px; padding: 9px 13px;
-  font-size: 13px; color: var(--ink); background: #fff; outline: none; width: 100%;
+  font-size: 13px; color: var(--ink); background: var(--surface); outline: none; width: 100%;
   transition: all var(--trans);
 }
 .input:focus {
-  border-color: var(--border-focus); box-shadow: 0 0 0 3px rgba(59, 102, 245, 0.1);
+  border-color: var(--border-focus); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }
 
 /* ==============================================================================
@@ -119,10 +154,14 @@ body {
   height: 64px;
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 36px;
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(15, 23, 42, 0.85);
   backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
-  transition: box-shadow var(--trans);
+  transition: box-shadow var(--trans), background var(--trans);
+}
+body.theme-envato-light .navbar {
+  background: rgba(255, 255, 255, 0.92);
 }
 .navbar.scrolled { box-shadow: var(--shadow); }
 
@@ -1037,4 +1076,448 @@ body {
   align-items: center;
   justify-content: center;
 }
+
+/* ==============================================================================
+   ENVATO PREMIUM DESIGN SYSTEM UTILITIES & MODULES ($50+ VALUE)
+   ============================================================================== */
+
+/* ── Typography & Gradients ── */
+.font-inter {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+.heading-pro {
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+}
+.body-pro {
+  font-weight: 400;
+  line-height: 1.65;
+  color: var(--ink-secondary);
+}
+
+.gradient-text {
+  background: linear-gradient(to right, #60A5FA, #A855F7, #EC4899);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.gradient-heading {
+  background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 50%, #EC4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ── Glassmorphism & Depth ── */
+.glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+body.theme-envato-light .glass {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
+}
+
+/* ── Micro-Interactions ── */
+.hover-lift {
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+  border-color: rgba(59, 130, 246, 0.4);
+}
+
+.hover-scale {
+  transition: transform 0.15s ease;
+}
+.hover-scale:hover {
+  transform: scale(1.02);
+}
+.hover-scale:active, .btn:active, button:active {
+  transform: scale(0.95);
+}
+
+@keyframes pulse-gradient {
+  0%, 100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.04);
+  }
+}
+.animate-pulse-gradient {
+  animation: pulse-gradient 5s ease-in-out infinite;
+}
+
+/* ── Theme Switcher Button ── */
+.theme-switcher-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--ink-secondary);
+  cursor: pointer;
+  transition: all var(--trans);
+}
+.theme-switcher-btn:hover {
+  background: var(--surface-secondary);
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+/* ── Marketplace Module ── */
+.marketplace-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 22px;
+  margin-top: 28px;
+}
+
+.tpl-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.tpl-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+  border-color: var(--primary);
+}
+
+.tpl-badge {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  padding: 3px 9px;
+  border-radius: 9999px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.tpl-badge-bestseller { background: rgba(245, 158, 11, 0.15); color: #F59E0B; border: 1px solid rgba(245, 158, 11, 0.3); }
+.tpl-badge-trending   { background: rgba(59, 130, 246, 0.15); color: #3B82F6; border: 1px solid rgba(59, 130, 246, 0.3); }
+.tpl-badge-popular    { background: rgba(139, 92, 246, 0.15); color: #8B5CF6; border: 1px solid rgba(139, 92, 246, 0.3); }
+.tpl-badge-hot        { background: rgba(239, 68, 68, 0.15); color: #EF4444; border: 1px solid rgba(239, 68, 68, 0.3); }
+
+.tpl-category {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+}
+.tpl-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--ink);
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+.tpl-author {
+  font-size: 12px;
+  color: var(--ink-muted);
+  margin-bottom: 12px;
+}
+.tpl-desc {
+  font-size: 13px;
+  color: var(--ink-secondary);
+  line-height: 1.55;
+  margin-bottom: 16px;
+}
+
+.tpl-features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+.tpl-features li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--ink-secondary);
+}
+
+.tpl-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  font-size: 12px;
+  color: var(--ink-muted);
+}
+.tpl-rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 700;
+  color: var(--gold);
+}
+
+.tpl-price-box {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+.tpl-price-usd {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--ink);
+}
+.tpl-price-inr {
+  font-size: 12.5px;
+  color: var(--ink-muted);
+}
+
+.tpl-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* ── Multi-Gateway Checkout Modal & Pricing ── */
+.pricing-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: modalFadeIn 0.2s ease;
+}
+
+.pricing-modal-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  max-width: 960px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+  padding: 32px;
+  position: relative;
+}
+
+.pricing-toggle-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 20px 0 28px;
+}
+.billing-switch {
+  position: relative;
+  display: inline-block;
+  width: 52px;
+  height: 28px;
+}
+.billing-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.billing-slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: var(--surface-alt);
+  transition: .25s;
+  border-radius: 9999px;
+  border: 1px solid var(--border);
+}
+.billing-slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .25s;
+  border-radius: 50%;
+}
+.billing-switch input:checked + .billing-slider {
+  background-color: var(--primary);
+}
+.billing-switch input:checked + .billing-slider:before {
+  transform: translateX(24px);
+}
+
+.pricing-tier-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+  margin-bottom: 28px;
+}
+
+.pricing-tier-card {
+  background: var(--surface-secondary);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  position: relative;
+}
+.pricing-tier-card.selected, .pricing-tier-card:hover {
+  border-color: var(--primary);
+  background: rgba(59, 130, 246, 0.05);
+  transform: translateY(-2px);
+}
+.pricing-tier-card.featured {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px var(--primary);
+}
+
+/* Payment Gateway Selector */
+.gateway-tabs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin: 20px 0;
+}
+.gateway-card {
+  background: var(--surface-secondary);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.gateway-card:hover, .gateway-card.active {
+  border-color: var(--primary);
+  background: rgba(59, 130, 246, 0.08);
+}
+.gateway-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+
+/* ── License Key Certificate & Modal ── */
+.license-modal-box {
+  background: var(--surface);
+  border: 1.5px solid var(--primary);
+  border-radius: var(--radius-lg);
+  max-width: 540px;
+  width: 100%;
+  padding: 32px;
+  position: relative;
+  box-shadow: 0 24px 60px rgba(59, 130, 246, 0.25);
+  text-align: center;
+}
+.license-cert-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--accent);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.license-key-display {
+  background: var(--surface-secondary);
+  border: 1px dashed var(--primary);
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: 0.1em;
+  margin: 18px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+/* ── Blog & Portfolio Sections ── */
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+  margin-top: 28px;
+}
+.blog-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.25s ease;
+}
+.blog-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary);
+}
+
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+  margin-top: 28px;
+}
+.portfolio-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: all 0.25s ease;
+}
+.portfolio-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--secondary);
+}
+
 

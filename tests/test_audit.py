@@ -684,8 +684,98 @@ class TestAuditChatterboxPlatform(unittest.TestCase):
         self.assertIn("superadmin@khyathi.sri", emails)
         self.assertIn("admin@khyathi.sri", emails)
 
+    def test_30_envato_marketplace_cms_and_checkout(self):
+        """Audit Envato marketplace templates, cryptographic license generation, CMS blog, portfolio, and checkout."""
+        # 1. Marketplace templates listing
+        tpl_res = self.client.get("/api/marketplace/templates")
+        self.assertEqual(tpl_res.status_code, 200)
+        tpl_data = tpl_res.json()
+        self.assertTrue(tpl_data["success"])
+        self.assertGreaterEqual(len(tpl_data["templates"]), 4)
+        tpl_ids = [t["id"] for t in tpl_data["templates"]]
+        self.assertIn("tpl_sales_pipeline", tpl_ids)
+        self.assertIn("tpl_academic_narrator", tpl_ids)
+        self.assertIn("tpl_podcast_studio", tpl_ids)
+        self.assertIn("tpl_kids_storyteller", tpl_ids)
+
+        first_tpl = tpl_data["templates"][0]
+        self.assertIn("price_usd", first_tpl)
+        self.assertIn("price_inr", first_tpl)
+        self.assertIn("rating", first_tpl)
+        self.assertIn("badge", first_tpl)
+        self.assertIn("features", first_tpl)
+
+        # 2. Template purchase & cryptographic license key generation
+        buy_res = self.client.post("/api/marketplace/purchase", json={
+            "template_id": "tpl_sales_pipeline",
+            "plan_tier": "single_license",
+            "payment_method": "stripe"
+        })
+        self.assertEqual(buy_res.status_code, 200)
+        buy_data = buy_res.json()
+        self.assertTrue(buy_data["success"])
+        self.assertEqual(buy_data["template_id"], "tpl_sales_pipeline")
+        self.assertTrue(buy_data["license_key"].startswith("ENV-"))
+        key_parts = buy_data["license_key"].split("-")
+        self.assertEqual(len(key_parts), 4)
+        for part in key_parts[1:]:
+            self.assertEqual(len(part), 8)
+
+        # 3. Dynamic CMS Blog posts
+        blog_res = self.client.get("/api/cms/blog")
+        self.assertEqual(blog_res.status_code, 200)
+        blog_data = blog_res.json()
+        self.assertTrue(blog_data["success"])
+        self.assertGreaterEqual(len(blog_data["posts"]), 3)
+        self.assertTrue(any("Apple Silicon" in p["title"] for p in blog_data["posts"]))
+
+        # 4. Dynamic CMS Portfolio showcase
+        port_res = self.client.get("/api/cms/portfolio")
+        self.assertEqual(port_res.status_code, 200)
+        port_data = port_res.json()
+        self.assertTrue(port_data["success"])
+        self.assertGreaterEqual(len(port_data["portfolio"]), 3)
+
+        # 5. Stripe global checkout session creation
+        stripe_res = self.client.post("/api/billing/checkout-session", json={
+            "plan_id": "pro",
+            "currency": "USD",
+            "gateway": "stripe",
+            "interval": "monthly"
+        })
+        self.assertEqual(stripe_res.status_code, 200)
+        stripe_data = stripe_res.json()
+        self.assertTrue(stripe_data["success"])
+        self.assertEqual(stripe_data["gateway"], "stripe")
+        self.assertTrue(stripe_data["session_id"].startswith("cs_stripe_"))
+        self.assertIn("checkout.stripe.com", stripe_data["checkout_url"])
+
+        # 6. Razorpay India checkout session creation
+        razor_res = self.client.post("/api/billing/checkout-session", json={
+            "plan_id": "enterprise",
+            "currency": "INR",
+            "gateway": "razorpay",
+            "interval": "yearly"
+        })
+        self.assertEqual(razor_res.status_code, 200)
+        razor_data = razor_res.json()
+        self.assertTrue(razor_data["success"])
+        self.assertEqual(razor_data["gateway"], "razorpay")
+        self.assertTrue(razor_data["session_id"].startswith("cs_razorpay_"))
+        self.assertIn("checkout.razorpay.com", razor_data["checkout_url"])
+
+        # 7. Verify index.html contains the new Envato theme & marketplace elements
+        index_res = self.client.get("/")
+        self.assertEqual(index_res.status_code, 200)
+        self.assertIn("theme-envato-dark", index_res.text)
+        self.assertIn("Marketplace", index_res.text)
+        self.assertIn("Chatterbox", index_res.text)
+        self.assertIn("Scan to Pay", index_res.text)
+        self.assertIn("Autonomous Workers", index_res.text)
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+
 
 
