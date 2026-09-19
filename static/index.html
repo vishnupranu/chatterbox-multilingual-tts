@@ -69,23 +69,28 @@
        ════════════════════════════════════════════════════════════════════════ -->
   <div class="zipwp-landing page-panel active" id="panel-landing">
 
-    <!-- ── ZIPWP HERO SECTION ── -->
-    <section class="zip-hero">
-      <div class="zip-badge">
+    <!-- ── ZIPWP HERO SECTION (WITH ANIMATED GRID MOTIONS & GLOW ORBS) ── -->
+    <section class="zip-hero animated-grid-bg" style="position:relative;overflow:hidden">
+      <!-- Radiant atmospheric floating ambient glow orbs -->
+      <div class="ambient-glow-orb orb-blue"></div>
+      <div class="ambient-glow-orb orb-purple"></div>
+      <div class="ambient-glow-orb orb-cyan"></div>
+
+      <div class="zip-badge" style="position:relative;z-index:2">
         <span class="zip-badge-pill">NEW</span>
         Universal Neural Voice AI &middot; 23 Indic &amp; Global Languages
       </div>
 
-      <h1 class="zip-hero-title">
+      <h1 class="zip-hero-title" style="position:relative;z-index:2">
         Build Studio-Quality Voice &amp; Audio in <em>Seconds</em>
       </h1>
 
-      <p class="zip-hero-sub">
+      <p class="zip-hero-sub" style="position:relative;z-index:2">
         From young children's bedtime tales to postgraduate academic research and global enterprise voiceovers. An ultra-fast, local neural acoustic engine built for every workflow.
       </p>
 
-      <!-- ── INTERACTIVE PROMPT CARD (ZipWP Core Feature) ── -->
-      <div class="zip-prompt-card">
+      <!-- ── INTERACTIVE PROMPT CARD (ZipWP Core Feature with Glassy Refinement) ── -->
+      <div class="zip-prompt-card glass-container" style="position:relative;z-index:2">
         <textarea id="hero-prompt-input" class="zip-prompt-input" rows="2" placeholder="Describe what you want to create or synthesize... (e.g., Bedtime story in Telugu, Thesis summary, Multilingual marketing ad...)" onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault(); runHeroPrompt();}"></textarea>
         
         <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-top:4px">
@@ -196,6 +201,317 @@
           <p>Render pristine, low-latency audio accelerated on Apple Silicon MPS Neural Core ready for export or streaming.</p>
         </div>
       </div>
+    </section>
+
+    <!-- ── AUTOMATE WORKFLOW DETAILS & GLASSY MACOS MODULE FRAME ── -->
+    <!-- (Faithful clone of https://show.uwebb.id/automate/template-kit/workflow-details/ and uploaded UI reference) -->
+    <section class="zip-sec animated-grid-bg" id="sec-workflow-details" style="position:relative;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:64px 20px;">
+      <div class="ambient-glow-orb orb-purple" style="top:5%;left:20%"></div>
+      <div class="ambient-glow-orb orb-blue" style="bottom:10%;right:15%"></div>
+
+      <div class="zip-sec-hd" style="position:relative;z-index:1">
+        <span class="zip-sec-tag" style="background:#fef3c7;color:#92400e;border:1px solid #fde68a">
+          WORKFLOW BLUEPRINT &middot; ELEMENTOR AUTOMATION KIT
+        </span>
+        <h2 class="zip-sec-title">Autonomous Voice &amp; Sales Pipeline Management</h2>
+        <p class="zip-sec-sub">
+          A synchronized agentic workflow bridging script intake, 23-language neural voice rendering, and automated multichannel distribution with surgical precision.
+        </p>
+
+        <!-- Connected Tool Badges (From template kit) -->
+        <div class="integration-pills-strip">
+          <span class="int-pill">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
+            Salesforce CRM
+          </span>
+          <span class="int-pill">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+            Google Sheets
+          </span>
+          <span class="int-pill">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="13" y="2" width="9" height="9" rx="2"/><rect x="2" y="13" width="9" height="9" rx="2"/></svg>
+            Slack Alerts
+          </span>
+          <span class="int-pill">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m10 15 5-3-5-3v6Z"/></svg>
+            HubSpot
+          </span>
+          <span class="int-pill">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            WhatsApp Voice
+          </span>
+          <span class="int-pill">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Key Secure Foundation
+          </span>
+        </div>
+      </div>
+
+      <!-- macOS App Window Mockup Frame (Directly matching media_1789853974772.png) -->
+      <div class="macos-app-frame">
+        <!-- Titlebar -->
+        <div class="macos-titlebar">
+          <div class="macos-traffic-lights">
+            <span class="traffic-light light-red"></span>
+            <span class="traffic-light light-yellow"></span>
+            <span class="traffic-light light-green"></span>
+          </div>
+
+          <div class="macos-tab-bar">
+            <div class="macos-tab active" onclick="switchMockupTab(this, 'modules')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+              <span>Security &amp; Voice Modules</span>
+            </div>
+            <div class="macos-tab" onclick="switchMockupTab(this, 'progress')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <span>Progress Tracker</span>
+            </div>
+            <div class="macos-tab" onclick="switchMockupTab(this, 'preview')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              <span>Live Studio Preview</span>
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:8px">
+            <button class="btn btn-ghost btn-sm" style="font-size:11.5px;padding:4px 8px" onclick="openAuthModal('signin')">Profile</button>
+            <button class="btn btn-ghost btn-sm" style="font-size:11.5px;padding:4px 8px" onclick="openClaudeStudio()">Settings</button>
+            <button class="btn btn-ghost btn-sm" style="font-size:11.5px;padding:4px 8px" onclick="performLogout()">Log Out</button>
+          </div>
+        </div>
+
+        <!-- Greeting Bar (From reference image) -->
+        <div style="padding:28px 24px 14px;text-align:center;background:linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(248,250,252,0.85) 100%)">
+          <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg, #6366f1 0%, #a855f7 100%);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;margin:0 auto 12px;box-shadow:0 8px 16px rgba(99,102,241,0.25)">
+            AS
+          </div>
+          <h3 style="font-size:22px;font-weight:800;color:#1e1b4b;margin-bottom:6px">Welcome back, Dr. Aryan</h3>
+          <p style="font-size:13.5px;color:#64748b;margin-bottom:14px">
+            You have 6 training &amp; voice modules ready to deploy. Local neural engine running at <strong>24kHz Lossless</strong>.
+          </p>
+          <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(238,242,255,0.8);border:1px solid #c7d2fe;padding:6px 14px;border-radius:9999px;font-size:12px;color:#3730a3">
+            <span class="dot dot-green"></span>
+            <span>MPS Neural Core active on Apple Silicon &middot; Latency ~120ms &middot; 23 Languages</span>
+          </div>
+        </div>
+
+        <!-- Glassy Gradient Mesh Grid (The exact 6 cards from reference image) -->
+        <div class="glass-mesh-grid">
+          <!-- Card 1: Intro -->
+          <div class="glass-mesh-card card-theme-intro" onclick="openClaudeStudio()">
+            <div>
+              <div class="card-dash-progress">
+                <div class="dash-bar filled"></div>
+                <div class="dash-bar filled"></div>
+                <div class="dash-bar filled"></div>
+                <div class="dash-bar filled"></div>
+                <div class="dash-bar filled"></div>
+              </div>
+              <div class="card-duration-badge">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                ~10 min
+              </div>
+              <div class="card-content-wrap">
+                <h4>Intro to Neural TTS</h4>
+                <p>Details on current 24kHz acoustic architecture and why local on-device neural models matter for privacy.</p>
+              </div>
+            </div>
+            <button class="card-action-btn btn-completed">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+              COMPLETED
+            </button>
+          </div>
+
+          <!-- Card 2: Social Engineering -->
+          <div class="glass-mesh-card card-theme-social" onclick="openClaudeStudio()">
+            <div>
+              <div class="card-dash-progress">
+                <div class="dash-bar filled"></div>
+                <div class="dash-bar filled"></div>
+                <div class="dash-bar filled"></div>
+                <div class="dash-bar"></div>
+                <div class="dash-bar"></div>
+              </div>
+              <div class="card-duration-badge">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                ~25 min
+              </div>
+              <div class="card-content-wrap">
+                <h4>Social Engineering &amp; Dialects</h4>
+                <p>What it is, why native cadence matters, and how to calibrate accents in Telugu, Tamil, and Hindi.</p>
+              </div>
+            </div>
+            <button class="card-action-btn btn-resume">Resume</button>
+          </div>
+
+          <!-- Card 3: Voice Phishing / Vishing -->
+          <div class="glass-mesh-card card-theme-voice" onclick="openClaudeStudio()">
+            <div>
+              <div class="card-dash-progress">
+                <div class="dash-bar filled"></div>
+                <div class="dash-bar filled"></div>
+                <div class="dash-bar"></div>
+                <div class="dash-bar"></div>
+                <div class="dash-bar"></div>
+              </div>
+              <div class="card-duration-badge">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                ~25 min
+              </div>
+              <div class="card-content-wrap">
+                <h4>Voice Synthesis (Vishing Defense)</h4>
+                <p>Hands-on audio examples of deepfake detection, forensic pitch analysis, and how to stay safe.</p>
+              </div>
+            </div>
+            <button class="card-action-btn btn-resume">Resume</button>
+          </div>
+
+          <!-- Card 4: SMS Phishing / Smishing -->
+          <div class="glass-mesh-card card-theme-sms" onclick="openClaudeStudio()">
+            <div>
+              <div class="card-dash-progress">
+                <div class="dash-bar"></div>
+                <div class="dash-bar"></div>
+                <div class="dash-bar"></div>
+                <div class="dash-bar"></div>
+                <div class="dash-bar"></div>
+              </div>
+              <div class="card-duration-badge">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                ~20 min
+              </div>
+              <div class="card-content-wrap">
+                <h4>Multichannel Voice Dispatch</h4>
+                <p>Automated webhook dispatch to WhatsApp, phone bots, and SMS alert systems with instant audio playback.</p>
+              </div>
+            </div>
+            <button class="card-action-btn btn-start">Start</button>
+          </div>
+
+          <!-- Card 5: Video Phishing / Multimodal -->
+          <div class="glass-mesh-card card-theme-video" onclick="openClaudeStudio()">
+            <div>
+              <div class="card-dash-progress">
+                <div class="dash-bar"></div>
+                <div class="dash-bar"></div>
+                <div class="dash-bar"></div>
+                <div class="dash-bar"></div>
+                <div class="dash-bar"></div>
+              </div>
+              <div class="card-duration-badge">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                ~25 min
+              </div>
+              <div class="card-content-wrap">
+                <h4>Video Dubbing &amp; Research Narration</h4>
+                <p>Translates audio across 23 languages with zero-shot prosody matching and long-form thesis reading.</p>
+              </div>
+            </div>
+            <button class="card-action-btn btn-start">Start</button>
+          </div>
+
+          <!-- Card 6: Safe Use of AI Tools -->
+          <div class="glass-mesh-card card-theme-ai" onclick="openClaudeStudio()">
+            <div>
+              <div class="card-dash-progress">
+                <div class="dash-bar"></div>
+                <div class="dash-bar"></div>
+                <div class="dash-bar"></div>
+                <div class="dash-bar"></div>
+                <div class="dash-bar"></div>
+              </div>
+              <div class="card-duration-badge">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                ~25 min
+              </div>
+              <div class="card-content-wrap">
+                <h4>Safe Use of AI &amp; RBAC Governance</h4>
+                <p>Super Admin root controls, cryptographic token sessions, Key Secure Foundation verification, and Scan to Pay.</p>
+              </div>
+            </div>
+            <button class="card-action-btn btn-start">Start</button>
+          </div>
+        </div>
+
+        <!-- Workflow Details Description (from https://show.uwebb.id/automate/template-kit/workflow-details/) -->
+        <div style="padding:28px;background:rgba(255,255,255,0.92);border-top:1px solid rgba(226,232,240,0.8);display:grid;grid-template-columns:1fr 1fr;gap:24px" class="workflow-details-cols">
+          <div>
+            <div style="font-size:11.5px;font-weight:700;text-transform:uppercase;color:var(--primary);letter-spacing:0.06em;margin-bottom:6px">DESCRIPTION</div>
+            <h4 style="font-size:17px;font-weight:800;color:var(--ink);margin-bottom:10px">Autonomous Sales &amp; Voice Operations Pipeline</h4>
+            <p style="font-size:13px;color:var(--ink-secondary);line-height:1.65;margin-bottom:14px">
+              This workflow acts as your 24/7 autonomous audio and operations manager, handling everything from prompt intake to multi-speaker vocal synthesis and webhook dispatch. It eliminates manual studio editing, ensuring researchers, educators, and enterprise teams focus purely on high-value creative work.
+            </p>
+            <div style="display:flex;gap:10px;flex-wrap:wrap">
+              <button class="btn btn-primary btn-sm" onclick="openClaudeStudio()">Duplicate Template</button>
+              <button class="btn btn-ghost btn-sm" onclick="startNewVoiceSession()">Or Create from Blank</button>
+            </div>
+          </div>
+
+          <div style="background:var(--surface-secondary);border:1px solid var(--border);border-radius:14px;padding:20px">
+            <div style="font-size:11.5px;font-weight:700;text-transform:uppercase;color:var(--ink-muted);letter-spacing:0.06em;margin-bottom:12px">HOW IT WORKS &middot; 5-STAGE PIPELINE</div>
+            <ol style="font-size:12.5px;color:var(--ink-secondary);line-height:1.75;padding-left:18px;display:flex;flex-direction:column;gap:8px">
+              <li><strong>Lead &amp; Script Ingestion:</strong> Monitors CRM webhooks and script uploads in real-time.</li>
+              <li><strong>Phonetic Enrichment:</strong> Cross-references 23 Indic &amp; global linguistic phonetic dictionaries.</li>
+              <li><strong>Persona Scoring:</strong> Evaluates intent and matches with PG Researcher, Child Narrator, or Executive.</li>
+              <li><strong>Orchestration:</strong> Renders 24kHz lossless audio on Apple Silicon MPS Neural Core.</li>
+              <li><strong>Multichannel Delivery:</strong> Delivers audio, updates database, and alerts Slack/CRM.</li>
+            </ol>
+          </div>
+        </div>
+
+        <!-- Browse by Category Grid (from template kit) -->
+        <div style="padding:24px 28px;background:rgba(248,250,252,0.9);border-top:1px solid var(--border)">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px">
+            <div>
+              <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--ink-muted);letter-spacing:0.06em">EXPLORE</div>
+              <h4 style="font-size:16px;font-weight:800;color:var(--ink)">Browse Blueprints by Category</h4>
+            </div>
+            <button class="btn btn-ghost btn-sm" onclick="showPanel('skills')">View All Templates &rarr;</button>
+          </div>
+
+          <div class="category-box-grid">
+            <div class="cat-box" onclick="showPanel('skills')">
+              <div class="cat-box-icon" style="background:#e0f2fe;color:#0284c7">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+              </div>
+              <div>
+                <div style="font-size:13px;font-weight:700;color:var(--ink)">Marketing Voice</div>
+                <div style="font-size:11px;color:var(--ink-muted)">Ad Dubbing &amp; Video</div>
+              </div>
+            </div>
+
+            <div class="cat-box" onclick="openAudienceMode('kids')">
+              <div class="cat-box-icon" style="background:#ecfdf5;color:#059669">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/></svg>
+              </div>
+              <div>
+                <div style="font-size:13px;font-weight:700;color:var(--ink)">Early Education</div>
+                <div style="font-size:11px;color:var(--ink-muted)">Kids Bedtime Tales</div>
+              </div>
+            </div>
+
+            <div class="cat-box" onclick="openAudienceMode('research')">
+              <div class="cat-box-icon" style="background:#f5f3ff;color:#7c3aed">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+              </div>
+              <div>
+                <div style="font-size:13px;font-weight:700;color:var(--ink)">PG Academic</div>
+                <div style="font-size:11px;color:var(--ink-muted)">Thesis Literature Audio</div>
+              </div>
+            </div>
+
+            <div class="cat-box" onclick="showPanel('code')">
+              <div class="cat-box-icon" style="background:#fef3c7;color:#d97706">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/></svg>
+              </div>
+              <div>
+                <div style="font-size:13px;font-weight:700;color:var(--ink)">Operations &amp; IT</div>
+                <div style="font-size:11px;color:var(--ink-muted)">Automated Pipelines</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /.macos-app-frame -->
     </section>
 
     <!-- ── AUDIENCE MATRIX: FROM KIDS TO PG RESEARCH ── -->
@@ -1405,6 +1721,13 @@ function toggleFaq(el) {
   const isOpen = el.classList.contains('open');
   document.querySelectorAll('.zip-faq-item').forEach(item => item.classList.remove('open'));
   if (!isOpen) el.classList.add('open');
+}
+
+// ── MACOS MOCKUP FRAME TAB SWITCHER ──
+function switchMockupTab(el, tabName) {
+  document.querySelectorAll('.macos-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  showToast('Switched to ' + tabName.toUpperCase() + ' workflow view', 'success');
 }
 
 // ── AUTHENTICATION MANAGEMENT ──
