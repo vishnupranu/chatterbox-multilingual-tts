@@ -46,3 +46,4 @@ static/uploads/*
 # Logs
 logs/
 *.log
+users.db
