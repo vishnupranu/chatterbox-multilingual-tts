@@ -176,6 +176,38 @@ def api_auth_logout(req: LogoutRequest):
     return {"success": True, "message": "Successfully logged out."}
 
 
+# =====================================================================
+# ADMIN & SUPER ADMIN PERMISSION ENDPOINTS
+# =====================================================================
+
+@app.get("/api/admin/users")
+def api_admin_users(token: Optional[str] = None, authorization: Optional[str] = Header(None)):
+    """Super Admin Only: Lists all registered platform users."""
+    auth_token = token
+    if not auth_token and authorization:
+        auth_token = authorization[7:].strip() if authorization.lower().startswith("bearer ") else authorization.strip()
+    if not auth_token:
+        raise HTTPException(status_code=401, detail="Authentication token required.")
+    users = auth.list_all_users(auth_token)
+    if users is None:
+        raise HTTPException(status_code=403, detail="Forbidden: Super Admin permission mandated.")
+    return {"success": True, "users": users}
+
+
+@app.get("/api/admin/stats")
+def api_admin_stats(token: Optional[str] = None, authorization: Optional[str] = Header(None)):
+    """Admin & Super Admin: Returns platform health, security metrics, and sessions."""
+    auth_token = token
+    if not auth_token and authorization:
+        auth_token = authorization[7:].strip() if authorization.lower().startswith("bearer ") else authorization.strip()
+    if not auth_token:
+        raise HTTPException(status_code=401, detail="Authentication token required.")
+    stats = auth.get_admin_system_stats(auth_token)
+    if stats is None:
+        raise HTTPException(status_code=403, detail="Forbidden: Admin permission mandated.")
+    return {"success": True, "stats": stats}
+
+
 class CreateOrderRequest(BaseModel):
     plan_id: str = Field(..., description="Plan ID: plan_starter, plan_pro, or plan_enterprise")
 

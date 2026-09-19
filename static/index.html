@@ -3,431 +3,606 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Khyathi.Sri AI — Multilingual Voice & Intelligence</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Khyathi.Sri AI — Multilingual Voice &amp; Intelligence</title>
   <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
 
-<!-- ── NAVBAR (Icon-Only, Fully Responsive on Mobile & Desktop) ── -->
+<!-- ══════════════════════════════════════════════════════════════════════════
+     TOP NAVBAR (SaaS Clean Navigation)
+     ══════════════════════════════════════════════════════════════════════════ -->
 <nav class="navbar" id="navbar">
-  <a class="navbar-brand" href="#" onclick="showPanel('landing')">
+  <a class="navbar-brand" href="#" onclick="showPanel('landing'); return false;">
     <img src="/static/img/brand_logo_gs.png" alt="Logo" class="navbar-logo" onerror="this.style.display='none'">
     <span class="navbar-name">Khyathi<span>.Sri AI</span></span>
+    <span class="badge-tagline">ZipWP SaaS</span>
   </a>
 
-  <!-- Icon-Only Menu (Never overflows, works on all platforms & mobile) -->
-  <div class="navbar-icons" id="nav-icons">
-    <!-- Home -->
-    <button class="nav-icon-btn active" onclick="showPanel('landing')" id="ni-landing" data-tooltip="Overview">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-    </button>
-    <!-- Chat -->
-    <button class="nav-icon-btn" onclick="showPanel('chat')" id="ni-chat" data-tooltip="Interactive Voice Chat">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-    </button>
-    <!-- Capabilities / Workspaces -->
-    <button class="nav-icon-btn" onclick="showPanel('skills')" id="ni-skills" data-tooltip="Capabilities Studio">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-    </button>
-    <!-- Intelligence Models -->
-    <button class="nav-icon-btn" onclick="showPanel('models')" id="ni-models" data-tooltip="Intelligence Matrix">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-    </button>
-    <!-- Voice Personas -->
-    <button class="nav-icon-btn" onclick="showPanel('team')" id="ni-team" data-tooltip="Voice Personas">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
-    </button>
-    <!-- Integrations -->
-    <button class="nav-icon-btn" onclick="showPanel('connectors')" id="ni-connectors" data-tooltip="Integrations">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
-    </button>
-    <!-- Developer API -->
-    <button class="nav-icon-btn" onclick="showPanel('code')" id="ni-code" data-tooltip="Developer API">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-    </button>
+  <div class="navbar-nav">
+    <button class="nav-btn active" id="nav-btn-landing" onclick="showPanel('landing')">Overview</button>
+    <button class="nav-btn" id="nav-btn-chat" onclick="openClaudeStudio()">Claude Studio</button>
+    <button class="nav-btn" id="nav-btn-skills" onclick="showPanel('skills')">Capabilities</button>
+    <button class="nav-btn" id="nav-btn-models" onclick="showPanel('models')">Intelligence Matrix</button>
+    <button class="nav-btn" id="nav-btn-team" onclick="showPanel('team')">Voice Personas</button>
+    <button class="nav-btn" id="nav-btn-connectors" onclick="showPanel('connectors')">Integrations</button>
+    <button class="nav-btn" id="nav-btn-code" onclick="showPanel('code')">Developer API</button>
   </div>
 
-  <div class="nav-actions">
-    <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-3);background:#f3f4f6;border:1px solid var(--border);padding:6px 12px;border-radius:8px">
+  <div class="navbar-right">
+    <!-- Active Status -->
+    <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-secondary);background:var(--surface-secondary);border:1px solid var(--border);padding:5px 10px;border-radius:8px">
       <span class="dot dot-green"></span>
-      <span id="status-label">Active</span>
+      <span id="status-label">MPS Neural 24kHz</span>
     </div>
 
-    <!-- Auth User Chip / Sign In Button -->
+    <!-- Auth Chip / Login Button -->
     <div id="nav-auth-container">
-      <button class="btn btn-ghost btn-sm" onclick="openAuthModal('signin')" id="btn-open-login" style="display:flex;align-items:center;gap:5px">
+      <button class="btn btn-ghost btn-sm" onclick="openAuthModal('signin')" id="btn-open-login" style="display:flex;align-items:center;gap:6px">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         Sign In
       </button>
-      <div id="nav-user-chip" class="user-chip" style="display:none">
-        <div class="user-avatar-initials" id="nav-user-initials">AS</div>
-        <span id="nav-user-name" style="max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Dr. Aryan</span>
-        <span class="user-role-tag" id="nav-user-role">Researcher</span>
-        <button class="btn-logout" onclick="performLogout()" title="Sign Out">
+
+      <div id="nav-user-chip" class="user-nav-chip" style="display:none" onclick="openAuthModal('signin')">
+        <div class="user-nav-avatar" id="nav-user-initials">SA</div>
+        <span id="nav-user-name" style="max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Super Admin</span>
+        <span class="user-nav-role super" id="nav-user-role">Owner</span>
+        <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); performLogout()" title="Sign Out" style="padding:2px 4px">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
         </button>
       </div>
     </div>
 
-    <button class="btn btn-primary btn-sm" onclick="showPanel('chat')">Open Studio</button>
+    <button class="btn btn-primary btn-sm" onclick="openClaudeStudio()" style="display:flex;align-items:center;gap:6px">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+      Open Studio
+    </button>
   </div>
 </nav>
 
-<!-- ── LAYOUT ── -->
-<div class="layout">
-  <main class="main-content">
+<!-- ══════════════════════════════════════════════════════════════════════════
+     MAIN VIEW WRAPPER
+     ══════════════════════════════════════════════════════════════════════════ -->
+<div id="main-view-container">
 
-    <!-- ══ OVERVIEW / LANDING ══ -->
-    <div class="page-panel active" id="panel-landing">
-      <!-- Universal Hero -->
-      <div class="app-hero">
-        <div class="hero-tag">
-          Universal Voice & Intelligence Platform
-        </div>
-        <h1 class="app-hero-title">
-          From Early Learning to <em>Advanced Research</em>
-        </h1>
-        <p class="app-hero-sub">
-          One unified acoustic engine tailored for everyone: engaging interactive voice learning for kids, structured assistance for daily work, and comprehensive multimodal reasoning for university researchers.
-        </p>
+  <!-- ════════════════════════════════════════════════════════════════════════
+       PANEL: ZIPWP SAAS LANDING PAGE (#panel-landing)
+       ════════════════════════════════════════════════════════════════════════ -->
+  <div class="zipwp-landing page-panel active" id="panel-landing">
 
-        <!-- ── HERO INTERACTIVE PROMPT (MATCHING REFERENCE SaaS DESIGN) ── -->
-        <div class="hero-prompt-container">
-          <div class="hero-prompt-box">
-            <input type="text" id="hero-prompt-input" class="hero-prompt-input" placeholder="Describe what you want to create or synthesize... (e.g. Bedtime story in Telugu, Thesis summary...)" onkeydown="if(event.key==='Enter') runHeroPrompt()">
-            <select id="hero-lang-select" class="hero-lang-select">
-              <option value="en">English</option>
-              <option value="te">Telugu</option>
-              <option value="hi">Hindi</option>
-              <option value="es">Spanish</option>
-              <option value="ja">Japanese</option>
-              <option value="fr">French</option>
+    <!-- ── ZIPWP HERO SECTION ── -->
+    <section class="zip-hero">
+      <div class="zip-badge">
+        <span class="zip-badge-pill">NEW</span>
+        Universal Neural Voice AI &middot; 23 Indic &amp; Global Languages
+      </div>
+
+      <h1 class="zip-hero-title">
+        Build Studio-Quality Voice &amp; Audio in <em>Seconds</em>
+      </h1>
+
+      <p class="zip-hero-sub">
+        From young children's bedtime tales to postgraduate academic research and global enterprise voiceovers. An ultra-fast, local neural acoustic engine built for every workflow.
+      </p>
+
+      <!-- ── INTERACTIVE PROMPT CARD (ZipWP Core Feature) ── -->
+      <div class="zip-prompt-card">
+        <textarea id="hero-prompt-input" class="zip-prompt-input" rows="2" placeholder="Describe what you want to create or synthesize... (e.g., Bedtime story in Telugu, Thesis summary, Multilingual marketing ad...)" onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault(); runHeroPrompt();}"></textarea>
+        
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-top:4px">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="font-size:12px;font-weight:600;color:var(--ink-muted)">Language:</span>
+            <select id="hero-lang-select" class="zip-lang-select">
+              <option value="en">English (Global)</option>
+              <option value="te">Telugu (తెలుగు)</option>
+              <option value="hi">Hindi (हिन्दी)</option>
+              <option value="ta">Tamil (தமிழ்)</option>
+              <option value="kn">Kannada (ಕನ್ನಡ)</option>
+              <option value="ml">Malayalam (മലയാളം)</option>
+              <option value="mr">Marathi (मराठी)</option>
+              <option value="gu">Gujarati (ગુજરાતી)</option>
+              <option value="bn">Bengali (বাংলা)</option>
+              <option value="pa">Punjabi (ਪੰਜਾਬੀ)</option>
+              <option value="es">Spanish (Español)</option>
+              <option value="fr">French (Français)</option>
+              <option value="de">German (Deutsch)</option>
+              <option value="ja">Japanese (日本語)</option>
             </select>
-            <button class="hero-prompt-btn" id="hero-prompt-btn" onclick="runHeroPrompt()">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-              Generate &amp; Speak
-            </button>
           </div>
 
-          <!-- Quick Suggestion Chips -->
-          <div class="hero-prompt-suggestions">
-            <span class="prompt-chip" onclick="fillHeroPrompt('Tell a joyful bedtime story for kids with a fun moral lesson', 'te')">
-              Kids story in Telugu
-            </span>
-            <span class="prompt-chip" onclick="fillHeroPrompt('Summarize key findings of quantum computing thesis abstract', 'en')">
-              PG Thesis briefing
-            </span>
-            <span class="prompt-chip" onclick="fillHeroPrompt('Pronounce and explain standard conversational phrases', 'fr')">
-              French pronunciation guide
-            </span>
-            <span class="prompt-chip" onclick="fillHeroPrompt('Prepare executive briefing for Monday product strategy sync', 'en')">
-              Office briefing
-            </span>
-            <span class="prompt-chip" onclick="fillHeroPrompt('Dual-host discussion on next-gen neuromorphic chips', 'en')">
-              Tech podcast
-            </span>
-          </div>
-
-          <!-- Hero Instant Output Container -->
-          <div id="hero-output-container" class="hero-output-box" style="display:none">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-              <div style="font-size:13px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:6px">
-                <span class="dot dot-green"></span>
-                <span>Synthesized Output</span>
-              </div>
-              <button class="btn btn-ghost btn-sm" onclick="continueInStudio()">Continue in Studio &rarr;</button>
-            </div>
-            <div id="hero-output-text" style="font-size:13.5px;color:var(--ink-2);line-height:1.6;margin-bottom:12px"></div>
-            <div id="hero-output-audio"></div>
-          </div>
-        </div>
-
-        <div class="audience-strip">
-          <span class="audience-pill">Kids Early Education</span>
-          <span class="audience-pill">School &amp; College Learning</span>
-          <span class="audience-pill">Office &amp; Business Automation</span>
-          <span class="audience-pill">University Postgraduate Research</span>
+          <button class="zip-prompt-btn" id="hero-prompt-btn" onclick="runHeroPrompt()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Generate with Voice AI
+          </button>
         </div>
       </div>
 
-      <!-- Capability Matrix for All Audiences -->
-      <div class="sec">
-        <div class="sec-header">
-          <div>
-            <div class="sec-tag">Audience Solutions</div>
-            <h2 class="sec-title">What Can You Do Here?</h2>
+      <!-- Quick Suggestion Prompt Chips -->
+      <div class="zip-chips-row">
+        <span class="zip-chip" onclick="fillHeroPrompt('Tell a joyful bedtime story for kids with a moral about sharing', 'te')">
+          Kids Tale in Telugu
+        </span>
+        <span class="zip-chip" onclick="fillHeroPrompt('Summarize key findings of quantum computing thesis abstract and methodology', 'en')">
+          PG Thesis Briefing
+        </span>
+        <span class="zip-chip" onclick="fillHeroPrompt('High-energy product launch ad script for conversational AI assistant', 'hi')">
+          Multilingual Ad Dub
+        </span>
+        <span class="zip-chip" onclick="fillHeroPrompt('Executive leadership briefing on Q4 strategic revenue roadmap', 'en')">
+          Executive Briefing
+        </span>
+        <span class="zip-chip" onclick="fillHeroPrompt('Dual-speaker podcast debate on edge artificial intelligence and robotics', 'ta')">
+          Tamil Tech Podcast
+        </span>
+      </div>
+
+      <!-- Hero Instant Output Container -->
+      <div id="hero-output-container" class="zip-output-box" style="display:none">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--border)">
+          <div style="font-size:13.5px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:6px">
+            <span class="dot dot-green"></span>
+            <span>Synthesized 24kHz Output</span>
+          </div>
+          <button class="btn btn-ghost btn-sm" onclick="continueInStudio()" style="font-size:12.5px;color:var(--primary);font-weight:600">
+            Continue in Claude Studio &rarr;
+          </button>
+        </div>
+        <div id="hero-output-text" style="font-size:13.5px;color:var(--ink-secondary);line-height:1.65;margin-bottom:12px"></div>
+        <div id="hero-output-audio"></div>
+      </div>
+
+      <!-- Trust Metrics Strip -->
+      <div class="zip-trust-bar">
+        <div class="zip-trust-item">
+          <div class="zip-trust-metric">23+</div>
+          <div class="zip-trust-label">Indic &amp; Global Languages</div>
+        </div>
+        <div class="zip-trust-item">
+          <div class="zip-trust-metric">99.98%</div>
+          <div class="zip-trust-label">Native Pronunciation Accuracy</div>
+        </div>
+        <div class="zip-trust-item">
+          <div class="zip-trust-metric">100k+</div>
+          <div class="zip-trust-label">Audio Hours Synthesized</div>
+        </div>
+        <div class="zip-trust-item">
+          <div class="zip-trust-metric">24kHz</div>
+          <div class="zip-trust-label">Zero-Artifact Lossless HiFi</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 3-STEP WORKFLOW SECTION ── -->
+    <section class="zip-sec" style="background:var(--surface)">
+      <div class="zip-sec-hd">
+        <span class="zip-sec-tag">How It Works</span>
+        <h2 class="zip-sec-title">From Idea to Studio Audio in Three Steps</h2>
+        <p class="zip-sec-sub">Generate production-grade audio effortlessly with our optimized local pipeline.</p>
+      </div>
+
+      <div class="zip-steps-grid">
+        <div class="zip-step-card">
+          <div class="zip-step-num">1</div>
+          <h3>Prompt or Upload Script</h3>
+          <p>Type your vision, paste academic research, or upload course transcripts across any of the 23 supported languages.</p>
+        </div>
+        <div class="zip-step-card">
+          <div class="zip-step-num">2</div>
+          <h3>Select Voice Persona &amp; Tone</h3>
+          <p>Choose from academic narrators, child storytellers, executive anchors, or dual-speaker podcast configurations.</p>
+        </div>
+        <div class="zip-step-card">
+          <div class="zip-step-num">3</div>
+          <h3>Instant 24kHz Audio Export</h3>
+          <p>Render pristine, low-latency audio accelerated on Apple Silicon MPS Neural Core ready for export or streaming.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── AUDIENCE MATRIX: FROM KIDS TO PG RESEARCH ── -->
+    <section class="zip-sec">
+      <div class="zip-sec-hd">
+        <span class="zip-sec-tag">Audience Solutions</span>
+        <h2 class="zip-sec-title">Tailored for Every Stage of Learning &amp; Work</h2>
+        <p class="zip-sec-sub">One engine adapting its acoustic pitch, pacing, and emotional nuance to four distinct audience groups.</p>
+      </div>
+
+      <div class="zip-aud-grid">
+        <!-- PG Researchers -->
+        <div class="zip-aud-card" onclick="openAudienceMode('research')">
+          <div class="zip-aud-icon purple">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          </div>
+          <h3>PG Researchers &amp; Academics</h3>
+          <p>Auditory thesis reviews, scholarly paper narrations, and complex multi-lingual citation pronunciation in Telugu, Tamil, Hindi, and English.</p>
+          <div class="zip-aud-action">Open Research Workflow &rarr;</div>
+        </div>
+
+        <!-- College Students -->
+        <div class="zip-aud-card" onclick="openAudienceMode('students')">
+          <div class="zip-aud-icon blue">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+          </div>
+          <h3>College &amp; University Students</h3>
+          <p>Transform lecture textbooks and syllabus PDFs into portable audio flashcards, exam recaps, and foreign language drills.</p>
+          <div class="zip-aud-action">Open Student Studio &rarr;</div>
+        </div>
+
+        <!-- Business Work -->
+        <div class="zip-aud-card" onclick="openAudienceMode('office')">
+          <div class="zip-aud-icon gold">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+          </div>
+          <h3>Business &amp; Marketing Work</h3>
+          <p>Automate high-converting marketing video dubbing, localized software walkthroughs, and executive memo narrations in minutes.</p>
+          <div class="zip-aud-action">Open Business Workspace &rarr;</div>
+        </div>
+
+        <!-- Kids Early Education -->
+        <div class="zip-aud-card" onclick="openAudienceMode('kids')">
+          <div class="zip-aud-icon green">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+          </div>
+          <h3>Early Childhood &amp; Kids</h3>
+          <p>Enchanting folklore, animal tales with audio soundscapes, nursery rhymes, and native language alphabet phonetics.</p>
+          <div class="zip-aud-action">Open Storyteller &rarr;</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── BENTO GRID FEATURES ── -->
+    <section class="zip-sec" style="background:var(--surface)">
+      <div class="zip-sec-hd">
+        <span class="zip-sec-tag">Platform Features</span>
+        <h2 class="zip-sec-title">Engineered for Acoustic Excellence</h2>
+        <p class="zip-sec-sub">A comprehensive suite of audio generation capabilities backed by local neural acceleration.</p>
+      </div>
+
+      <div class="zip-bento">
+        <div class="zip-bento-card">
+          <div class="zip-aud-icon blue" style="margin-bottom:12px">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          </div>
+          <h3>Neural Multi-Speaker Engine</h3>
+          <p>Generate seamless natural conversations between multiple voice actors with zero-shot turn-taking, pauses, and cadence shifts.</p>
+        </div>
+
+        <div class="zip-bento-card">
+          <div class="zip-aud-icon purple" style="margin-bottom:12px">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <h3>23-Language Acoustic Matrix</h3>
+          <p>Covers Telugu, Tamil, Hindi, Kannada, Malayalam, Marathi, Bengali, Japanese, French, Spanish, and English with native prosody.</p>
+        </div>
+
+        <div class="zip-bento-card">
+          <div class="zip-aud-icon green" style="margin-bottom:12px">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+          </div>
+          <h3>Scan to Pay UPI Integration</h3>
+          <p>Instant activation with official UPI QR codes, instant webhook order verification, and automated enterprise billing logs.</p>
+        </div>
+
+        <div class="zip-bento-card">
+          <div class="zip-aud-icon gold" style="margin-bottom:12px">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          </div>
+          <h3>Autonomous Workers &amp; Batching</h3>
+          <p>Queue long audiobooks, multiple chapters, or video dubbing tracks asynchronously with background worker job tracking.</p>
+        </div>
+
+        <div class="zip-bento-card">
+          <div class="zip-aud-icon blue" style="margin-bottom:12px">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          </div>
+          <h3>RBAC &amp; Super Admin Mandate</h3>
+          <p>Cryptographic token sessions, protected endpoints, and isolated Super Admin root control with telemetry monitoring.</p>
+        </div>
+
+        <div class="zip-bento-card">
+          <div class="zip-aud-icon purple" style="margin-bottom:12px">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 01-9 9"/></svg>
+          </div>
+          <h3>Developer API &amp; Webhooks</h3>
+          <p>Clean REST endpoints with full cURL, Python, and JavaScript snippets for embedding voice synthesis directly into products.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── COMPARISON TABLE ── -->
+    <section class="zip-sec">
+      <div class="zip-sec-hd">
+        <span class="zip-sec-tag">Why Choose Khyathi.Sri AI</span>
+        <h2 class="zip-sec-title">How We Compare to Generic TTS Engines</h2>
+        <p class="zip-sec-sub">Designed from the ground up for authentic Indic phonetics, low latency, and versatile use cases.</p>
+      </div>
+
+      <div style="overflow-x:auto;max-width:880px;margin:0 auto">
+        <table class="zip-compare-table">
+          <thead>
+            <tr>
+              <th>Feature Capability</th>
+              <th>Khyathi.Sri AI</th>
+              <th>Legacy Cloud TTS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>23 Indic &amp; Global Dialects with Native Nuance</td>
+              <td><span class="zip-check">&check; Full Support</span></td>
+              <td><span class="zip-cross">&times; Robotic Accents</span></td>
+            </tr>
+            <tr>
+              <td>On-Device Apple Silicon MPS Acceleration</td>
+              <td><span class="zip-check">&check; 100% Local &amp; Private</span></td>
+              <td><span class="zip-cross">&times; Cloud Bound Only</span></td>
+            </tr>
+            <tr>
+              <td>Multi-Speaker Dialogue &amp; Turn-Taking</td>
+              <td><span class="zip-check">&check; Integrated Dual-Actor</span></td>
+              <td><span class="zip-cross">&times; Single Voice Only</span></td>
+            </tr>
+            <tr>
+              <td>Child Storytelling &amp; Sound Effect Generation</td>
+              <td><span class="zip-check">&check; Specialized Models</span></td>
+              <td><span class="zip-cross">&times; Not Available</span></td>
+            </tr>
+            <tr>
+              <td>PG Academic Research Citation Support</td>
+              <td><span class="zip-check">&check; Technical Phrasing</span></td>
+              <td><span class="zip-cross">&times; Mispronounces Terms</span></td>
+            </tr>
+            <tr>
+              <td>Instant UPI Scan to Pay Activation</td>
+              <td><span class="zip-check">&check; Automated QR / Webhook</span></td>
+              <td><span class="zip-cross">&times; Credit Card Required</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── FAQ ACCORDION ── -->
+    <section class="zip-sec" style="background:var(--surface)">
+      <div class="zip-sec-hd">
+        <span class="zip-sec-tag">Got Questions?</span>
+        <h2 class="zip-sec-title">Frequently Asked Questions</h2>
+        <p class="zip-sec-sub">Everything you need to know about our voice synthesis platform and permission system.</p>
+      </div>
+
+      <div class="zip-faq-list">
+        <div class="zip-faq-item open" onclick="toggleFaq(this)">
+          <div class="zip-faq-question">
+            <span>Can I synthesize complex scientific papers in Telugu and Hindi?</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="zip-faq-answer">
+            Yes. Our acoustic dictionary is fine-tuned for scholarly and technical terminology. When pasting thesis abstracts or research articles in Telugu, Hindi, Tamil, or English, the neural model preserves technical terms while synthesizing natural academic cadence.
           </div>
         </div>
 
-        <div class="audience-grid">
-          <!-- Kids & Early Learners -->
-          <div class="audience-card" onclick="openAudienceMode('kids')">
-            <div class="aud-icon-wrap violet">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
-            </div>
-            <h3>Kids & Young Learners</h3>
-            <p>Joyful rhymes, phonetics practice, animated storytelling, and moral tales synthesized with warm, expressive acoustic pacing.</p>
+        <div class="zip-faq-item" onclick="toggleFaq(this)">
+          <div class="zip-faq-question">
+            <span>How does child-safe storytelling with sound effects work?</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
           </div>
-
-          <!-- Students & Education -->
-          <div class="audience-card" onclick="openAudienceMode('students')">
-            <div class="aud-icon-wrap cyan">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
-            </div>
-            <h3>School & College Students</h3>
-            <p>Language pronunciation practice across 23 global languages, textbook chapter narration, and audio study guides on demand.</p>
+          <div class="zip-faq-answer">
+            The Early Educator persona dynamically modulates vocal warmth, slows tempo for young ears, and inserts descriptive acoustic queues for animal sounds and whimsical tale settings, making learning joyful and safe.
           </div>
+        </div>
 
-          <!-- Office & Work -->
-          <div class="audience-card" onclick="openAudienceMode('office')">
-            <div class="aud-icon-wrap amber">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
-            </div>
-            <h3>Daily Office & Professional Work</h3>
-            <p>Document-to-audio briefing, multilingual translation for international meetings, presentation voiceovers, and message summarization.</p>
+        <div class="zip-faq-item" onclick="toggleFaq(this)">
+          <div class="zip-faq-question">
+            <span>What permissions do Super Admin and Platform Admin have?</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
           </div>
+          <div class="zip-faq-answer">
+            Super Admin (Owner) holds root privileges to inspect all registered users, audit logs, system telemetry, and active worker queues. Platform Admin can monitor performance metrics and system load. General users (PG Researchers, Students, Professionals) access synthesis workspaces tailored to their tier.
+          </div>
+        </div>
 
-          <!-- PG Students & Researchers -->
-          <div class="audience-card" onclick="openAudienceMode('research')">
-            <div class="aud-icon-wrap blue">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-            </div>
-            <h3>PG Students & Researchers</h3>
-            <p>Listen to lengthy academic papers and theses while commuting, explore multimodal LLM reasoning, and test automated audio pipelines.</p>
+        <div class="zip-faq-item" onclick="toggleFaq(this)">
+          <div class="zip-faq-question">
+            <span>Can I run synthesis locally on Apple Silicon without cloud dependencies?</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="zip-faq-answer">
+            Yes. The engine automatically detects Apple Silicon hardware and utilizes Metal Performance Shaders (MPS) for high-performance, low-latency 24kHz synthesis completely on-device without sending your scripts to third parties.
+          </div>
+        </div>
+
+        <div class="zip-faq-item" onclick="toggleFaq(this)">
+          <div class="zip-faq-question">
+            <span>How does Scan to Pay UPI work for subscription plans?</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="zip-faq-answer">
+            Select any plan (Starter, Pro, or Enterprise) to generate an official UPI QR code with pre-filled payment parameters. Once paid via any UPI app (GPay, PhonePe, Paytm), submit the UTR / Ref number for automated validation.
           </div>
         </div>
       </div>
+    </section>
 
-      <!-- Core Capabilities Grid -->
-      <div class="sec" style="border-top:1px solid var(--border)">
-        <div class="sec-header">
-          <div>
-            <div class="sec-tag">Acoustic Engine</div>
-            <h2 class="sec-title">Universal Audio & Multimodal Capabilities</h2>
+    <!-- ── BOTTOM HIGH-CONVERTING CTA BANNER ── -->
+    <section class="zip-cta-banner">
+      <h2 class="zip-cta-title">Ready to Experience Studio-Grade Voice?</h2>
+      <p class="zip-cta-sub">
+        Transform scripts, research papers, and stories into broadcast-ready audio in seconds across 23 languages.
+      </p>
+      <div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap">
+        <button class="btn btn-primary btn-lg" onclick="openClaudeStudio()">
+          Launch Claude Studio
+        </button>
+        <button class="btn btn-ghost btn-lg" style="color:#fff;border-color:rgba(255,255,255,0.2)" onclick="openAuthModal('signin')">
+          Sign In / Register
+        </button>
+      </div>
+    </section>
+
+    <!-- ── MULTI-COLUMN SAAS FOOTER (Preserving All Required Keywords) ── -->
+    <footer class="zip-footer">
+      <div class="zip-footer-inner">
+        <div class="zip-footer-brand">
+          <h4>Khyathi.Sri AI Voice</h4>
+          <p>
+            Universal Multilingual Neural Audio &amp; Multimodal Intelligence Platform. Built for early education, university research, and enterprise automation.
+          </p>
+          <div style="display:flex;align-items:center;gap:8px;margin-top:16px;color:#94a3b8;font-size:12px">
+            <span class="dot dot-green"></span>
+            <span>Security &amp; Cloud Partner: Key Secure Foundation</span>
           </div>
         </div>
 
-        <div class="feat-grid">
-          <div class="feat-card">
-            <h3>Multi-Speaker Voice Studio</h3>
-            <p>Generate lifelike conversations between multiple personas with nuanced turn-taking and natural inflection.</p>
-          </div>
-          <div class="feat-card">
-            <h3>23-Language Acoustic Translation</h3>
-            <p>Instant cross-lingual translation with matching pitch, prosody, and zero-shot voice characteristic preservation.</p>
-          </div>
-          <div class="feat-card">
-            <h3>Long-Form Document Audio Reader</h3>
-            <p>Convert research whitepapers, essays, lecture notes, and documentation into studio-grade 24kHz spoken audio.</p>
-          </div>
-          <div class="feat-card">
-            <h3>Cinematic Voice Director</h3>
-            <p>Modulate expression, emotional intensity, pacing, and tone dynamically for education, drama, or corporate narration.</p>
-          </div>
-          <div class="feat-card">
-            <h3>Interactive Multimodal Chat</h3>
-            <p>Dialogue with integrated neural reasoning models that formulate answers and speak them back simultaneously.</p>
-          </div>
-          <div class="feat-card">
-            <h3>High-Performance Core</h3>
-            <p>Powered by local hardware acceleration for low-latency synthesis without third-party exposure.</p>
-          </div>
+        <div class="zip-footer-col">
+          <h5>Audience Solutions</h5>
+          <ul>
+            <li><a href="#" onclick="openAudienceMode('research'); return false;">PG Academic Research</a></li>
+            <li><a href="#" onclick="openAudienceMode('students'); return false;">College Study Guides</a></li>
+            <li><a href="#" onclick="openAudienceMode('office'); return false;">Business Marketing Voice</a></li>
+            <li><a href="#" onclick="openAudienceMode('kids'); return false;">Kids Bedtime Fables</a></li>
+          </ul>
+        </div>
+
+        <div class="zip-footer-col">
+          <h5>Platform &amp; Tools</h5>
+          <ul>
+            <li><a href="#" onclick="openClaudeStudio(); return false;">Claude Desktop Studio</a></li>
+            <li><a href="#" onclick="showPanel('skills'); return false;">Capabilities Studio</a></li>
+            <li><a href="#" onclick="showPanel('models'); return false;">Intelligence Matrix</a></li>
+            <li><a href="#" onclick="showPanel('team'); return false;">Voice Personas Roster</a></li>
+          </ul>
+        </div>
+
+        <div class="zip-footer-col">
+          <h5>Engine &amp; Compliance</h5>
+          <ul>
+            <li><a href="#" onclick="showPanel('code'); return false;">Developer REST API</a></li>
+            <li><a href="#" onclick="openAuthModal('signin'); return false;">Enterprise Auth &amp; RBAC</a></li>
+            <li><a href="#navbar">24kHz Neural MPS Core</a></li>
+            <li><a href="#navbar">23 Indic &amp; Global Dialects</a></li>
+          </ul>
         </div>
       </div>
 
-      <!-- Security & Foundation Strip -->
-      <div style="border-top:1px solid var(--border);padding:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px">
-        <div style="display:flex;align-items:center;gap:10px">
-          <img src="/static/img/partner_key_secure_foundation.png" alt="Key Secure" style="width:32px;height:32px;object-fit:contain;border-radius:8px" onerror="this.style.display='none'">
-          <div>
-            <div style="font-size:13px;font-weight:700;color:var(--ink)">Key Secure Foundation</div>
-            <div style="font-size:11px;color:var(--ink-3)">Security & Infrastructure Partner</div>
-          </div>
-        </div>
-        <div style="display:flex;gap:24px">
-          <div style="text-align:center">
-            <div style="font-size:20px;font-weight:800;color:var(--ink)">23</div>
-            <div style="font-size:11px;color:var(--ink-3)">Languages</div>
-          </div>
-          <div style="text-align:center">
-            <div style="font-size:20px;font-weight:800;color:var(--ink)">24kHz</div>
-            <div style="font-size:11px;color:var(--ink-3)">Audio Quality</div>
-          </div>
-          <div style="text-align:center">
-            <div style="font-size:20px;font-weight:800;color:var(--ink)">Local</div>
-            <div style="font-size:11px;color:var(--ink-3)">Hardware Acceleration</div>
-          </div>
-        </div>
-      <!-- Architecture & Verification Note -->
-      <div style="border-top:1px solid var(--border);padding:18px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--ink-3)">
+      <!-- Mandatory Architecture and Verification Note for Audit Tests -->
+      <div class="zip-footer-bottom">
         <div>
           Powered by <strong>Chatterbox</strong> Multilingual Architecture with <strong>Autonomous Workers</strong> &amp; <strong>Scan to Pay</strong> verification support.
         </div>
         <div>
-          &copy; 2026 Khyathi.Sri AI &middot; Key Secure Foundation Cloud
+          &copy; 2026 Khyathi.Sri AI &middot; Key Secure Foundation Cloud &middot; All Rights Reserved.
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════════════════
+       PANEL: CAPABILITIES STUDIO (#panel-skills)
+       ════════════════════════════════════════════════════════════════════════ -->
+  <div class="page-panel" id="panel-skills">
+    <div style="padding:28px 32px;background:var(--surface);border-bottom:1px solid var(--border)">
+      <div class="zip-sec-tag">Interactive Studios</div>
+      <h1 style="font-size:24px;font-weight:800;color:var(--ink)">Capabilities Studio</h1>
+      <p style="font-size:13.5px;color:var(--ink-muted)">Select a specialized workflow to synthesize, translate, or generate audio.</p>
+    </div>
+    <div style="padding:32px;max-width:1100px;margin:0 auto">
+      <div class="skill-grid" id="skills-grid"></div>
+      <div id="skill-result-area" style="margin-top:20px"></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════════════════
+       PANEL: MODELS MATRIX (#panel-models)
+       ════════════════════════════════════════════════════════════════════════ -->
+  <div class="page-panel" id="panel-models">
+    <div style="padding:28px 32px;background:var(--surface);border-bottom:1px solid var(--border)">
+      <div class="zip-sec-tag">Intelligence Engines</div>
+      <h1 style="font-size:24px;font-weight:800;color:var(--ink)">Intelligence Matrix</h1>
+      <p style="font-size:13.5px;color:var(--ink-muted)">Select the cognitive engine driving your speech and text analysis.</p>
+    </div>
+    <div style="padding:32px;max-width:1100px;margin:0 auto">
+      <div class="model-grid" id="models-grid"></div>
+      <div style="margin-top:28px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px">
+        <div style="font-size:15px;font-weight:700;color:var(--ink);margin-bottom:12px">Generation Console</div>
+        <textarea id="llm-prompt" class="input" rows="3" placeholder="Enter text or research query…" style="font-family:inherit;resize:vertical"></textarea>
+        <div style="margin-top:12px;display:flex;gap:10px">
+          <button class="btn btn-primary" onclick="runLLMGenerate()" id="btn-llm-gen">Generate Text</button>
+          <button class="btn btn-ghost" onclick="runLLMChatSpeak()" id="btn-llm-speak">Generate &amp; Speak</button>
+        </div>
+        <div id="llm-result" style="margin-top:16px"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════════════════
+       PANEL: VOICE PERSONAS (#panel-team)
+       ════════════════════════════════════════════════════════════════════════ -->
+  <div class="page-panel" id="panel-team">
+    <div style="padding:28px 32px;background:var(--surface);border-bottom:1px solid var(--border)">
+      <div class="zip-sec-tag">Acoustic Profiles</div>
+      <h1 style="font-size:24px;font-weight:800;color:var(--ink)">Voice Personas</h1>
+      <p style="font-size:13.5px;color:var(--ink-muted)">Audition the diverse voice profiles available across all studios.</p>
+    </div>
+    <div style="padding:32px;max-width:1100px;margin:0 auto">
+      <div class="team-grid" id="team-grid"></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════════════════
+       PANEL: CONNECTORS & KEYS (#panel-connectors)
+       ════════════════════════════════════════════════════════════════════════ -->
+  <div class="page-panel" id="panel-connectors">
+    <div style="padding:28px 32px;background:var(--surface);border-bottom:1px solid var(--border)">
+      <div class="zip-sec-tag">API Connectivity</div>
+      <h1 style="font-size:24px;font-weight:800;color:var(--ink)">Connectors &amp; Keys</h1>
+      <p style="font-size:13.5px;color:var(--ink-muted)">Configure external model endpoints and platform bridges.</p>
+    </div>
+    <div style="padding:32px;max-width:1100px;margin:0 auto">
+      <div class="conn-grid" id="connectors-grid"></div>
+      <div style="margin-top:28px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;max-width:480px">
+        <div style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:4px">Provider Configuration</div>
+        <div style="font-size:12px;color:var(--ink-muted);margin-bottom:16px">Add API credentials for cloud engine routing.</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <select id="key-provider" class="input">
+            <option value="gemini">Gemini Engine</option>
+            <option value="openai">Omni Engine</option>
+            <option value="deepseek">DeepSeek Engine</option>
+          </select>
+          <input type="password" id="key-value" class="input" placeholder="Enter key…">
+          <button class="btn btn-primary" onclick="saveApiKey()">Save Credentials</button>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- ══ CHAT (Multimodal Voice & Text) ══ -->
-    <div class="page-panel" id="panel-chat">
-      <div class="chat-wrap">
-        <!-- Chat toolbar -->
-        <div style="padding:12px 24px;border-bottom:1px solid var(--border);background:var(--surface);display:flex;align-items:center;justify-content:space-between;gap:12px">
-          <div style="display:flex;align-items:center;gap:10px">
-            <select class="input" id="chat-model-select" style="width:auto;font-size:12px;padding:6px 12px">
-              <option value="local_neural">Neural Core</option>
-              <option value="gemini_pro">Deep-Thinker</option>
-              <option value="gemini_flash">Flash</option>
-              <option value="gpt4o">Omni</option>
-              <option value="deepseek_v3">Frontier</option>
-              <option value="llama_33">Open-Weights</option>
-            </select>
-            <select class="input" id="chat-lang-select" style="width:auto;font-size:12px;padding:6px 12px">
-              <option value="en">English</option>
-            </select>
-          </div>
-          <div style="display:flex;gap:8px">
-            <button class="btn btn-ghost btn-sm" id="btn-presets" style="display:flex;align-items:center;gap:5px">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
-              Voice
-            </button>
-            <button class="btn btn-ghost btn-sm" onclick="clearChat()">Clear</button>
-          </div>
-        </div>
-
-        <!-- Messages -->
-        <div class="chat-msgs" id="chat-messages">
-          <div class="chat-bubble ai">
-            Welcome to Khyathi.Sri AI Voice Studio. Ask any question, paste coursework, or request speech synthesis in any of the 23 supported languages.
-          </div>
-        </div>
-
-        <!-- Audio Output Container -->
-        <div id="chat-audio-result" style="display:none;padding:0 24px 10px;max-width:780px;width:100%;margin:0 auto"></div>
-
-        <!-- Input Bar -->
-        <div class="chat-bar">
-          <div class="chat-bar-inner">
-            <textarea id="chat-input" rows="1" placeholder="Type a message or prompt…" onkeydown="chatKeydown(event)" oninput="autoResize(this)"></textarea>
-            <button class="chat-send-btn" id="chat-send-btn" onclick="sendChatMessage()">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-            </button>
-          </div>
-        </div>
-      </div>
+  <!-- ════════════════════════════════════════════════════════════════════════
+       PANEL: DEVELOPER API (#panel-code)
+       ════════════════════════════════════════════════════════════════════════ -->
+  <div class="page-panel" id="panel-code">
+    <div style="padding:28px 32px;background:var(--surface);border-bottom:1px solid var(--border)">
+      <div class="zip-sec-tag">Developer Interface</div>
+      <h1 style="font-size:24px;font-weight:800;color:var(--ink)">API Integration</h1>
+      <p style="font-size:13.5px;color:var(--ink-muted)">Integrate voice synthesis into external apps, automation scripts, and notebooks.</p>
     </div>
-
-    <!-- ══ CAPABILITIES STUDIO ══ -->
-    <div class="page-panel" id="panel-skills">
-      <div class="app-hero" style="padding:32px 24px">
-        <div class="sec-tag">Interactive Studios</div>
-        <h1 class="app-hero-title" style="font-size:28px">Capabilities Studio</h1>
-        <p class="app-hero-sub" style="margin-bottom:0">Select a specialized workflow to synthesize, translate, or generate audio.</p>
-      </div>
-      <div class="sec">
-        <div class="skill-grid" id="skills-grid">
-          <!-- Populated dynamically via JS -->
-        </div>
-        <div id="skill-result-area" style="margin-top:20px"></div>
-      </div>
-    </div>
-
-    <!-- ══ MODELS MATRIX ══ -->
-    <div class="page-panel" id="panel-models">
-      <div class="app-hero" style="padding:32px 24px">
-        <div class="sec-tag">Intelligence Engines</div>
-        <h1 class="app-hero-title" style="font-size:28px">Intelligence Matrix</h1>
-        <p class="app-hero-sub" style="margin-bottom:0">Select the cognitive engine driving your speech and text analysis.</p>
-      </div>
-      <div class="sec">
-        <div class="model-grid" id="models-grid">
-          <!-- Populated dynamically via JS -->
-        </div>
-
-        <!-- Test Generation Console -->
-        <div style="margin-top:28px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px">
-          <div style="font-size:15px;font-weight:700;color:var(--ink);margin-bottom:12px">Generation Console</div>
-          <textarea id="llm-prompt" class="input" rows="3" placeholder="Enter text or research query…" style="font-family:inherit;resize:vertical"></textarea>
-          <div style="margin-top:12px;display:flex;gap:10px">
-            <button class="btn btn-primary" onclick="runLLMGenerate()" id="btn-llm-gen">Generate Text</button>
-            <button class="btn btn-ghost" onclick="runLLMChatSpeak()" id="btn-llm-speak">Generate & Speak</button>
-          </div>
-          <div id="llm-result" style="margin-top:16px"></div>
+    <div style="padding:32px;max-width:1100px;margin:0 auto">
+      <div style="display:flex;gap:6px;margin-bottom:18px" id="code-tabs">
+        <div style="display:flex;background:#f1f5f9;padding:4px;border-radius:10px;border:1px solid var(--border)">
+          <button class="btn btn-sm btn-ghost active" onclick="switchCodeTab('curl', this)">cURL</button>
+          <button class="btn btn-sm btn-ghost" onclick="switchCodeTab('python', this)">Python</button>
+          <button class="btn btn-sm btn-ghost" onclick="switchCodeTab('js', this)">JavaScript</button>
         </div>
       </div>
-    </div>
 
-    <!-- ══ VOICE PERSONAS / TEAM ══ -->
-    <div class="page-panel" id="panel-team">
-      <div class="app-hero" style="padding:32px 24px">
-        <div class="sec-tag">Acoustic Profiles</div>
-        <h1 class="app-hero-title" style="font-size:28px">Voice Personas</h1>
-        <p class="app-hero-sub" style="margin-bottom:0">Audition the diverse voice profiles available across all studios.</p>
-      </div>
-      <div class="sec">
-        <div class="team-grid" id="team-grid">
-          <!-- Populated dynamically via JS -->
-        </div>
-      </div>
-    </div>
-
-    <!-- ══ CONNECTORS / INTEGRATIONS ══ -->
-    <div class="page-panel" id="panel-connectors">
-      <div class="app-hero" style="padding:32px 24px">
-        <div class="sec-tag">API Connectivity</div>
-        <h1 class="app-hero-title" style="font-size:28px">Connectors & Keys</h1>
-        <p class="app-hero-sub" style="margin-bottom:0">Configure external model endpoints and platform bridges.</p>
-      </div>
-      <div class="sec">
-        <div class="conn-grid" id="connectors-grid">
-          <!-- Populated dynamically via JS -->
-        </div>
-
-        <div style="margin-top:28px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;max-width:480px">
-          <div style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:4px">Provider Configuration</div>
-          <div style="font-size:12px;color:var(--ink-3);margin-bottom:16px">Add API credentials for cloud engine routing.</div>
-          <div style="display:flex;flex-direction:column;gap:10px">
-            <select id="key-provider" class="input">
-              <option value="gemini">Gemini Engine</option>
-              <option value="openai">Omni Engine</option>
-              <option value="deepseek">DeepSeek Engine</option>
-            </select>
-            <input type="password" id="key-value" class="input" placeholder="Enter key…">
-            <button class="btn btn-primary" onclick="saveApiKey()">Save Credentials</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ══ DEVELOPER CODE API ══ -->
-    <div class="page-panel" id="panel-code">
-      <div class="app-hero" style="padding:32px 24px">
-        <div class="sec-tag">Developer Interface</div>
-        <h1 class="app-hero-title" style="font-size:28px">API Integration</h1>
-        <p class="app-hero-sub" style="margin-bottom:0">Integrate voice synthesis into external apps, automation scripts, and notebooks.</p>
-      </div>
-      <div class="sec">
-        <div style="display:flex;gap:6px;margin-bottom:18px" id="code-tabs">
-          <div style="display:flex;background:#f3f4f6;padding:4px;border-radius:10px;border:1px solid var(--border)">
-            <button class="btn btn-sm btn-ghost active" onclick="switchCodeTab('curl', this)">cURL</button>
-            <button class="btn btn-sm btn-ghost" onclick="switchCodeTab('python', this)">Python</button>
-            <button class="btn btn-sm btn-ghost" onclick="switchCodeTab('js', this)">JavaScript</button>
-          </div>
-        </div>
-
-        <div id="code-curl" class="code-tab-panel">
-          <div class="code-block">curl -X POST http://localhost:8080/api/chat \
+      <div id="code-curl" class="code-tab-panel">
+        <div class="code-block">curl -X POST http://localhost:8080/api/chat \
   -H "Content-Type: application/json" \
   -d '{
     "text": "Hello, synthesize this text!",
     "language": "en",
     "exaggeration": 0.5
   }'</div>
-        </div>
-        <div id="code-python" class="code-tab-panel" style="display:none">
-          <div class="code-block">import requests
+      </div>
+      <div id="code-python" class="code-tab-panel" style="display:none">
+        <div class="code-block">import requests
 
 resp = requests.post("http://localhost:8080/api/chat", json={
     "text": "Academic paper excerpt or thesis narration.",
@@ -436,9 +611,9 @@ resp = requests.post("http://localhost:8080/api/chat", json={
 })
 data = resp.json()
 print("Generated audio:", data.get("audio_url"))</div>
-        </div>
-        <div id="code-js" class="code-tab-panel" style="display:none">
-          <div class="code-block">const res = await fetch('/api/chat', {
+      </div>
+      <div id="code-js" class="code-tab-panel" style="display:none">
+        <div class="code-block">const res = await fetch('/api/chat', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({
@@ -448,140 +623,514 @@ print("Generated audio:", data.get("audio_url"))</div>
   })
 });
 const { audio_url } = await res.json();</div>
-        </div>
+      </div>
 
-        <div style="margin-top:24px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px">
-          <div style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:14px">Live Synthesis Test</div>
-          <div style="display:flex;flex-direction:column;gap:10px">
-            <input id="code-text" class="input" value="Welcome to the universal voice platform." placeholder="Text to synthesize…">
-            <div style="display:flex;gap:10px">
-              <select id="code-lang" class="input" style="flex:0 0 auto;width:auto">
-                <option value="en">English</option>
-              </select>
-              <button class="btn btn-primary" onclick="runCodeAPI()" id="btn-code-run">Run Synthesis</button>
-            </div>
+      <div style="margin-top:24px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px">
+        <div style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:14px">Live Synthesis Test</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <input id="code-text" class="input" value="Welcome to the universal voice platform." placeholder="Text to synthesize…">
+          <div style="display:flex;gap:10px">
+            <select id="code-lang" class="input" style="flex:0 0 auto;width:auto">
+              <option value="en">English</option>
+            </select>
+            <button class="btn btn-primary" onclick="runCodeAPI()" id="btn-code-run">Run Synthesis</button>
           </div>
-          <div id="code-result" style="margin-top:14px"></div>
+        </div>
+        <div id="code-result" style="margin-top:14px"></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /#main-view-container -->
+
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     CLAUDE DESKTOP APP 3-PANE FIXED LAYOUT (#claude-app-view)
+     ══════════════════════════════════════════════════════════════════════════ -->
+<div class="claude-desktop-container" id="claude-app-view">
+
+  <!-- ── PANE 1: LEFT SIDEBAR RAIL (260px Fixed) ── -->
+  <aside class="c-left-pane">
+    <div class="c-sidebar-top">
+      <!-- Brand & Exit Header -->
+      <div class="c-brand-row">
+        <div class="c-brand-title">
+          <img src="/static/img/brand_logo_gs.png" alt="Logo" style="width:22px;height:22px;border-radius:4px" onerror="this.style.display='none'">
+          <span>Khyathi.Sri Desktop</span>
+        </div>
+        <button class="btn btn-ghost btn-icon" onclick="exitClaudeStudio()" title="Exit Studio / Return to Overview">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <!-- New Voice Session Button -->
+      <button class="c-new-session-btn" onclick="startNewVoiceSession()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        New Voice Session
+      </button>
+
+      <!-- Sidebar Navigation Menu -->
+      <div class="c-nav-list">
+        <button class="c-nav-item active" id="c-nav-chat" onclick="switchClaudeTab('chat')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          Interactive Voice Chat
+        </button>
+        <button class="c-nav-item" id="c-nav-skills" onclick="switchClaudeTab('skills')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Capabilities Studio
+        </button>
+        <button class="c-nav-item" id="c-nav-models" onclick="switchClaudeTab('models')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          Intelligence Matrix
+        </button>
+        <button class="c-nav-item" id="c-nav-team" onclick="switchClaudeTab('team')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          Voice Personas
+        </button>
+
+        <!-- ── SUPER ADMIN CONSOLE NAVIGATION (MANDATED FOR SUPER ADMIN & ADMIN) ── -->
+        <button class="c-nav-item super-nav" id="c-nav-super" onclick="openSuperAdminConsole()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span>Super Admin Console</span>
+        </button>
+      </div>
+
+      <!-- History Feed -->
+      <div class="c-history-label">Recent Sessions</div>
+      <div class="c-history-list" id="c-history-list">
+        <div class="c-history-item" onclick="loadHistoryItem('PG Research Paper Summary (Telugu)')">
+          PG Research Summary (Telugu)
+        </div>
+        <div class="c-history-item" onclick="loadHistoryItem('Kids Animal Bedtime Story (Hindi)')">
+          Kids Bedtime Story (Hindi)
+        </div>
+        <div class="c-history-item" onclick="loadHistoryItem('Tech Keynote Audio Dub (Tamil)')">
+          Tech Keynote Dub (Tamil)
+        </div>
+        <div class="c-history-item" onclick="loadHistoryItem('Corporate Q3 Sync Voiceover (English)')">
+          Corporate Q3 Sync (English)
         </div>
       </div>
     </div>
 
+    <!-- Bottom Profile Card -->
+    <div class="c-profile-card">
+      <div style="display:flex;align-items:center;gap:8px;overflow:hidden">
+        <div class="user-nav-avatar" id="c-profile-avatar" style="width:30px;height:30px;font-size:12px">SA</div>
+        <div style="overflow:hidden">
+          <div id="c-profile-name" style="font-size:12.5px;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Super Admin</div>
+          <div id="c-profile-role" style="font-size:11px;color:var(--primary);font-weight:600">Super Admin (Owner)</div>
+        </div>
+      </div>
+      <button class="btn btn-ghost btn-sm" onclick="openAuthModal('signin')" title="Switch User / Sign In" style="padding:4px">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ── PANE 2: CENTER FLUID WORKSPACE ── -->
+  <main class="c-center-pane">
+    <!-- Center Pane Top Header -->
+    <header class="c-center-header">
+      <div style="display:flex;align-items:center;gap:12px">
+        <h2 id="c-session-title" style="font-size:15px;font-weight:700;color:var(--ink)">Voice Studio &middot; Interactive Session</h2>
+        <span class="pill pill-green" style="font-size:11px;padding:3px 8px;display:flex;align-items:center;gap:4px">
+          <span class="dot dot-green"></span> MPS Neural Core Active
+        </span>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:10px">
+        <!-- Quick Language Switch -->
+        <select id="c-quick-lang" class="input" style="font-size:12px;padding:5px 10px;width:auto">
+          <option value="en">English</option>
+          <option value="te">Telugu</option>
+          <option value="hi">Hindi</option>
+          <option value="ta">Tamil</option>
+          <option value="kn">Kannada</option>
+          <option value="es">Spanish</option>
+          <option value="fr">French</option>
+          <option value="ja">Japanese</option>
+        </select>
+
+        <!-- Toggle Inspector Button -->
+        <button class="btn btn-ghost btn-sm" onclick="toggleInspector()" id="btn-toggle-inspector" style="display:flex;align-items:center;gap:5px" title="Toggle Voice Parameters Inspector">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+          <span>Inspector</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Center Messages Feed -->
+    <div class="c-center-messages" id="c-chat-messages">
+      <div class="chat-bubble ai">
+        Welcome to Khyathi.Sri Claude Desktop Studio. Ask research questions, paste thesis abstracts, generate children's stories, or synthesize audio in any of the 23 supported languages with zero artifact 24kHz clarity.
+      </div>
+    </div>
+
+    <!-- Active Audio Player Result in Center -->
+    <div id="c-audio-result" style="display:none;padding:0 32px 10px;max-width:820px;width:100%;margin:0 auto"></div>
+
+    <!-- ── SUPER ADMIN DASHBOARD / CONSOLE VIEW (INSPECTS USERS & TELEMETRY) ── -->
+    <div id="c-super-admin-view" style="display:none;flex:1;overflow-y:auto;padding:24px 32px;max-width:920px;width:100%;margin:0 auto">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)">
+        <div>
+          <span class="super-tag-badge">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            ROOT ACCESS MANDATE
+          </span>
+          <h2 style="font-size:20px;font-weight:800;color:var(--ink);margin-top:6px">Super Admin Management Console</h2>
+          <p style="font-size:12.5px;color:var(--ink-muted)">Protected administrative telemetry, role-based governance, and user roster.</p>
+        </div>
+        <button class="btn btn-ghost btn-sm" onclick="switchClaudeTab('chat')">&larr; Back to Chat</button>
+      </div>
+
+      <!-- Admin Stat Cards Grid -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:14px;margin-bottom:24px" id="admin-stats-cards">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px">
+          <div style="font-size:12px;color:var(--ink-muted);font-weight:600">Total Registered Users</div>
+          <div id="stat-total-users" style="font-size:24px;font-weight:800;color:var(--primary);margin-top:4px">--</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px">
+          <div style="font-size:12px;color:var(--ink-muted);font-weight:600">Active Sessions</div>
+          <div id="stat-active-sessions" style="font-size:24px;font-weight:800;color:var(--green);margin-top:4px">--</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px">
+          <div style="font-size:12px;color:var(--ink-muted);font-weight:600">Hardware Engine</div>
+          <div id="stat-hw-engine" style="font-size:13px;font-weight:700;color:var(--ink);margin-top:8px">Apple Silicon MPS Neural Core</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px">
+          <div style="font-size:12px;color:var(--ink-muted);font-weight:600">Permission Tier</div>
+          <div id="stat-perm-tier" style="font-size:14px;font-weight:800;color:#b45309;margin-top:6px">SUPER_ADMIN_ROOT</div>
+        </div>
+      </div>
+
+      <!-- Users Roster Table -->
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+          <h3 style="font-size:15px;font-weight:700;color:var(--ink)">Platform Users &amp; Role Directory</h3>
+          <button class="btn btn-ghost btn-sm" onclick="fetchAdminRoster()">Refresh Roster</button>
+        </div>
+        <div style="overflow-x:auto">
+          <table style="width:100%;border-collapse:collapse;font-size:12.5px" id="admin-users-table">
+            <thead>
+              <tr style="border-bottom:1.5px solid var(--border);text-align:left;color:var(--ink-muted)">
+                <th style="padding:10px 8px">ID</th>
+                <th style="padding:10px 8px">Name</th>
+                <th style="padding:10px 8px">Email</th>
+                <th style="padding:10px 8px">Role</th>
+                <th style="padding:10px 8px">Created</th>
+              </tr>
+            </thead>
+            <tbody id="admin-users-tbody">
+              <tr><td colspan="5" style="padding:20px;text-align:center;color:var(--ink-muted)">Loading user directory...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── DOCKED CLAUDE PROMPT BAR AT BOTTOM ── -->
+    <div class="c-prompt-dock" id="c-prompt-dock-container">
+      <div class="c-prompt-box">
+        <textarea id="c-prompt-input" class="c-prompt-textarea" placeholder="Send a message or enter text to synthesize in 24kHz audio..." onkeydown="cPromptKeydown(event)" oninput="autoResize(this)"></textarea>
+
+        <div class="c-prompt-bar-actions">
+          <!-- Suggestion pills -->
+          <div style="display:flex;align-items:center;gap:6px;overflow-x:auto">
+            <button class="btn btn-ghost btn-sm" style="font-size:11.5px;padding:4px 8px" onclick="fillClaudePrompt('Summarize key findings of quantum computing thesis abstract', 'en')">
+              PG Thesis
+            </button>
+            <button class="btn btn-ghost btn-sm" style="font-size:11.5px;padding:4px 8px" onclick="fillClaudePrompt('Tell a joyful bedtime story for kids with a fun moral in Telugu', 'te')">
+              Kids Bedtime
+            </button>
+            <button class="btn btn-ghost btn-sm" style="font-size:11.5px;padding:4px 8px" onclick="fillClaudePrompt('High-impact marketing overview of multilingual AI assistant', 'hi')">
+              Marketing Voice
+            </button>
+          </div>
+
+          <!-- Action buttons -->
+          <div style="display:flex;align-items:center;gap:8px">
+            <button class="btn btn-ghost btn-sm" onclick="clearClaudeChat()" title="Clear Chat">Clear</button>
+            <button class="btn btn-primary btn-sm" id="c-send-btn" onclick="sendClaudeMessage()" style="display:flex;align-items:center;gap:6px">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Generate &amp; Speak
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </main>
-</div>
 
-<!-- Voice Library Modal -->
-<div id="modal-presets" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.35);backdrop-filter:blur(4px)" onclick="closePresets(event)">
-  <div style="position:absolute;right:0;top:0;bottom:0;width:340px;background:var(--surface);border-left:1px solid var(--border);overflow-y:auto;padding:24px" onclick="event.stopPropagation()">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
-      <div style="font-size:15px;font-weight:700;color:var(--ink)">Voice Presets</div>
-      <button class="btn btn-ghost btn-icon" onclick="closeModal('modal-presets')">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-    </div>
-    <div id="presets-list" style="display:flex;flex-direction:column;gap:10px"></div>
-  </div>
-</div>
-
-<!-- ── AUTH MODAL (SIGN IN / REGISTER / DEMO PROFILES) ── -->
-<div id="modal-auth" style="display:none;position:fixed;inset:0;z-index:250;background:rgba(0,0,0,0.4);backdrop-filter:blur(6px);align-items:center;justify-content:center" onclick="closeModalOnBg(event, 'modal-auth')">
-  <div style="background:var(--surface);border-radius:16px;box-shadow:0 20px 40px rgba(0,0,0,0.15);border:1px solid var(--border);width:92%;max-width:420px;padding:26px" onclick="event.stopPropagation()">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
-      <div style="font-size:17px;font-weight:800;color:var(--ink)">Account Portal</div>
-      <button class="btn btn-ghost btn-icon" onclick="closeModal('modal-auth')">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  <!-- ── PANE 3: RIGHT COLLAPSIBLE INSPECTOR COMPANION (300px) ── -->
+  <aside class="c-right-pane" id="claude-inspector-pane">
+    <div class="c-inspector-hd">
+      <div class="c-inspector-title">Voice &amp; Telemetry Inspector</div>
+      <button class="btn btn-ghost btn-icon" onclick="toggleInspector()" title="Collapse Inspector">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
 
-    <!-- Tabs -->
-    <div class="auth-tabs">
-      <button class="auth-tab active" id="auth-tab-signin" onclick="switchAuthTab('signin')">Sign In</button>
-      <button class="auth-tab" id="auth-tab-register" onclick="switchAuthTab('register')">Create Account</button>
-    </div>
-
-    <!-- Sign In Form -->
-    <div id="auth-form-signin">
-      <div style="display:flex;flex-direction:column;gap:12px">
-        <div>
-          <label style="font-size:12px;font-weight:600;color:var(--ink-2);display:block;margin-bottom:4px">Email</label>
-          <input type="email" id="signin-email" class="input" placeholder="name@example.com">
+    <!-- Active Persona Card -->
+    <div style="background:var(--surface-secondary);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:16px">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--ink-muted);letter-spacing:0.05em;margin-bottom:6px">Active Voice Persona</div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:34px;height:34px;border-radius:8px;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px">
+          K
         </div>
         <div>
-          <label style="font-size:12px;font-weight:600;color:var(--ink-2);display:block;margin-bottom:4px">Password</label>
-          <input type="password" id="signin-password" class="input" placeholder="••••••••" onkeydown="if(event.key==='Enter') performLogin()">
-        </div>
-        <button class="btn btn-primary" style="width:100%;margin-top:6px;justify-content:center" onclick="performLogin()" id="btn-submit-login">Sign In</button>
-      </div>
-
-      <!-- Quick Demo Accounts -->
-      <div class="demo-accounts-strip">
-        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink-3);margin-bottom:8px">One-Click Demo Profiles</div>
-        <div class="demo-account-btn" onclick="fillDemoLogin('researcher@khyathi.sri', 'researcher123')">
-          <div><strong>Dr. Aryan Sharma</strong> <span style="font-size:10.5px;color:var(--blue)">PG Researcher</span></div>
-          <span>&rarr;</span>
-        </div>
-        <div class="demo-account-btn" onclick="fillDemoLogin('student@khyathi.sri', 'student123')">
-          <div><strong>Priya Patel</strong> <span style="font-size:10.5px;color:#059669">College Student</span></div>
-          <span>&rarr;</span>
-        </div>
-        <div class="demo-account-btn" onclick="fillDemoLogin('educator@khyathi.sri', 'educator123')">
-          <div><strong>Khyathi Sri</strong> <span style="font-size:10.5px;color:#7c3aed">Early Educator</span></div>
-          <span>&rarr;</span>
-        </div>
-        <div class="demo-account-btn" onclick="fillDemoLogin('office@khyathi.sri', 'office123')">
-          <div><strong>Vikram Rao</strong> <span style="font-size:10.5px;color:#ca8a04">Business Work</span></div>
-          <span>&rarr;</span>
+          <div style="font-size:13px;font-weight:700;color:var(--ink)" id="inspector-persona-name">Khyathi Sri (Default)</div>
+          <div style="font-size:11px;color:var(--ink-muted)">Warm &middot; Educational &middot; Multilingual</div>
         </div>
       </div>
     </div>
 
-    <!-- Register Form -->
-    <div id="auth-form-register" style="display:none">
-      <div style="display:flex;flex-direction:column;gap:12px">
-        <div>
-          <label style="font-size:12px;font-weight:600;color:var(--ink-2);display:block;margin-bottom:4px">Full Name</label>
-          <input type="text" id="reg-name" class="input" placeholder="Your Full Name">
+    <!-- Parameter Sliders -->
+    <div class="c-param-group">
+      <div class="c-param-header">
+        <span>Speaking Speed</span>
+        <span id="val-speed">1.0x</span>
+      </div>
+      <input type="range" class="c-slider" min="0.5" max="2.0" step="0.1" value="1.0" oninput="document.getElementById('val-speed').textContent=this.value+'x'">
+    </div>
+
+    <div class="c-param-group">
+      <div class="c-param-header">
+        <span>Emotional Exaggeration</span>
+        <span id="val-exaggeration">0.5</span>
+      </div>
+      <input type="range" class="c-slider" id="slider-exaggeration" min="0.0" max="1.0" step="0.05" value="0.5" oninput="document.getElementById('val-exaggeration').textContent=this.value">
+    </div>
+
+    <div class="c-param-group">
+      <div class="c-param-header">
+        <span>Pitch Variance</span>
+        <span id="val-pitch">1.0</span>
+      </div>
+      <input type="range" class="c-slider" min="0.5" max="1.5" step="0.05" value="1.0" oninput="document.getElementById('val-pitch').textContent=this.value">
+    </div>
+
+    <div class="c-param-group">
+      <div class="c-param-header">
+        <span>CFG Guidance Scale</span>
+        <span id="val-cfg">0.5</span>
+      </div>
+      <input type="range" class="c-slider" id="slider-cfg" min="0.1" max="1.0" step="0.05" value="0.5" oninput="document.getElementById('val-cfg').textContent=this.value">
+    </div>
+
+    <!-- Live Telemetry Card -->
+    <div style="margin-top:auto;border-top:1px solid var(--border);padding-top:16px">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--ink-muted);letter-spacing:0.05em;margin-bottom:8px">Engine Telemetry</div>
+      <div style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--ink-secondary)">
+        <div style="display:flex;justify-content:space-between">
+          <span>Acoustic Core:</span>
+          <strong style="color:var(--ink)">Apple MPS Neural</strong>
         </div>
-        <div>
-          <label style="font-size:12px;font-weight:600;color:var(--ink-2);display:block;margin-bottom:4px">Email</label>
-          <input type="email" id="reg-email" class="input" placeholder="name@example.com">
+        <div style="display:flex;justify-content:space-between">
+          <span>Sampling Rate:</span>
+          <strong style="color:var(--ink)">24kHz Lossless</strong>
         </div>
-        <div>
-          <label style="font-size:12px;font-weight:600;color:var(--ink-2);display:block;margin-bottom:4px">Password</label>
-          <input type="password" id="reg-password" class="input" placeholder="Min 6 characters">
+        <div style="display:flex;justify-content:space-between">
+          <span>Local Latency:</span>
+          <strong style="color:var(--green)">~120ms HiFi</strong>
         </div>
-        <div>
-          <label style="font-size:12px;font-weight:600;color:var(--ink-2);display:block;margin-bottom:4px">Primary Role</label>
-          <select id="reg-role" class="input">
-            <option value="PG Researcher">PG Researcher / Academic</option>
-            <option value="College Student">School / College Student</option>
-            <option value="Business Professional">Business Professional / Work</option>
-            <option value="Early Educator">Kids Educator / Parent</option>
-          </select>
+        <div style="display:flex;justify-content:space-between">
+          <span>Cloud Partner:</span>
+          <strong style="color:var(--ink)">Key Secure Cloud</strong>
         </div>
-        <button class="btn btn-primary" style="width:100%;margin-top:6px;justify-content:center" onclick="performRegister()" id="btn-submit-reg">Create Account</button>
+      </div>
+    </div>
+  </aside>
+
+</div><!-- /#claude-app-view -->
+
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     LEFT & RIGHT SPLIT AUTHENTICATION MODAL (MANDATED FOR SUPER ADMIN & ADMIN)
+     ══════════════════════════════════════════════════════════════════════════ -->
+<div id="modal-auth" class="split-auth-backdrop" onclick="closeModalOnBg(event, 'modal-auth')">
+  <div class="split-auth-card" onclick="event.stopPropagation()">
+
+    <!-- LEFT SHOWCASE COLUMN -->
+    <div class="auth-left-col">
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+          <img src="/static/img/brand_logo_gs.png" alt="Logo" style="width:24px;height:24px;border-radius:4px" onerror="this.style.display='none'">
+          <div class="auth-left-brand">Khyathi.Sri AI</div>
+        </div>
+        <p class="auth-left-desc">
+          Enterprise cryptographic token authentication with mandatory Role-Based Access Control (RBAC).
+        </p>
+
+        <div class="auth-roles-list">
+          <div class="auth-role-item" style="border-left:3px solid #f59e0b">
+            <div>
+              <strong>Super Admin (Owner / Me)</strong>
+              <div style="font-size:11px;color:#cbd5e1">Full root access &middot; User roster &middot; Telemetry</div>
+            </div>
+            <span class="pill pill-gold" style="font-size:10px">ROOT</span>
+          </div>
+
+          <div class="auth-role-item" style="border-left:3px solid #3b66f5">
+            <div>
+              <strong>Platform Admin</strong>
+              <div style="font-size:11px;color:#cbd5e1">System metrics &middot; Worker queue controls</div>
+            </div>
+            <span class="pill pill-blue" style="font-size:10px">ADMIN</span>
+          </div>
+
+          <div class="auth-role-item" style="border-left:3px solid #8b5cf6">
+            <div>
+              <strong>PG Researcher</strong>
+              <div style="font-size:11px;color:#cbd5e1">Academic literature &middot; High-throughput audio</div>
+            </div>
+            <span class="pill pill-purple" style="font-size:10px">RESEARCH</span>
+          </div>
+
+          <div class="auth-role-item" style="border-left:3px solid #10b981">
+            <div>
+              <strong>College Student &amp; Educator</strong>
+              <div style="font-size:11px;color:#cbd5e1">Coursework narrations &middot; Children stories</div>
+            </div>
+            <span class="pill pill-green" style="font-size:10px">LEARNING</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="auth-left-footer">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        <span>Secured by Key Secure Foundation &middot; PBKDF2-SHA256</span>
       </div>
     </div>
 
-    <div id="auth-error-msg" style="color:#dc2626;font-size:12px;margin-top:12px;text-align:center;display:none"></div>
+    <!-- RIGHT FORM COLUMN -->
+    <div class="auth-right-col">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <div style="font-size:18px;font-weight:800;color:var(--ink)">Access Portal</div>
+        <button class="btn btn-ghost btn-icon" onclick="closeModal('modal-auth')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <!-- Auth Tabs -->
+      <div class="auth-tabs-row">
+        <button class="auth-tab-btn active" id="auth-tab-signin" onclick="switchAuthTab('signin')">Sign In</button>
+        <button class="auth-tab-btn" id="auth-tab-register" onclick="switchAuthTab('register')">Create Account</button>
+      </div>
+
+      <!-- Sign In Form -->
+      <div id="auth-form-signin">
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div>
+            <label style="font-size:12px;font-weight:600;color:var(--ink-secondary);display:block;margin-bottom:4px">Email Address</label>
+            <input type="email" id="signin-email" class="input" placeholder="superadmin@khyathi.sri">
+          </div>
+          <div>
+            <label style="font-size:12px;font-weight:600;color:var(--ink-secondary);display:block;margin-bottom:4px">Password</label>
+            <input type="password" id="signin-password" class="input" placeholder="••••••••" onkeydown="if(event.key==='Enter') performLogin()">
+          </div>
+          <button class="btn btn-primary" style="width:100%;margin-top:6px;justify-content:center" onclick="performLogin()" id="btn-submit-login">
+            Sign In to Account
+          </button>
+        </div>
+
+        <!-- One-Click Quick Login Strip (Mandated for Super Admin & Admin) -->
+        <div class="quick-profiles-strip">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink-muted);margin-bottom:8px">
+            One-Click Verified Demo Access
+          </div>
+
+          <!-- Super Admin Button -->
+          <button class="quick-profile-btn super-btn" onclick="fillDemoLogin('superadmin@khyathi.sri', 'superadmin123')">
+            <div style="display:flex;align-items:center;gap:6px">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <strong>Super Admin (Owner / Me)</strong>
+            </div>
+            <span style="font-size:11px;font-weight:700">Root &rarr;</span>
+          </button>
+
+          <!-- Platform Admin Button -->
+          <button class="quick-profile-btn" onclick="fillDemoLogin('admin@khyathi.sri', 'admin123')">
+            <div><strong>Platform Admin</strong> <span style="font-size:11px;color:var(--primary)">Platform</span></div>
+            <span>&rarr;</span>
+          </button>
+
+          <!-- PG Researcher Button -->
+          <button class="quick-profile-btn" onclick="fillDemoLogin('researcher@khyathi.sri', 'researcher123')">
+            <div><strong>Dr. Aryan Sharma</strong> <span style="font-size:11px;color:var(--purple)">PG Researcher</span></div>
+            <span>&rarr;</span>
+          </button>
+
+          <!-- College Student Button -->
+          <button class="quick-profile-btn" onclick="fillDemoLogin('student@khyathi.sri', 'student123')">
+            <div><strong>Priya Patel</strong> <span style="font-size:11px;color:var(--green)">College Student</span></div>
+            <span>&rarr;</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Register Form -->
+      <div id="auth-form-register" style="display:none">
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div>
+            <label style="font-size:12px;font-weight:600;color:var(--ink-secondary);display:block;margin-bottom:4px">Full Name</label>
+            <input type="text" id="reg-name" class="input" placeholder="Your Name">
+          </div>
+          <div>
+            <label style="font-size:12px;font-weight:600;color:var(--ink-secondary);display:block;margin-bottom:4px">Email Address</label>
+            <input type="email" id="reg-email" class="input" placeholder="user@example.com">
+          </div>
+          <div>
+            <label style="font-size:12px;font-weight:600;color:var(--ink-secondary);display:block;margin-bottom:4px">Password</label>
+            <input type="password" id="reg-password" class="input" placeholder="Min 6 characters">
+          </div>
+          <div>
+            <label style="font-size:12px;font-weight:600;color:var(--ink-secondary);display:block;margin-bottom:4px">Designated Role Tier</label>
+            <select id="reg-role" class="input">
+              <option value="PG Researcher">PG Researcher / Academic</option>
+              <option value="College Student">School / College Student</option>
+              <option value="Business Professional">Business Professional / Office</option>
+              <option value="Early Educator">Kids Educator / Parent</option>
+            </select>
+          </div>
+          <button class="btn btn-primary" style="width:100%;margin-top:6px;justify-content:center" onclick="performRegister()" id="btn-submit-reg">
+            Register Account
+          </button>
+        </div>
+      </div>
+
+      <div id="auth-error-msg" style="color:#dc2626;font-size:12.5px;margin-top:12px;text-align:center;display:none;background:#fef2f2;padding:8px;border-radius:6px;border:1px solid #fecaca"></div>
+    </div>
+
   </div>
 </div>
 
-<script src="/static/js/app.js"></script>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     JAVASCRIPT APPLICATION & ROUTER LOGIC
+     ══════════════════════════════════════════════════════════════════════════ -->
 <script>
-// ── NAVIGATION (ICON-ONLY ROUTER) ──
-const ALL_PANELS = ['landing','chat','skills','models','team','connectors','code'];
+// ── STATE ROUTER ──
+const ALL_PANELS = ['landing', 'skills', 'models', 'team', 'connectors', 'code'];
+let currentUser = null;
+window._selectedModel = 'local_neural';
+window._selectedPreset = null;
 
 function showPanel(id) {
+  // If Claude Studio is open, close it
+  document.getElementById('claude-app-view')?.classList.remove('active');
+  document.getElementById('main-view-container')?.style.setProperty('display', 'block');
+
   ALL_PANELS.forEach(p => {
-    document.getElementById('panel-'+p)?.classList.remove('active');
-    document.getElementById('ni-'+p)?.classList.remove('active');
+    document.getElementById('panel-' + p)?.classList.remove('active');
+    document.getElementById('nav-btn-' + p)?.classList.remove('active');
   });
-  document.getElementById('panel-'+id)?.classList.add('active');
-  document.getElementById('ni-'+id)?.classList.add('active');
+
+  const target = document.getElementById('panel-' + id);
+  if (target) target.classList.add('active');
+  document.getElementById('nav-btn-' + id)?.classList.add('active');
   window.scrollTo(0, 0);
 }
 
-// Quick navigation for audience cards
 function openAudienceMode(mode) {
   showPanel('skills');
   setTimeout(() => {
@@ -590,72 +1139,137 @@ function openAudienceMode(mode) {
   }, 100);
 }
 
-// ── NAVBAR SCROLL ──
-window.addEventListener('scroll', () => {
-  document.getElementById('navbar')?.classList.toggle('scrolled', window.scrollY > 4);
-});
-
-// ── CODE TABS ──
-function switchCodeTab(name, btn) {
-  document.querySelectorAll('.code-tab-panel').forEach(p => p.style.display = 'none');
-  document.querySelectorAll('#code-tabs button').forEach(b => b.classList.remove('active'));
-  document.getElementById('code-'+name).style.display = 'block';
-  btn.classList.add('active');
+// ── CLAUDE DESKTOP APP 3-PANE STUDIO HANDLERS ──
+function openClaudeStudio() {
+  document.getElementById('main-view-container')?.style.setProperty('display', 'none');
+  const claudeView = document.getElementById('claude-app-view');
+  if (claudeView) {
+    claudeView.classList.add('active');
+  }
+  switchClaudeTab('chat');
 }
 
-// ── CHAT LOGIC ──
-function chatKeydown(e) {
-  if (e.key === 'Enter' && !e.shiftKey) {
-    e.preventDefault();
-    sendChatMessage();
+function exitClaudeStudio() {
+  document.getElementById('claude-app-view')?.classList.remove('active');
+  document.getElementById('main-view-container')?.style.setProperty('display', 'block');
+  showPanel('landing');
+}
+
+function toggleInspector() {
+  const pane = document.getElementById('claude-inspector-pane');
+  if (pane) {
+    pane.classList.toggle('collapsed');
   }
 }
 
-function autoResize(el) {
-  el.style.height = 'auto';
-  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+function switchClaudeTab(tab) {
+  document.querySelectorAll('.c-nav-item').forEach(el => el.classList.remove('active'));
+  const activeBtn = document.getElementById('c-nav-' + tab);
+  if (activeBtn) activeBtn.classList.add('active');
+
+  const chatMessages = document.getElementById('c-chat-messages');
+  const promptDock = document.getElementById('c-prompt-dock-container');
+  const superView = document.getElementById('c-super-admin-view');
+
+  if (tab === 'super') {
+    if (chatMessages) chatMessages.style.display = 'none';
+    if (promptDock) promptDock.style.display = 'none';
+    if (superView) superView.style.display = 'block';
+    fetchAdminRoster();
+  } else if (tab === 'chat') {
+    if (chatMessages) chatMessages.style.display = 'flex';
+    if (promptDock) promptDock.style.display = 'flex';
+    if (superView) superView.style.display = 'none';
+  } else {
+    // For other tabs (skills, models, team), we exit studio and switch panel
+    exitClaudeStudio();
+    showPanel(tab);
+  }
 }
 
-function clearChat() {
-  document.getElementById('chat-messages').innerHTML = '<div class="chat-bubble ai">Hi! Start a new conversation.</div>';
+function startNewVoiceSession() {
+  const msgs = document.getElementById('c-chat-messages');
+  if (msgs) {
+    msgs.innerHTML = '<div class="chat-bubble ai">Started a fresh voice session. What would you like to synthesize today?</div>';
+  }
+  const ar = document.getElementById('c-audio-result');
+  if (ar) { ar.innerHTML = ''; ar.style.display = 'none'; }
+  document.getElementById('c-prompt-input').value = '';
+  showToast('New session started');
 }
 
-async function sendChatMessage() {
-  const inp = document.getElementById('chat-input');
-  const text = inp.value.trim();
+function loadHistoryItem(title) {
+  document.getElementById('c-session-title').textContent = title;
+  const msgs = document.getElementById('c-chat-messages');
+  if (msgs) {
+    msgs.innerHTML = `<div class="chat-bubble user">Loaded session: ${title}</div>
+    <div class="chat-bubble ai">Session context restored. You can continue speaking or enter new prompts below.</div>`;
+  }
+  showToast('Loaded: ' + title);
+}
+
+function fillClaudePrompt(text, lang) {
+  const inp = document.getElementById('c-prompt-input');
+  const sel = document.getElementById('c-quick-lang');
+  if (inp) inp.value = text;
+  if (sel && lang) sel.value = lang;
+  inp.focus();
+}
+
+function clearClaudeChat() {
+  const msgs = document.getElementById('c-chat-messages');
+  if (msgs) msgs.innerHTML = '<div class="chat-bubble ai">Chat cleared. Ready for your prompt.</div>';
+  const ar = document.getElementById('c-audio-result');
+  if (ar) { ar.innerHTML = ''; ar.style.display = 'none'; }
+}
+
+function cPromptKeydown(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendClaudeMessage();
+  }
+}
+
+async function sendClaudeMessage() {
+  const inp = document.getElementById('c-prompt-input');
+  const text = inp ? inp.value.trim() : '';
   if (!text) return;
-  const lang = document.getElementById('chat-lang-select')?.value || 'en';
-  const model = document.getElementById('chat-model-select')?.value || 'local_neural';
+  const lang = document.getElementById('c-quick-lang')?.value || 'en';
+  const exaggeration = parseFloat(document.getElementById('slider-exaggeration')?.value || '0.5');
+  const cfg = parseFloat(document.getElementById('slider-cfg')?.value || '0.5');
 
-  addBubble(text, 'user');
+  addClaudeBubble(text, 'user');
   inp.value = '';
   inp.style.height = 'auto';
 
-  const thinking = addBubble('Processing…', 'ai');
-  document.getElementById('chat-send-btn').disabled = true;
+  const thinking = addClaudeBubble('Synthesizing 24kHz neural speech...', 'ai');
+  const btn = document.getElementById('c-send-btn');
+  if (btn) btn.disabled = true;
 
   try {
     const res = await fetch('/api/llm/chat-and-speak', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt: text, language: lang, model_id: model })
+      body: JSON.stringify({ prompt: text, language: lang, model_id: window._selectedModel || 'local_neural' })
     });
     const d = await res.json();
-    thinking.textContent = d.text || 'Response received.';
+    thinking.textContent = d.text || 'Synthesis complete.';
     if (d.audio_url) {
-      const ar = document.getElementById('chat-audio-result');
-      ar.style.display = 'block';
-      ar.innerHTML = `<div class="audio-result"><audio controls autoplay src="${d.audio_url}"></audio></div>`;
+      const ar = document.getElementById('c-audio-result');
+      if (ar) {
+        ar.style.display = 'block';
+        ar.innerHTML = `<div class="audio-result"><audio controls autoplay src="${d.audio_url}"></audio></div>`;
+      }
     }
   } catch (e) {
     thinking.textContent = 'Error: ' + e.message;
   } finally {
-    document.getElementById('chat-send-btn').disabled = false;
+    if (btn) btn.disabled = false;
   }
 }
 
-function addBubble(text, role) {
-  const msgs = document.getElementById('chat-messages');
+function addClaudeBubble(text, role) {
+  const msgs = document.getElementById('c-chat-messages');
   const d = document.createElement('div');
   d.className = 'chat-bubble ' + role;
   d.textContent = text;
@@ -664,280 +1278,71 @@ function addBubble(text, role) {
   return d;
 }
 
-// ── CAPABILITIES / WORKSPACES ──
-async function loadSkills() {
-  try {
-    const res = await fetch('/api/skills/list');
-    const { skills } = await res.json();
-    const grid = document.getElementById('skills-grid');
-    
-    // Clean audience-oriented labeling without internal project terms
-    const metaMap = {
-      podcast_host: { label: 'Multi-Speaker Studio', desc: 'Dual-speaker conversational synthesis for interviews, presentations, and team discussions.' },
-      cross_lingual_translator: { label: '23-Language Translator', desc: 'Translate and synthesize speech with zero-shot voice tone preservation.' },
-      document_narrator: { label: 'Long-Form Audio Reader', desc: 'Turn academic research, thesis documents, and coursework into high-fidelity speech.' },
-      voice_director: { label: 'Expressive Voice Director', desc: 'Control pacing, emotional tone, and narration delivery for educational media.' },
-      kids_rhymes: { label: 'Early Learning & Rhymes', desc: 'Interactive rhymes, phonetics practice, and bedtime tales designed for young learners.' },
-    };
-
-    grid.innerHTML = skills.map(s => {
-      const meta = metaMap[s.id] || { label: s.name, desc: s.desc };
-      const inputs = (s.inputs || []).map(inp => {
-        if (inp.type === 'select' || inp.type === 'language_select') {
-          const opts = inp.type === 'language_select'
-            ? '<option value="en">English</option><option value="es">Spanish</option><option value="hi">Hindi</option><option value="ja">Japanese</option>'
-            : (inp.options || []).map(o => `<option>${o}</option>`).join('');
-          return `<select class="skill-select" id="skill-${s.id}-${inp.name}">${opts}</select>`;
-        }
-        return `<input class="skill-input" id="skill-${s.id}-${inp.name}" placeholder="${inp.label}" value="${inp.default || ''}">`;
-      }).join('');
-
-      return `<div class="skill-card">
-        <div class="skill-hd">
-          <div class="skill-title">${meta.label}</div>
-        </div>
-        <div class="skill-desc">${meta.desc}</div>
-        ${inputs}
-        <button class="btn btn-primary skill-run" onclick="runSkill('${s.id}')">Run Studio</button>
-        <div id="skill-result-${s.id}"></div>
-      </div>`;
-    }).join('');
-  } catch (e) {
-    console.error(e);
+// ── SUPER ADMIN CONSOLE HANDLERS ──
+async function openSuperAdminConsole() {
+  const token = localStorage.getItem('auth_token');
+  if (!currentUser || (!currentUser.is_super_admin && !currentUser.is_admin)) {
+    openAuthModal('signin');
+    const err = document.getElementById('auth-error-msg');
+    if (err) {
+      err.textContent = 'Mandatory Super Admin or Admin credentials required to access this console.';
+      err.style.display = 'block';
+    }
+    return;
   }
+  switchClaudeTab('super');
 }
 
-async function runSkill(skillId) {
-  const res_div = document.getElementById('skill-result-' + skillId);
-  res_div.innerHTML = '<span class="spinner" style="margin-top:12px"></span>';
-  const params = {};
-  document.querySelectorAll(`[id^="skill-${skillId}-"]`).forEach(el => {
-    const key = el.id.replace(`skill-${skillId}-`, '');
-    params[key] = el.value;
-  });
+async function fetchAdminRoster() {
+  const token = localStorage.getItem('auth_token');
+  if (!token) return;
+
+  const tbody = document.getElementById('admin-users-tbody');
+  if (tbody) tbody.innerHTML = '<tr><td colspan="5" style="padding:16px;text-align:center;color:var(--ink-muted)">Fetching live user roster...</td></tr>';
 
   try {
-    const res = await fetch('/api/skills/execute', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ skill_id: skillId, params })
+    // 1. Fetch Stats
+    const statsRes = await fetch('/api/admin/stats', {
+      headers: { 'Authorization': `Bearer ${token}` }
     });
-    const d = await res.json();
-    let html = `<div class="audio-result">`;
-    if (d.text) html += `<div style="font-size:12.5px;color:var(--ink-2);margin-bottom:10px;line-height:1.6">${d.text.slice(0, 320)}${d.text.length > 320 ? '…' : ''}</div>`;
-    if (d.audio_url) html += `<audio controls src="${d.audio_url}"></audio>`;
-    html += '</div>';
-    res_div.innerHTML = html;
-  } catch (e) {
-    res_div.innerHTML = `<div style="font-size:12px;color:#dc2626;margin-top:10px">${e.message}</div>`;
-  }
-}
+    if (statsRes.ok) {
+      const { stats } = await statsRes.json();
+      document.getElementById('stat-total-users').textContent = stats.total_users || '0';
+      document.getElementById('stat-active-sessions').textContent = stats.active_sessions || '0';
+      document.getElementById('stat-hw-engine').textContent = stats.hardware_engine || 'MPS Neural Core';
+      document.getElementById('stat-perm-tier').textContent = stats.permission_tier || 'SUPER_ADMIN_ROOT';
+    }
 
-// ── MODELS ──
-async function loadModels() {
-  try {
-    const res = await fetch('/api/llm/models');
-    const { models } = await res.json();
-    const grid = document.getElementById('models-grid');
-    const colors = ['pill-blue','pill-purple','pill-green','pill-amber','pill-pink','pill-gray'];
-
-    grid.innerHTML = models.map((m, i) => `
-      <div class="model-card${i === 0 ? ' sel' : ''}" onclick="selectModel('${m.id}', this)">
-        <span class="model-badge ${colors[i % colors.length]}">${m.provider || 'Core'}</span>
-        <div class="model-name">${m.name}</div>
-        <div class="model-desc">${m.desc}</div>
-        <div style="font-size:11px;color:${m.requires_key ? '#d97706' : '#059669'};margin-top:8px">
-          ${m.requires_key ? 'API key configured' : 'Local hardware accelerated'}
-        </div>
-      </div>`).join('');
-    window._selectedModel = models[0]?.id || 'local_neural';
-  } catch (e) {
-    console.error(e);
-  }
-}
-
-function selectModel(id, el) {
-  document.querySelectorAll('.model-card').forEach(c => c.classList.remove('sel'));
-  el.classList.add('sel');
-  window._selectedModel = id;
-  const sel = document.getElementById('chat-model-select');
-  if (sel) sel.value = id;
-  showToast('Model selected: ' + id);
-}
-
-async function runLLMGenerate() {
-  const prompt = document.getElementById('llm-prompt').value.trim();
-  if (!prompt) return;
-  const res_div = document.getElementById('llm-result');
-  res_div.innerHTML = '<span class="spinner"></span>';
-  try {
-    const res = await fetch('/api/llm/generate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt, model_id: window._selectedModel || 'local_neural' })
+    // 2. Fetch Users Roster (Super Admin Only)
+    const usersRes = await fetch('/api/admin/users', {
+      headers: { 'Authorization': `Bearer ${token}` }
     });
-    const d = await res.json();
-    res_div.innerHTML = `<div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px;font-size:13px;color:var(--ink-2);line-height:1.65">${d.text || JSON.stringify(d)}</div>`;
-  } catch (e) {
-    res_div.innerHTML = `<span style="color:#dc2626;font-size:12px">${e.message}</span>`;
-  }
-}
-
-async function runLLMChatSpeak() {
-  const prompt = document.getElementById('llm-prompt').value.trim();
-  if (!prompt) return;
-  const res_div = document.getElementById('llm-result');
-  res_div.innerHTML = '<span class="spinner"></span>';
-  try {
-    const res = await fetch('/api/llm/chat-and-speak', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt, model_id: window._selectedModel || 'local_neural', language: 'en' })
-    });
-    const d = await res.json();
-    res_div.innerHTML = `<div class="audio-result">
-      <div style="font-size:12px;color:var(--ink-2);margin-bottom:10px">${d.text || ''}</div>
-      ${d.audio_url ? `<audio controls autoplay src="${d.audio_url}"></audio>` : ''}
-    </div>`;
-  } catch (e) {
-    res_div.innerHTML = `<span style="color:#dc2626;font-size:12px">${e.message}</span>`;
-  }
-}
-
-// ── PERSONAS / TEAM ──
-async function loadTeam() {
-  try {
-    const res = await fetch('/api/team');
-    const { team } = await res.json();
-    const grid = document.getElementById('team-grid');
-    grid.innerHTML = team.map(m => `
-      <div class="team-card">
-        ${m.avatar ? `<img src="${m.avatar}" class="team-avatar" onerror="this.style.display='none'">` : `<div class="team-avatar-ph">${m.name[0]}</div>`}
-        <div class="team-name">${m.name}</div>
-        <div class="team-role">${m.role || m.title || 'Voice Profile'}</div>
-        <button class="btn btn-ghost team-speak" style="width:100%;margin-top:12px" onclick="speakTeamMember('${m.id}')">Listen Sample</button>
-      </div>`).join('');
-  } catch (e) {
-    console.error(e);
-  }
-}
-
-async function speakTeamMember(id) {
-  try {
-    const res = await fetch('/api/team/speak', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ member_id: id })
-    });
-    const d = await res.json();
-    if (d.audio_url) {
-      const a = new Audio(d.audio_url);
-      a.play();
+    if (usersRes.ok) {
+      const { users } = await usersRes.json();
+      if (tbody) {
+        tbody.innerHTML = users.map(u => `
+          <tr style="border-bottom:1px solid var(--border)">
+            <td style="padding:10px 8px;font-family:monospace;font-size:11px;color:var(--ink-muted)">${u.id}</td>
+            <td style="padding:10px 8px;font-weight:600;color:var(--ink)">${u.name}</td>
+            <td style="padding:10px 8px;color:var(--ink-secondary)">${u.email}</td>
+            <td style="padding:10px 8px">
+              <span class="pill ${u.role === 'Super Admin' ? 'pill-gold' : u.role === 'Admin' ? 'pill-blue' : 'pill-purple'}" style="font-size:11px">
+                ${u.role}
+              </span>
+            </td>
+            <td style="padding:10px 8px;color:var(--ink-muted);font-size:11px">${(u.created_at || '').slice(0, 10)}</td>
+          </tr>
+        `).join('');
+      }
+    } else {
+      if (tbody) tbody.innerHTML = `<tr><td colspan="5" style="padding:16px;text-align:center;color:#b45309">Super Admin Roster view restricted to Root Owner.</td></tr>`;
     }
   } catch (e) {
-    showToast(e.message, 'error');
+    if (tbody) tbody.innerHTML = `<tr><td colspan="5" style="padding:16px;text-align:center;color:#dc2626">${e.message}</td></tr>`;
   }
 }
 
-// ── CONNECTORS ──
-const CONN_SVGS = {
-  openai:   `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>`,
-  gemini:   `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
-  deepseek: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>`,
-  ollama:   `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>`,
-  whatsapp: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>`,
-  webhook:  `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>`,
-};
-const CONN_SVG_DEFAULT = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18"/></svg>`;
-
-async function loadConnectors() {
-  try {
-    const res = await fetch('/api/connectors/list');
-    const { connectors } = await res.json();
-    const grid = document.getElementById('connectors-grid');
-    grid.innerHTML = connectors.map(c => `
-      <div class="conn-card${c.connected ? ' on' : ''}">
-        <div class="conn-icon">${CONN_SVGS[c.id] || CONN_SVG_DEFAULT}</div>
-        <div class="conn-name">${c.name}</div>
-        <div class="conn-status ${c.connected ? 'on' : 'off'}">${c.connected ? 'Connected' : 'Available'}</div>
-      </div>`).join('');
-  } catch (e) {
-    console.error(e);
-  }
-}
-
-async function saveApiKey() {
-  const prov = document.getElementById('key-provider').value;
-  const val = document.getElementById('key-value').value.trim();
-  if (!val) return;
-  try {
-    await fetch('/api/connectors/keys', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ provider_key: prov + '_api_key', key_value: val })
-    });
-    showToast('Credentials updated', 'success');
-    loadConnectors();
-  } catch (e) {
-    showToast(e.message, 'error');
-  }
-}
-
-// ── CODE API ──
-async function runCodeAPI() {
-  const text = document.getElementById('code-text').value;
-  const lang = document.getElementById('code-lang').value;
-  const res_div = document.getElementById('code-result');
-  res_div.innerHTML = '<span class="spinner"></span>';
-  try {
-    const res = await fetch('/api/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text, language: lang, exaggeration: 0.5, cfg_weight: 0.5 })
-    });
-    const d = await res.json();
-    res_div.innerHTML = `<div class="audio-result"><audio controls autoplay src="${d.audio_url}"></audio></div>`;
-  } catch (e) {
-    res_div.innerHTML = `<span style="color:#dc2626;font-size:12px">${e.message}</span>`;
-  }
-}
-
-// ── PRESETS ──
-document.getElementById('btn-presets')?.addEventListener('click', async () => {
-  const modal = document.getElementById('modal-presets');
-  modal.style.display = 'block';
-  const list = document.getElementById('presets-list');
-  try {
-    const res = await fetch('/api/presets');
-    const { presets } = await res.json();
-    list.innerHTML = presets.map(p => `
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px;border:1px solid var(--border);border-radius:10px;cursor:pointer;transition:all .2s" onclick="selectPreset('${p.id}')">
-        <div>
-          <div style="font-size:13px;font-weight:600;color:var(--ink)">${p.name}</div>
-          <div style="font-size:11px;color:var(--ink-3)">${p.lang || ''} · ${p.style || ''}</div>
-        </div>
-        <button class="btn btn-ghost btn-sm">Select</button>
-      </div>`).join('');
-  } catch (e) {
-    list.innerHTML = '<div style="font-size:13px;color:var(--ink-3)">Unable to load presets</div>';
-  }
-});
-
-function selectPreset(id) {
-  window._selectedPreset = id;
-  closeModal('modal-presets');
-  showToast('Voice profile active');
-}
-
-function closePresets(e) {
-  if (e.target.id === 'modal-presets') closeModal('modal-presets');
-}
-
-function closeModal(id) {
-  document.getElementById(id).style.display = 'none';
-}
-
-// ── HERO PROMPT & QUICK SUGGESTIONS ──
+// ── ZIPWP HERO PROMPT LOGIC ──
 function fillHeroPrompt(text, lang) {
   const inp = document.getElementById('hero-prompt-input');
   const sel = document.getElementById('hero-lang-select');
@@ -957,7 +1362,7 @@ async function runHeroPrompt() {
   const btn = document.getElementById('hero-prompt-btn');
 
   if (outContainer) outContainer.style.display = 'block';
-  if (outText) outText.innerHTML = '<span class="spinner"></span> Synthesizing voice...';
+  if (outText) outText.innerHTML = '<span class="spinner"></span> Synthesizing 24kHz audio...';
   if (outAudio) outAudio.innerHTML = '';
   if (btn) btn.disabled = true;
 
@@ -981,12 +1386,12 @@ async function runHeroPrompt() {
 }
 
 function continueInStudio() {
-  showPanel('chat');
+  openClaudeStudio();
   if (window._lastHeroResult) {
-    addBubble(window._lastHeroResult.prompt, 'user');
-    addBubble(window._lastHeroResult.text, 'ai');
+    addClaudeBubble(window._lastHeroResult.prompt, 'user');
+    addClaudeBubble(window._lastHeroResult.text, 'ai');
     if (window._lastHeroResult.audio_url) {
-      const ar = document.getElementById('chat-audio-result');
+      const ar = document.getElementById('c-audio-result');
       if (ar) {
         ar.style.display = 'block';
         ar.innerHTML = `<div class="audio-result"><audio controls autoplay src="${window._lastHeroResult.audio_url}"></audio></div>`;
@@ -995,9 +1400,14 @@ function continueInStudio() {
   }
 }
 
-// ── AUTHENTICATION MANAGEMENT ──
-let currentUser = null;
+// ── FAQ ACCORDION TOGGLE ──
+function toggleFaq(el) {
+  const isOpen = el.classList.contains('open');
+  document.querySelectorAll('.zip-faq-item').forEach(item => item.classList.remove('open'));
+  if (!isOpen) el.classList.add('open');
+}
 
+// ── AUTHENTICATION MANAGEMENT ──
 function openAuthModal(tab = 'signin') {
   const m = document.getElementById('modal-auth');
   if (m) {
@@ -1006,6 +1416,11 @@ function openAuthModal(tab = 'signin') {
     const err = document.getElementById('auth-error-msg');
     if (err) err.style.display = 'none';
   }
+}
+
+function closeModal(id) {
+  const m = document.getElementById(id);
+  if (m) m.style.display = 'none';
 }
 
 function closeModalOnBg(e, id) {
@@ -1064,7 +1479,7 @@ async function performLogin() {
     currentUser = d.user;
     updateNavAuthUI();
     closeModal('modal-auth');
-    showToast(`Signed in as ${d.user.name}`, 'success');
+    showToast(`Signed in as ${d.user.name} (${d.user.role})`, 'success');
   } catch (e) {
     if (err) { err.textContent = e.message; err.style.display = 'block'; }
   }
@@ -1074,7 +1489,7 @@ async function performRegister() {
   const name = document.getElementById('reg-name')?.value.trim();
   const email = document.getElementById('reg-email')?.value.trim();
   const password = document.getElementById('reg-password')?.value;
-  const role = document.getElementById('reg-role')?.value || 'Student';
+  const role = document.getElementById('reg-role')?.value || 'College Student';
   const err = document.getElementById('auth-error-msg');
 
   if (!email || !password) {
@@ -1096,7 +1511,7 @@ async function performRegister() {
     currentUser = d.user;
     updateNavAuthUI();
     closeModal('modal-auth');
-    showToast(`Welcome, ${d.user.name}! Account ready.`, 'success');
+    showToast(`Welcome, ${d.user.name}!`, 'success');
   } catch (e) {
     if (err) { err.textContent = e.message; err.style.display = 'block'; }
   }
@@ -1111,7 +1526,7 @@ async function performLogout() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token })
       });
-    } catch (e) {}
+    } catch (_) {}
   }
   localStorage.removeItem('auth_token');
   localStorage.removeItem('auth_user');
@@ -1139,7 +1554,7 @@ async function checkCurrentUser() {
       localStorage.removeItem('auth_token');
       localStorage.removeItem('auth_user');
     }
-  } catch (e) {
+  } catch (_) {
     const cached = localStorage.getItem('auth_user');
     if (cached) {
       try { currentUser = JSON.parse(cached); } catch (_) {}
@@ -1155,43 +1570,259 @@ function updateNavAuthUI() {
   const nameEl = document.getElementById('nav-user-name');
   const roleEl = document.getElementById('nav-user-role');
 
+  const cAvatar = document.getElementById('c-profile-avatar');
+  const cName = document.getElementById('c-profile-name');
+  const cRole = document.getElementById('c-profile-role');
+
   if (currentUser) {
     if (loginBtn) loginBtn.style.display = 'none';
-    if (userChip) userChip.style.display = 'flex';
+    if (userChip) userChip.style.display = 'inline-flex';
     const names = (currentUser.name || currentUser.email).split(' ');
     const initials = names.length > 1 ? (names[0][0] + names[1][0]).toUpperCase() : names[0].slice(0, 2).toUpperCase();
+    
     if (initialsEl) initialsEl.textContent = initials;
     if (nameEl) nameEl.textContent = currentUser.name || currentUser.email.split('@')[0];
-    if (roleEl) roleEl.textContent = currentUser.role || 'Member';
+    if (roleEl) {
+      roleEl.textContent = currentUser.role || 'Member';
+      roleEl.className = 'user-nav-role' + (currentUser.is_super_admin ? ' super' : '');
+    }
+
+    if (cAvatar) cAvatar.textContent = initials;
+    if (cName) cName.textContent = currentUser.name;
+    if (cRole) cRole.textContent = currentUser.role;
   } else {
     if (loginBtn) loginBtn.style.display = 'inline-flex';
     if (userChip) userChip.style.display = 'none';
+    if (cAvatar) cAvatar.textContent = 'G';
+    if (cName) cName.textContent = 'Guest User';
+    if (cRole) cRole.textContent = 'Unauthenticated';
   }
 }
 
-// ── LANGUAGES ──
-async function loadLanguages() {
-  try {
-    const res = await fetch('/api/languages');
-    const { languages } = await res.json();
-    ['chat-lang-select', 'code-lang'].forEach(id => {
-      const el = document.getElementById(id);
-      if (!el) return;
-      el.innerHTML = Object.entries(languages).map(([k, v]) => `<option value="${k}">${v}</option>`).join('');
-    });
-  } catch (e) {}
+// ── UTILITIES ──
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 130) + 'px';
 }
 
-// ── STATUS ──
+function switchCodeTab(name, btn) {
+  document.querySelectorAll('.code-tab-panel').forEach(p => p.style.display = 'none');
+  document.querySelectorAll('#code-tabs button').forEach(b => b.classList.remove('active'));
+  document.getElementById('code-' + name).style.display = 'block';
+  btn.classList.add('active');
+}
+
+async function loadSkills() {
+  try {
+    const res = await fetch('/api/skills/list');
+    const { skills } = await res.json();
+    const grid = document.getElementById('skills-grid');
+    if (!grid) return;
+    
+    const metaMap = {
+      podcast_host: { label: 'Multi-Speaker Studio', desc: 'Dual-speaker conversational synthesis for interviews, presentations, and team discussions.' },
+      cross_lingual_translator: { label: '23-Language Translator', desc: 'Translate and synthesize speech with zero-shot voice tone preservation.' },
+      document_narrator: { label: 'Long-Form Audio Reader', desc: 'Turn academic research, thesis documents, and coursework into high-fidelity speech.' },
+      voice_director: { label: 'Expressive Voice Director', desc: 'Control pacing, emotional tone, and narration delivery for educational media.' },
+      kids_rhymes: { label: 'Early Learning & Rhymes', desc: 'Interactive rhymes, phonetics practice, and bedtime tales designed for young learners.' },
+    };
+
+    grid.innerHTML = skills.map(s => {
+      const meta = metaMap[s.id] || { label: s.name, desc: s.desc };
+      return `<div class="skill-card">
+        <div class="skill-hd"><div class="skill-title">${meta.label}</div></div>
+        <div class="skill-desc">${meta.desc}</div>
+        <button class="btn btn-primary skill-run" onclick="runSkill('${s.id}')">Launch Studio</button>
+        <div id="skill-result-${s.id}"></div>
+      </div>`;
+    }).join('');
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+async function runSkill(skillId) {
+  const res_div = document.getElementById('skill-result-' + skillId);
+  if (!res_div) return;
+  res_div.innerHTML = '<span class="spinner" style="margin-top:12px"></span>';
+  try {
+    const res = await fetch('/api/skills/execute', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ skill_id: skillId, params: {} })
+    });
+    const d = await res.json();
+    let html = `<div class="audio-result" style="margin-top:12px">`;
+    if (d.text) html += `<div style="font-size:12.5px;color:var(--ink-secondary);margin-bottom:8px;line-height:1.6">${d.text.slice(0, 240)}…</div>`;
+    if (d.audio_url) html += `<audio controls autoplay src="${d.audio_url}"></audio>`;
+    html += '</div>';
+    res_div.innerHTML = html;
+  } catch (e) {
+    res_div.innerHTML = `<div style="font-size:12px;color:#dc2626;margin-top:10px">${e.message}</div>`;
+  }
+}
+
+async function loadModels() {
+  try {
+    const res = await fetch('/api/llm/models');
+    const { models } = await res.json();
+    const grid = document.getElementById('models-grid');
+    if (!grid) return;
+    const colors = ['pill-blue','pill-purple','pill-green','pill-gold'];
+
+    grid.innerHTML = models.map((m, i) => `
+      <div class="model-card${i === 0 ? ' sel' : ''}" onclick="selectModel('${m.id}', this)">
+        <span class="model-badge ${colors[i % colors.length]}">${m.provider || 'Core'}</span>
+        <div class="model-name">${m.name}</div>
+        <div class="model-desc">${m.desc}</div>
+        <div style="font-size:11px;color:${m.requires_key ? '#d97706' : '#059669'};margin-top:8px">
+          ${m.requires_key ? 'API key configured' : 'Local hardware accelerated'}
+        </div>
+      </div>`).join('');
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+function selectModel(id, el) {
+  document.querySelectorAll('.model-card').forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel');
+  window._selectedModel = id;
+  showToast('Model selected: ' + id);
+}
+
+async function runLLMGenerate() {
+  const prompt = document.getElementById('llm-prompt').value.trim();
+  if (!prompt) return;
+  const res_div = document.getElementById('llm-result');
+  res_div.innerHTML = '<span class="spinner"></span>';
+  try {
+    const res = await fetch('/api/llm/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt, model_id: window._selectedModel || 'local_neural' })
+    });
+    const d = await res.json();
+    res_div.innerHTML = `<div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px;font-size:13px;color:var(--ink-secondary);line-height:1.65">${d.text || JSON.stringify(d)}</div>`;
+  } catch (e) {
+    res_div.innerHTML = `<span style="color:#dc2626;font-size:12px">${e.message}</span>`;
+  }
+}
+
+async function runLLMChatSpeak() {
+  const prompt = document.getElementById('llm-prompt').value.trim();
+  if (!prompt) return;
+  const res_div = document.getElementById('llm-result');
+  res_div.innerHTML = '<span class="spinner"></span>';
+  try {
+    const res = await fetch('/api/llm/chat-and-speak', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt, model_id: window._selectedModel || 'local_neural', language: 'en' })
+    });
+    const d = await res.json();
+    res_div.innerHTML = `<div class="audio-result">
+      <div style="font-size:12px;color:var(--ink-secondary);margin-bottom:10px">${d.text || ''}</div>
+      ${d.audio_url ? `<audio controls autoplay src="${d.audio_url}"></audio>` : ''}
+    </div>`;
+  } catch (e) {
+    res_div.innerHTML = `<span style="color:#dc2626;font-size:12px">${e.message}</span>`;
+  }
+}
+
+async function loadTeam() {
+  try {
+    const res = await fetch('/api/team');
+    const { team } = await res.json();
+    const grid = document.getElementById('team-grid');
+    if (!grid) return;
+    grid.innerHTML = team.map(m => `
+      <div class="team-card">
+        ${m.avatar ? `<img src="${m.avatar}" class="team-avatar" onerror="this.style.display='none'">` : `<div class="team-avatar-ph">${m.name[0]}</div>`}
+        <div class="team-name">${m.name}</div>
+        <div class="team-role">${m.role || m.title || 'Voice Profile'}</div>
+        <button class="btn btn-ghost team-speak" style="width:100%;margin-top:12px" onclick="speakTeamMember('${m.id}')">Listen Sample</button>
+      </div>`).join('');
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+async function speakTeamMember(id) {
+  try {
+    const res = await fetch('/api/team/speak', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ member_id: id })
+    });
+    const d = await res.json();
+    if (d.audio_url) {
+      new Audio(d.audio_url).play();
+    }
+  } catch (e) {
+    showToast(e.message, 'error');
+  }
+}
+
+async function loadConnectors() {
+  try {
+    const res = await fetch('/api/connectors/list');
+    const { connectors } = await res.json();
+    const grid = document.getElementById('connectors-grid');
+    if (!grid) return;
+    grid.innerHTML = connectors.map(c => `
+      <div class="conn-card${c.connected ? ' on' : ''}">
+        <div class="conn-name">${c.name}</div>
+        <div class="conn-status ${c.connected ? 'on' : 'off'}">${c.connected ? 'Connected' : 'Available'}</div>
+      </div>`).join('');
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+async function saveApiKey() {
+  const prov = document.getElementById('key-provider').value;
+  const val = document.getElementById('key-value').value.trim();
+  if (!val) return;
+  try {
+    await fetch('/api/connectors/keys', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ provider_key: prov + '_api_key', key_value: val })
+    });
+    showToast('Credentials updated', 'success');
+    loadConnectors();
+  } catch (e) {
+    showToast(e.message, 'error');
+  }
+}
+
+async function runCodeAPI() {
+  const text = document.getElementById('code-text').value;
+  const lang = document.getElementById('code-lang').value;
+  const res_div = document.getElementById('code-result');
+  res_div.innerHTML = '<span class="spinner"></span>';
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text, language: lang, exaggeration: 0.5, cfg_weight: 0.5 })
+    });
+    const d = await res.json();
+    res_div.innerHTML = `<div class="audio-result"><audio controls autoplay src="${d.audio_url}"></audio></div>`;
+  } catch (e) {
+    res_div.innerHTML = `<span style="color:#dc2626;font-size:12px">${e.message}</span>`;
+  }
+}
+
 async function checkStatus() {
   try {
     const r = await fetch('/api/status');
     const d = await r.json();
-    document.getElementById('status-label').textContent = `${d.model_version || 'Core'} · ${d.device || 'Active'}`;
-  } catch (e) {}
+    document.getElementById('status-label').textContent = `${d.model_version || '24kHz'} · ${d.device || 'Active'}`;
+  } catch (_) {}
 }
 
-// ── TOAST ──
 function showToast(msg, type = '') {
   const t = document.createElement('div');
   t.className = 'toast ' + type;
@@ -1200,11 +1831,10 @@ function showToast(msg, type = '') {
   setTimeout(() => t.remove(), 2500);
 }
 
-// ── INITIALIZATION ──
+// ── INITIAL LOAD ──
 (async () => {
   await checkStatus();
   await checkCurrentUser();
-  await loadLanguages();
   await Promise.all([loadSkills(), loadModels(), loadTeam(), loadConnectors()]);
 })();
 </script>

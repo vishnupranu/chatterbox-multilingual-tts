@@ -621,7 +621,71 @@ class TestAuditChatterboxPlatform(unittest.TestCase):
         self.assertEqual(logout_res.status_code, 200)
         self.assertTrue(logout_res.json()["success"])
 
+    def test_29_super_admin_rbac_permissions(self):
+        """Audit RBAC enforcement: Super Admin only vs Admin vs General User access control."""
+        # 1. Unauthenticated requests must return 401
+        res_unauth = self.client.get("/api/admin/users")
+        self.assertEqual(res_unauth.status_code, 401)
+        res_unauth_stats = self.client.get("/api/admin/stats")
+        self.assertEqual(res_unauth_stats.status_code, 401)
+
+        # 2. Login as regular Student user
+        student_res = self.client.post("/api/auth/login", json={
+            "email": "student@khyathi.sri",
+            "password": "student123"
+        })
+        self.assertEqual(student_res.status_code, 200)
+        student_tok = student_res.json()["token"]
+
+        # Student cannot access admin endpoints (403 Forbidden)
+        res_student_users = self.client.get("/api/admin/users", headers={"Authorization": f"Bearer {student_tok}"})
+        self.assertEqual(res_student_users.status_code, 403)
+        res_student_stats = self.client.get("/api/admin/stats", headers={"Authorization": f"Bearer {student_tok}"})
+        self.assertEqual(res_student_stats.status_code, 403)
+
+        # 3. Login as Platform Admin
+        admin_res = self.client.post("/api/auth/login", json={
+            "email": "admin@khyathi.sri",
+            "password": "admin123"
+        })
+        self.assertEqual(admin_res.status_code, 200)
+        admin_tok = admin_res.json()["token"]
+
+        # Platform Admin CAN access stats
+        res_admin_stats = self.client.get("/api/admin/stats", headers={"Authorization": f"Bearer {admin_tok}"})
+        self.assertEqual(res_admin_stats.status_code, 200)
+        self.assertTrue(res_admin_stats.json()["success"])
+        self.assertIn("total_users", res_admin_stats.json()["stats"])
+
+        # Platform Admin CANNOT access Super Admin users list (Super Admin Mandated)
+        res_admin_users = self.client.get("/api/admin/users", headers={"Authorization": f"Bearer {admin_tok}"})
+        self.assertEqual(res_admin_users.status_code, 403)
+
+        # 4. Login as Super Admin (Owner / Me)
+        super_res = self.client.post("/api/auth/login", json={
+            "email": "superadmin@khyathi.sri",
+            "password": "superadmin123"
+        })
+        self.assertEqual(super_res.status_code, 200)
+        super_tok = super_res.json()["token"]
+        self.assertTrue(super_res.json()["user"]["is_super_admin"])
+        self.assertTrue(super_res.json()["user"]["is_admin"])
+
+        # Super Admin CAN access both stats and users list
+        res_super_stats = self.client.get("/api/admin/stats", headers={"Authorization": f"Bearer {super_tok}"})
+        self.assertEqual(res_super_stats.status_code, 200)
+        self.assertEqual(res_super_stats.json()["stats"]["permission_tier"], "SUPER_ADMIN_ROOT")
+
+        res_super_users = self.client.get("/api/admin/users", headers={"Authorization": f"Bearer {super_tok}"})
+        self.assertEqual(res_super_users.status_code, 200)
+        users = res_super_users.json()["users"]
+        self.assertIsInstance(users, list)
+        emails = [u["email"] for u in users]
+        self.assertIn("superadmin@khyathi.sri", emails)
+        self.assertIn("admin@khyathi.sri", emails)
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+
 

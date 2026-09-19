@@ -1,9 +1,8 @@
 """
 auth.py
-Authentication & Session Management for Khyathi.Sri AI Platform.
-Provides secure user registration, password hashing (PBKDF2-HMAC-SHA256),
-token-based session handling, user profile management, and role-based presets
-(Kids & Family, School/College Student, Professional, PG Researcher).
+Authentication & Role-Based Access Control (RBAC) for Khyathi.Sri AI Platform.
+Enforces strict Super Admin (Me / Root) and Admin permission mandates alongside
+User role tiers (PG Researcher, College Student, Business Professional, Early Educator).
 """
 
 import os
@@ -11,9 +10,26 @@ import sqlite3
 import hashlib
 import secrets
 import datetime
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, List
 
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "users.db")
+
+# Standardized Role Constants
+ROLE_SUPER_ADMIN = "Super Admin"
+ROLE_ADMIN = "Admin"
+ROLE_RESEARCHER = "PG Researcher"
+ROLE_STUDENT = "College Student"
+ROLE_PROFESSIONAL = "Business Professional"
+ROLE_EDUCATOR = "Early Educator"
+
+ALL_ROLES = [
+    ROLE_SUPER_ADMIN,
+    ROLE_ADMIN,
+    ROLE_RESEARCHER,
+    ROLE_STUDENT,
+    ROLE_PROFESSIONAL,
+    ROLE_EDUCATOR
+]
 
 
 def get_db():
@@ -22,8 +38,18 @@ def get_db():
     return conn
 
 
+def hash_password(password: str, salt: str) -> str:
+    """PBKDF2-HMAC-SHA256 password hashing."""
+    return hashlib.pbkdf2_hmac(
+        "sha256",
+        password.encode("utf-8"),
+        salt.encode("utf-8"),
+        100_000
+    ).hex()
+
+
 def init_db():
-    """Initializes users and sessions tables and seeds demo accounts."""
+    """Initializes users and sessions tables and seeds Super Admin, Admin, and demo accounts."""
     conn = get_db()
     cursor = conn.cursor()
     cursor.execute("""
@@ -47,39 +73,37 @@ def init_db():
     """)
     conn.commit()
 
-    # Seed demo accounts if empty
-    cursor.execute("SELECT COUNT(*) FROM users")
-    count = cursor.fetchone()[0]
-    if count == 0:
-        demo_users = [
-            ("demo_researcher", "researcher@khyathi.sri", "researcher123", "Dr. Aryan Sharma", "PG Researcher"),
-            ("demo_student", "student@khyathi.sri", "student123", "Priya Patel", "College Student"),
-            ("demo_educator", "educator@khyathi.sri", "educator123", "Khyathi Sri", "Early Educator / Parent"),
-            ("demo_work", "office@khyathi.sri", "office123", "Vikram Rao", "Business Professional"),
-        ]
-        for uid, email, pwd, name, role in demo_users:
+    # Seed or ensure Super Admin and Admin accounts exist
+    seed_accounts = [
+        ("usr_superadmin", "superadmin@khyathi.sri", "superadmin123", "Super Admin (Owner)", ROLE_SUPER_ADMIN),
+        ("usr_admin", "admin@khyathi.sri", "admin123", "Platform Admin", ROLE_ADMIN),
+        ("usr_researcher", "researcher@khyathi.sri", "researcher123", "Dr. Aryan Sharma", ROLE_RESEARCHER),
+        ("usr_student", "student@khyathi.sri", "student123", "Priya Patel", ROLE_STUDENT),
+        ("usr_educator", "educator@khyathi.sri", "educator123", "Khyathi Sri", ROLE_EDUCATOR),
+        ("usr_office", "office@khyathi.sri", "office123", "Vikram Rao", ROLE_PROFESSIONAL),
+    ]
+
+    for uid, email, pwd, name, role in seed_accounts:
+        cursor.execute("SELECT id, role FROM users WHERE email = ?", (email.lower(),))
+        existing = cursor.fetchone()
+        if not existing:
             salt = secrets.token_hex(16)
             pwd_hash = hash_password(pwd, salt)
             cursor.execute(
                 "INSERT INTO users (id, email, password_hash, salt, name, role, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
                 (uid, email.lower(), pwd_hash, salt, name, role, datetime.datetime.utcnow().isoformat())
             )
-        conn.commit()
+        else:
+            # Ensure correct role
+            if existing["role"] != role:
+                cursor.execute("UPDATE users SET role = ? WHERE id = ?", (role, existing["id"]))
+
+    conn.commit()
     conn.close()
 
 
-def hash_password(password: str, salt: str) -> str:
-    """PBKDF2-HMAC-SHA256 password hashing."""
-    return hashlib.pbkdf2_hmac(
-        "sha256",
-        password.encode("utf-8"),
-        salt.encode("utf-8"),
-        100_000
-    ).hex()
-
-
-def register_user(email: str, password: str, name: str, role: str = "Student") -> Dict[str, Any]:
-    """Registers a new user and generates a session token."""
+def register_user(email: str, password: str, name: str, role: str = ROLE_STUDENT) -> Dict[str, Any]:
+    """Registers a new user. Super Admin role cannot be self-registered."""
     init_db()
     email = email.strip().lower()
     name = name.strip()
@@ -89,6 +113,10 @@ def register_user(email: str, password: str, name: str, role: str = "Student") -
         return {"success": False, "error": "Password must be at least 6 characters long."}
     if not name:
         name = email.split("@")[0].capitalize()
+
+    # Restrict direct registration of Super Admin unless granted
+    if role == ROLE_SUPER_ADMIN:
+        role = ROLE_RESEARCHER
 
     conn = get_db()
     cursor = conn.cursor()
@@ -120,13 +148,15 @@ def register_user(email: str, password: str, name: str, role: str = "Student") -
             "email": email,
             "name": name,
             "role": role,
+            "is_super_admin": (role == ROLE_SUPER_ADMIN),
+            "is_admin": (role in (ROLE_SUPER_ADMIN, ROLE_ADMIN)),
             "created_at": created_at
         }
     }
 
 
 def login_user(email: str, password: str) -> Dict[str, Any]:
-    """Authenticates user and returns active session token."""
+    """Authenticates user and returns session token with permission flags."""
     init_db()
     email = email.strip().lower()
     conn = get_db()
@@ -151,6 +181,9 @@ def login_user(email: str, password: str) -> Dict[str, Any]:
     conn.commit()
     conn.close()
 
+    is_super = (role == ROLE_SUPER_ADMIN)
+    is_adm = (role in (ROLE_SUPER_ADMIN, ROLE_ADMIN))
+
     return {
         "success": True,
         "token": token,
@@ -159,6 +192,8 @@ def login_user(email: str, password: str) -> Dict[str, Any]:
             "email": u_email,
             "name": name,
             "role": role,
+            "is_super_admin": is_super,
+            "is_admin": is_adm,
             "created_at": created_at
         }
     }
@@ -181,11 +216,15 @@ def get_current_user(token: str) -> Optional[Dict[str, Any]]:
     conn.close()
     if not row:
         return None
+
+    role = row["role"]
     return {
         "id": row["id"],
         "email": row["email"],
         "name": row["name"],
-        "role": row["role"],
+        "role": role,
+        "is_super_admin": (role == ROLE_SUPER_ADMIN),
+        "is_admin": (role in (ROLE_SUPER_ADMIN, ROLE_ADMIN)),
         "created_at": row["created_at"]
     }
 
@@ -204,5 +243,68 @@ def logout_user(token: str) -> bool:
     return deleted
 
 
-# Ensure database is prepped on module import
+# =====================================================================
+# PERMISSION & ADMIN CONTROLS (MANDATED FOR SUPER ADMIN & ADMIN)
+# =====================================================================
+
+def verify_super_admin(token: str) -> bool:
+    """Returns True only if the provided token belongs to a Super Admin."""
+    user = get_current_user(token)
+    return bool(user and user.get("is_super_admin"))
+
+
+def verify_admin(token: str) -> bool:
+    """Returns True if the provided token belongs to an Admin or Super Admin."""
+    user = get_current_user(token)
+    return bool(user and user.get("is_admin"))
+
+
+def list_all_users(token: str) -> Optional[List[Dict[str, Any]]]:
+    """Super Admin only: Returns all registered platform users."""
+    if not verify_super_admin(token):
+        return None
+    init_db()
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, email, name, role, created_at FROM users ORDER BY created_at DESC")
+    rows = cursor.fetchall()
+    conn.close()
+    return [
+        {
+            "id": r["id"],
+            "email": r["email"],
+            "name": r["name"],
+            "role": r["role"],
+            "created_at": r["created_at"]
+        }
+        for r in rows
+    ]
+
+
+def get_admin_system_stats(token: str) -> Optional[Dict[str, Any]]:
+    """Admin & Super Admin: Returns platform health and permission metrics."""
+    if not verify_admin(token):
+        return None
+    init_db()
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT COUNT(*) FROM users")
+    total_users = cursor.fetchone()[0]
+    cursor.execute("SELECT COUNT(*) FROM sessions")
+    active_sessions = cursor.fetchone()[0]
+    cursor.execute("SELECT role, COUNT(*) as count FROM users GROUP BY role")
+    role_breakdown = {r["role"]: r["count"] for r in cursor.fetchall()}
+    conn.close()
+
+    return {
+        "total_users": total_users,
+        "active_sessions": active_sessions,
+        "role_breakdown": role_breakdown,
+        "hardware_engine": "Apple Silicon MPS Neural Core (24kHz HiFi)",
+        "security_partner": "Key Secure Foundation Cloud",
+        "permission_tier": "SUPER_ADMIN_ROOT" if verify_super_admin(token) else "ADMIN_PLATFORM"
+    }
+
+
+# Initialize DB on module load
 init_db()
