@@ -62,20 +62,39 @@ def mel_spectrogram(y, n_fft=1920, num_mels=80, sampling_rate=24000, hop_size=48
     )
     y = y.squeeze(1)
 
-    spec = torch.view_as_real(
-        torch.stft(
-            y,
-            n_fft,
-            hop_length=hop_size,
-            win_length=win_size,
-            window=hann_window[str(y.device)],
-            center=center,
-            pad_mode="reflect",
-            normalized=False,
-            onesided=True,
-            return_complex=True,
+    if y.device.type == "mps":
+        y_cpu = y.cpu()
+        if str(y_cpu.device) not in hann_window:
+            hann_window[str(y_cpu.device)] = torch.hann_window(win_size).to(y_cpu.device)
+        spec = torch.view_as_real(
+            torch.stft(
+                y_cpu,
+                n_fft,
+                hop_length=hop_size,
+                win_length=win_size,
+                window=hann_window[str(y_cpu.device)],
+                center=center,
+                pad_mode="reflect",
+                normalized=False,
+                onesided=True,
+                return_complex=True,
+            )
+        ).to(y.device)
+    else:
+        spec = torch.view_as_real(
+            torch.stft(
+                y,
+                n_fft,
+                hop_length=hop_size,
+                win_length=win_size,
+                window=hann_window[str(y.device)],
+                center=center,
+                pad_mode="reflect",
+                normalized=False,
+                onesided=True,
+                return_complex=True,
+            )
         )
-    )
 
     spec = torch.sqrt(spec.pow(2).sum(-1) + (1e-9))
 

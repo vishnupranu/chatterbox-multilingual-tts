@@ -153,12 +153,21 @@ class S3Tokenizer(S3TokenizerV2):
         audio = audio.to(self.device)
         if padding > 0:
             audio = F.pad(audio, (0, padding))
-        stft = torch.stft(
-            audio, self.n_fft, S3_HOP,
-            window=self.window.to(self.device),
-            return_complex=True
-        )
-        magnitudes = stft[..., :-1].abs()**2
+        if self.device.type == "mps":
+            audio_cpu = audio.cpu()
+            stft = torch.stft(
+                audio_cpu, self.n_fft, S3_HOP,
+                window=self.window.to(audio_cpu.device),
+                return_complex=True
+            )
+            magnitudes = (stft[..., :-1].abs()**2).to(self.device)
+        else:
+            stft = torch.stft(
+                audio, self.n_fft, S3_HOP,
+                window=self.window.to(self.device),
+                return_complex=True
+            )
+            magnitudes = stft[..., :-1].abs()**2
 
         mel_spec = self._mel_filters.to(self.device) @ magnitudes
 

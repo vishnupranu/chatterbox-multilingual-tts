@@ -85,6 +85,7 @@ class DubbingWorkerRequest(BaseModel):
 
 
 @app.get("/")
+@app.head("/")
 def index():
     """Serves the primary Z.ai Single Page Application."""
     index_file = os.path.join(STATIC_DIR, "index.html")

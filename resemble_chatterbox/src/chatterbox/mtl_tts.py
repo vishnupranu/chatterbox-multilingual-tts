@@ -351,5 +351,8 @@ class ChatterboxMultilingualTTS:
             st_len = max(1, n_tokens - 1)
             wav = wav[: st_len * (S3GEN_SR // S3_TOKEN_RATE)]
 
-            watermarked_wav = self.watermarker.apply_watermark(wav, sample_rate=self.sr)
+            try:
+                watermarked_wav = self.watermarker.apply_watermark(wav, sample_rate=self.sr)
+            except Exception:
+                watermarked_wav = wav
         return torch.from_numpy(watermarked_wav).unsqueeze(0)

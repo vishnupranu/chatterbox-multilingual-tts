@@ -394,6 +394,16 @@ class HiFTGenerator(nn.Module):
             l.remove_weight_norm()
 
     def _stft(self, x):
+        orig_device = x.device
+        if orig_device.type == "mps":
+            x_cpu = x.cpu()
+            spec = torch.stft(
+                x_cpu,
+                self.istft_params["n_fft"], self.istft_params["hop_len"], self.istft_params["n_fft"], window=self.stft_window.to(x_cpu.device),
+                return_complex=True)
+            spec = torch.view_as_real(spec)  # [B, F, TT, 2]
+            return spec[..., 0].to(orig_device), spec[..., 1].to(orig_device)
+
         spec = torch.stft(
             x,
             self.istft_params["n_fft"], self.istft_params["hop_len"], self.istft_params["n_fft"], window=self.stft_window.to(x.device),
@@ -405,6 +415,15 @@ class HiFTGenerator(nn.Module):
         magnitude = torch.clip(magnitude, max=1e2)
         real = magnitude * torch.cos(phase)
         img = magnitude * torch.sin(phase)
+        orig_device = magnitude.device
+        if orig_device.type == "mps":
+            real_cpu = real.cpu()
+            img_cpu = img.cpu()
+            inverse_transform = torch.istft(
+                torch.complex(real_cpu, img_cpu), self.istft_params["n_fft"], self.istft_params["hop_len"],
+                self.istft_params["n_fft"], window=self.stft_window.to(real_cpu.device))
+            return inverse_transform.to(orig_device)
+
         inverse_transform = torch.istft(torch.complex(real, img), self.istft_params["n_fft"], self.istft_params["hop_len"],
                                         self.istft_params["n_fft"], window=self.stft_window.to(magnitude.device))
         return inverse_transform
