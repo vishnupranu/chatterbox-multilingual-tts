@@ -31,26 +31,67 @@
 <body class="theme-envato-dark">
 
 <!-- ══════════════════════════════════════════════════════════════════════════
-     TOP NAVBAR (Envato SaaS Pro Navigation)
+     HOSTINGER INDIA DEAL TICKER BANNER
+     ══════════════════════════════════════════════════════════════════════════ -->
+<div class="hostinger-deal-banner animate-deal-shimmer" id="hostinger-deal-bar">
+  <div style="display:flex;align-items:center;gap:8px">
+    <span class="hostinger-deal-pill">75% OFF + 3 MONTHS FREE</span>
+    <span>Hostinger Multilingual Voice Cloud Deal</span>
+  </div>
+  <div class="hostinger-countdown">
+    <span style="font-size:11px;opacity:0.8;margin-right:4px">Ends in:</span>
+    <span class="countdown-block" id="cd-days">02</span><span class="countdown-colon">:</span>
+    <span class="countdown-block" id="cd-hours">14</span><span class="countdown-colon">:</span>
+    <span class="countdown-block" id="cd-mins">36</span><span class="countdown-colon">:</span>
+    <span class="countdown-block" id="cd-secs">48</span>
+  </div>
+  <button class="hostinger-banner-cta" onclick="openCheckoutModal()">
+    Claim Deal &rarr;
+  </button>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     TOP NAVBAR (Hostinger Design System & Icon-Only Main Navigation)
      ══════════════════════════════════════════════════════════════════════════ -->
 <nav class="navbar" id="navbar">
   <a class="navbar-brand" href="#" onclick="showPanel('landing'); return false;">
     <img src="/static/img/brand_logo_gs.png" alt="Logo" class="navbar-logo" onerror="this.style.display='none'">
     <span class="navbar-name">Khyathi<span>.Sri AI</span></span>
-    <span class="badge-tagline">SaaS Pro</span>
+    <span class="badge-tagline">Cloud Pro</span>
   </a>
 
+  <!-- ICON-ONLY MAIN MENU NAVIGATION RAIL (UNIFIED MATERIAL UI SVGS + TOOLTIPS) -->
   <div class="navbar-nav">
-    <button class="nav-btn active" id="nav-btn-landing" onclick="showPanel('landing')">Overview</button>
-    <button class="nav-btn" id="nav-btn-chat" onclick="openClaudeStudio()">Claude Studio</button>
-    <button class="nav-btn" id="nav-btn-marketplace" onclick="showPanel('marketplace')">Marketplace</button>
-    <button class="nav-btn" id="nav-btn-skills" onclick="showPanel('skills')">Capabilities</button>
-    <button class="nav-btn" id="nav-btn-models" onclick="showPanel('models')">Intelligence</button>
-    <button class="nav-btn" id="nav-btn-team" onclick="showPanel('team')">Personas</button>
-    <button class="nav-btn" id="nav-btn-blog" onclick="showPanel('blog')">Articles</button>
-    <button class="nav-btn" id="nav-btn-portfolio" onclick="showPanel('portfolio')">Showcase</button>
-    <button class="nav-btn" id="nav-btn-connectors" onclick="showPanel('connectors')">Integrations</button>
-    <button class="nav-btn" id="nav-btn-code" onclick="showPanel('code')">API</button>
+    <button class="nav-btn active" id="nav-btn-landing" onclick="showPanel('landing')" data-tooltip="Overview &amp; Voice Studio" aria-label="Overview">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    </button>
+    <button class="nav-btn" id="nav-btn-chat" onclick="openClaudeStudio()" data-tooltip="Claude Desktop Studio" aria-label="Claude Studio">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+    </button>
+    <button class="nav-btn" id="nav-btn-marketplace" onclick="showPanel('marketplace')" data-tooltip="Marketplace Templates" aria-label="Marketplace">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+    </button>
+    <button class="nav-btn" id="nav-btn-skills" onclick="showPanel('skills')" data-tooltip="Capabilities Studio" aria-label="Capabilities">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+    </button>
+    <button class="nav-btn" id="nav-btn-models" onclick="showPanel('models')" data-tooltip="Intelligence Matrix" aria-label="Intelligence">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+    </button>
+    <button class="nav-btn" id="nav-btn-team" onclick="showPanel('team')" data-tooltip="Voice Personas" aria-label="Personas">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    </button>
+    <button class="nav-btn" id="nav-btn-blog" onclick="showPanel('blog')" data-tooltip="CMS Articles &amp; Insights" aria-label="Articles">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+    </button>
+    <button class="nav-btn" id="nav-btn-portfolio" onclick="showPanel('portfolio')" data-tooltip="Production Showcase" aria-label="Portfolio">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+    </button>
+    <button class="nav-btn" id="nav-btn-connectors" onclick="showPanel('connectors')" data-tooltip="Integrations &amp; Webhooks" aria-label="Integrations">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+    </button>
+    <button class="nav-btn" id="nav-btn-code" onclick="showPanel('code')" data-tooltip="Developer API &amp; SDK" aria-label="API">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+    </button>
   </div>
 
   <div class="navbar-right">
@@ -192,21 +233,60 @@
         <div id="hero-output-audio"></div>
       </div>
 
-      <!-- Trust Metrics Strip -->
+      <!-- ── HOSTINGER INDIA SOCIAL PROOF STRIP ── -->
+      <div class="hostinger-social-proof">
+        <div class="hostinger-proof-item">
+          <div class="hostinger-stars">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#00EB96"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#00EB96"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#00EB96"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#00EB96"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#00EB96"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <span class="proof-bold">Trustpilot 4.6/5</span>
+          <span class="proof-sub">&middot; 40,000+ Verified Reviews</span>
+        </div>
+        <div class="hostinger-proof-divider"></div>
+        <div class="hostinger-proof-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00EB96" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+          <span class="proof-bold">30-Day Money-Back Guarantee</span>
+          <span class="proof-sub">&middot; Risk-Free Trial</span>
+        </div>
+        <div class="hostinger-proof-divider"></div>
+        <div class="hostinger-proof-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFBC00" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          <span class="proof-bold">24/7 Global Live Support</span>
+          <span class="proof-sub">&middot; Fast Response</span>
+        </div>
+      </div>
+
+      <!-- Trust Metrics Strip with Crisp Inside Icons -->
       <div class="zip-trust-bar">
-        <div class="zip-trust-item">
+        <div class="zip-trust-item framer-card">
+          <div class="card-icon-bubble bubble-emerald" style="margin: 0 auto 8px">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </div>
           <div class="zip-trust-metric">23+</div>
           <div class="zip-trust-label">Indic &amp; Global Languages</div>
         </div>
-        <div class="zip-trust-item">
+        <div class="zip-trust-item framer-card">
+          <div class="card-icon-bubble" style="margin: 0 auto 8px">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+          </div>
           <div class="zip-trust-metric">99.98%</div>
           <div class="zip-trust-label">Native Pronunciation Accuracy</div>
         </div>
-        <div class="zip-trust-item">
+        <div class="zip-trust-item framer-card">
+          <div class="card-icon-bubble bubble-pink" style="margin: 0 auto 8px">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 10v4"/><path d="M6 7v10"/><path d="M10 4v16"/><path d="M14 7v10"/><path d="M18 10v4"/><path d="M22 12v0"/></svg>
+          </div>
           <div class="zip-trust-metric">100k+</div>
           <div class="zip-trust-label">Audio Hours Synthesized</div>
         </div>
-        <div class="zip-trust-item">
+        <div class="zip-trust-item framer-card">
+          <div class="card-icon-bubble bubble-amber" style="margin: 0 auto 8px">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </div>
           <div class="zip-trust-metric">24kHz</div>
           <div class="zip-trust-label">Zero-Artifact Lossless HiFi</div>
         </div>
@@ -222,17 +302,26 @@
       </div>
 
       <div class="zip-steps-grid">
-        <div class="zip-step-card">
+        <div class="zip-step-card framer-card">
+          <div class="card-icon-bubble bubble-pink" style="margin-bottom:14px">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          </div>
           <div class="zip-step-num">1</div>
           <h3>Prompt or Upload Script</h3>
           <p>Type your vision, paste academic research, or upload course transcripts across any of the 23 supported languages.</p>
         </div>
-        <div class="zip-step-card">
+        <div class="zip-step-card framer-card">
+          <div class="card-icon-bubble" style="margin-bottom:14px">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+          </div>
           <div class="zip-step-num">2</div>
           <h3>Select Voice Persona &amp; Tone</h3>
           <p>Choose from academic narrators, child storytellers, executive anchors, or dual-speaker podcast configurations.</p>
         </div>
-        <div class="zip-step-card">
+        <div class="zip-step-card framer-card">
+          <div class="card-icon-bubble bubble-emerald" style="margin-bottom:14px">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
           <div class="zip-step-num">3</div>
           <h3>Instant 24kHz Audio Export</h3>
           <p>Render pristine, low-latency audio accelerated on Apple Silicon MPS Neural Core ready for export or streaming.</p>
@@ -1307,42 +1396,42 @@ const { audio_url } = await res.json();</div>
     <div class="c-sidebar-top">
       <!-- Brand & Exit Header -->
       <div class="c-brand-row">
-        <div class="c-brand-title">
-          <img src="/static/img/brand_logo_gs.png" alt="Logo" style="width:22px;height:22px;border-radius:4px" onerror="this.style.display='none'">
+        <div class="c-brand-title" data-tooltip="Khyathi.Sri Desktop">
+          <img src="/static/img/brand_logo_gs.png" alt="Logo" style="width:26px;height:26px;border-radius:6px" onerror="this.style.display='none'">
           <span>Khyathi.Sri Desktop</span>
         </div>
-        <button class="btn btn-ghost btn-icon" onclick="exitClaudeStudio()" title="Exit Studio / Return to Overview">
+        <button class="btn btn-ghost btn-icon" onclick="exitClaudeStudio()" data-tooltip="Exit Studio / Return to Overview" title="Exit Studio / Return to Overview">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
 
       <!-- New Voice Session Button -->
-      <button class="c-new-session-btn" onclick="startNewVoiceSession()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        New Voice Session
+      <button class="c-new-session-btn" onclick="startNewVoiceSession()" data-tooltip="New Voice Session" aria-label="New Voice Session">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        <span>New Voice Session</span>
       </button>
 
       <!-- Sidebar Navigation Menu -->
       <div class="c-nav-list">
-        <button class="c-nav-item active" id="c-nav-chat" onclick="switchClaudeTab('chat')">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-          Interactive Voice Chat
+        <button class="c-nav-item active" id="c-nav-chat" onclick="switchClaudeTab('chat')" data-tooltip="Interactive Voice Chat" aria-label="Voice Chat">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          <span>Interactive Voice Chat</span>
         </button>
-        <button class="c-nav-item" id="c-nav-skills" onclick="switchClaudeTab('skills')">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          Capabilities Studio
+        <button class="c-nav-item" id="c-nav-skills" onclick="switchClaudeTab('skills')" data-tooltip="Capabilities Studio" aria-label="Capabilities">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span>Capabilities Studio</span>
         </button>
-        <button class="c-nav-item" id="c-nav-models" onclick="switchClaudeTab('models')">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-          Intelligence Matrix
+        <button class="c-nav-item" id="c-nav-models" onclick="switchClaudeTab('models')" data-tooltip="Intelligence Matrix" aria-label="Intelligence">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          <span>Intelligence Matrix</span>
         </button>
-        <button class="c-nav-item" id="c-nav-team" onclick="switchClaudeTab('team')">
+        <button class="c-nav-item" id="c-nav-team" onclick="switchClaudeTab('team')" data-tooltip="Voice Personas" aria-label="Personas">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
-          Voice Personas
+          <span>Voice Personas</span>
         </button>
 
         <!-- ── SUPER ADMIN CONSOLE NAVIGATION (MANDATED FOR SUPER ADMIN & ADMIN) ── -->
-        <button class="c-nav-item super-nav" id="c-nav-super" onclick="openSuperAdminConsole()">
+        <button class="c-nav-item super-nav" id="c-nav-super" onclick="openSuperAdminConsole()" data-tooltip="Super Admin Console" aria-label="Super Admin">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           <span>Super Admin Console</span>
         </button>
@@ -1369,14 +1458,14 @@ const { audio_url } = await res.json();</div>
     <!-- Bottom Profile Card -->
     <div class="c-profile-card">
       <div style="display:flex;align-items:center;gap:8px;overflow:hidden">
-        <div class="user-nav-avatar" id="c-profile-avatar" style="width:30px;height:30px;font-size:12px">SA</div>
+        <div class="user-nav-avatar" id="c-profile-avatar" style="width:34px;height:34px;font-size:12px;cursor:pointer" onclick="openAuthModal('signin')" data-tooltip="Super Admin (Owner)">SA</div>
         <div style="overflow:hidden">
           <div id="c-profile-name" style="font-size:12.5px;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Super Admin</div>
           <div id="c-profile-role" style="font-size:11px;color:var(--primary);font-weight:600">Super Admin (Owner)</div>
         </div>
       </div>
-      <button class="btn btn-ghost btn-sm" onclick="openAuthModal('signin')" title="Switch User / Sign In" style="padding:4px">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <button class="btn btn-ghost btn-sm" onclick="openAuthModal('signin')" data-tooltip="Switch User / Sign In" title="Switch User / Sign In" style="padding:4px">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
       </button>
     </div>
   </aside>
@@ -2887,9 +2976,35 @@ async function loadPortfolio() {
   }
 }
 
+// ── HOSTINGER DEAL COUNTDOWN TIMER ──
+function initHostingerCountdown() {
+  const target = new Date().getTime() + (2 * 86400000) + (14 * 3600000) + (36 * 60000);
+  const updateTimer = () => {
+    const now = new Date().getTime();
+    const diff = Math.max(0, target - now);
+    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+    const dEl = document.getElementById('cd-days');
+    const hEl = document.getElementById('cd-hours');
+    const mEl = document.getElementById('cd-mins');
+    const sEl = document.getElementById('cd-secs');
+
+    if (dEl) dEl.textContent = String(d).padStart(2, '0');
+    if (hEl) hEl.textContent = String(h).padStart(2, '0');
+    if (mEl) mEl.textContent = String(m).padStart(2, '0');
+    if (sEl) sEl.textContent = String(s).padStart(2, '0');
+  };
+  updateTimer();
+  setInterval(updateTimer, 1000);
+}
+
 // ── INITIAL LOAD ──
 (async () => {
   initTheme();
+  initHostingerCountdown();
   await checkStatus();
   await checkCurrentUser();
   await Promise.all([loadSkills(), loadModels(), loadTeam(), loadConnectors(), loadMarketplace()]);
