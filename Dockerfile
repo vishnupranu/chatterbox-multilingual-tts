@@ -3,6 +3,7 @@ FROM python:3.11-slim
 
 ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONUNBUFFERED=1 \
+    PORT=8080 \
     PYTORCH_ENABLE_MPS_FALLBACK=1
 
 WORKDIR /app
@@ -22,6 +23,7 @@ ENV PATH="/root/.local/bin:$PATH"
 COPY pyproject.toml README.md ./
 COPY resemble_chatterbox ./resemble_chatterbox
 
+RUN uv pip install --system --extra-index-url https://download.pytorch.org/whl/cpu torch torchaudio
 RUN uv pip install --system --only-binary llvmlite -e resemble_chatterbox
 RUN uv pip install --system fastapi uvicorn soundfile librosa gradio requests
 
