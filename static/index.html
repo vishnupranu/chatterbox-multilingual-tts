@@ -247,7 +247,7 @@
       <div class="ambient-glow-orb orb-blue" style="bottom:10%;right:15%"></div>
 
       <div class="zip-sec-hd" style="position:relative;z-index:1">
-        <span class="zip-sec-tag" style="background:#fef3c7;color:#92400e;border:1px solid #fde68a">
+        <span class="zip-sec-tag pill pill-gold">
           WORKFLOW BLUEPRINT &middot; ELEMENTOR AUTOMATION KIT
         </span>
         <h2 class="zip-sec-title">Autonomous Voice &amp; Sales Pipeline Management</h2>
@@ -317,15 +317,15 @@
         </div>
 
         <!-- Greeting Bar (From reference image) -->
-        <div style="padding:28px 24px 14px;text-align:center;background:linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(248,250,252,0.85) 100%)">
-          <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg, #6366f1 0%, #a855f7 100%);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;margin:0 auto 12px;box-shadow:0 8px 16px rgba(99,102,241,0.25)">
+        <div class="macos-greeting-bar">
+          <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg, var(--secondary) 0%, var(--purple) 100%);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;margin:0 auto 12px;box-shadow:0 8px 16px rgba(99,102,241,0.25)">
             AS
           </div>
-          <h3 style="font-size:22px;font-weight:800;color:#1e1b4b;margin-bottom:6px">Welcome back, Dr. Aryan</h3>
-          <p style="font-size:13.5px;color:#64748b;margin-bottom:14px">
+          <h3 class="macos-greeting-title">Welcome back, Dr. Aryan</h3>
+          <p class="macos-greeting-sub">
             You have 6 training &amp; voice modules ready to deploy. Local neural engine running at <strong>24kHz Lossless</strong>.
           </p>
-          <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(238,242,255,0.8);border:1px solid #c7d2fe;padding:6px 14px;border-radius:9999px;font-size:12px;color:#3730a3">
+          <div class="macos-greeting-chip">
             <span class="dot dot-green"></span>
             <span>MPS Neural Core active on Apple Silicon &middot; Latency ~120ms &middot; 23 Languages</span>
           </div>
@@ -470,7 +470,7 @@
         </div>
 
         <!-- Workflow Details Description (from https://show.uwebb.id/automate/template-kit/workflow-details/) -->
-        <div style="padding:28px;background:rgba(255,255,255,0.92);border-top:1px solid rgba(226,232,240,0.8);display:grid;grid-template-columns:1fr 1fr;gap:24px" class="workflow-details-cols">
+        <div class="workflow-details-cols">
           <div>
             <div style="font-size:11.5px;font-weight:700;text-transform:uppercase;color:var(--primary);letter-spacing:0.06em;margin-bottom:6px">DESCRIPTION</div>
             <h4 style="font-size:17px;font-weight:800;color:var(--ink);margin-bottom:10px">Autonomous Sales &amp; Voice Operations Pipeline</h4>
@@ -496,7 +496,7 @@
         </div>
 
         <!-- Browse by Category Grid (from template kit) -->
-        <div style="padding:24px 28px;background:rgba(248,250,252,0.9);border-top:1px solid var(--border)">
+        <div class="workflow-category-strip">
           <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px">
             <div>
               <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--ink-muted);letter-spacing:0.06em">EXPLORE</div>
@@ -507,7 +507,7 @@
 
           <div class="category-box-grid">
             <div class="cat-box" onclick="showPanel('skills')">
-              <div class="cat-box-icon" style="background:#e0f2fe;color:#0284c7">
+              <div class="cat-box-icon" style="background:var(--primary-light);color:var(--primary)">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
               </div>
               <div>
@@ -517,7 +517,7 @@
             </div>
 
             <div class="cat-box" onclick="openAudienceMode('kids')">
-              <div class="cat-box-icon" style="background:#ecfdf5;color:#059669">
+              <div class="cat-box-icon" style="background:var(--green-light);color:var(--green)">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/></svg>
               </div>
               <div>
@@ -527,7 +527,7 @@
             </div>
 
             <div class="cat-box" onclick="openAudienceMode('research')">
-              <div class="cat-box-icon" style="background:#f5f3ff;color:#7c3aed">
+              <div class="cat-box-icon" style="background:var(--purple-light);color:var(--purple)">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
               </div>
               <div>
@@ -537,7 +537,7 @@
             </div>
 
             <div class="cat-box" onclick="showPanel('code')">
-              <div class="cat-box-icon" style="background:#fef3c7;color:#d97706">
+              <div class="cat-box-icon" style="background:var(--gold-light);color:var(--gold)">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/></svg>
               </div>
               <div>
@@ -938,7 +938,7 @@
     </div>
     <div style="padding:32px;max-width:1100px;margin:0 auto">
       <div style="display:flex;gap:6px;margin-bottom:18px" id="code-tabs">
-        <div style="display:flex;background:#f1f5f9;padding:4px;border-radius:10px;border:1px solid var(--border)">
+        <div style="display:flex;background:var(--surface-secondary);padding:4px;border-radius:10px;border:1px solid var(--border)">
           <button class="btn btn-sm btn-ghost active" onclick="switchCodeTab('curl', this)">cURL</button>
           <button class="btn btn-sm btn-ghost" onclick="switchCodeTab('python', this)">Python</button>
           <button class="btn btn-sm btn-ghost" onclick="switchCodeTab('js', this)">JavaScript</button>
@@ -1453,7 +1453,7 @@ const { audio_url } = await res.json();</div>
         </div>
         <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px">
           <div style="font-size:12px;color:var(--ink-muted);font-weight:600">Permission Tier</div>
-          <div id="stat-perm-tier" style="font-size:14px;font-weight:800;color:#b45309;margin-top:6px">SUPER_ADMIN_ROOT</div>
+          <div id="stat-perm-tier" style="font-size:14px;font-weight:800;color:var(--gold);margin-top:6px">SUPER_ADMIN_ROOT</div>
         </div>
       </div>
 
@@ -1992,7 +1992,7 @@ async function fetchAdminRoster() {
         `).join('');
       }
     } else {
-      if (tbody) tbody.innerHTML = `<tr><td colspan="5" style="padding:16px;text-align:center;color:#b45309">Super Admin Roster view restricted to Root Owner.</td></tr>`;
+      if (tbody) tbody.innerHTML = `<tr><td colspan="5" style="padding:16px;text-align:center;color:var(--gold)">Super Admin Roster view restricted to Root Owner.</td></tr>`;
     }
   } catch (e) {
     if (tbody) tbody.innerHTML = `<tr><td colspan="5" style="padding:16px;text-align:center;color:#dc2626">${e.message}</td></tr>`;
